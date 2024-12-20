@@ -2,7 +2,7 @@ import 'package:offline17000ft/components/circular_indicator.dart';
 import 'package:offline17000ft/components/custom_drawer.dart';
 import 'package:offline17000ft/constants/color_const.dart';
 import 'package:offline17000ft/forms/fln_observation_form/fln_observation_form.dart';
-import 'package:offline17000ft/forms/inPerson_qualitative_form/inPerson_qualitative_form.dart';
+import 'package:offline17000ft/forms/inPerson_qualitative_form/in_person_qualitative_form.dart';
 import 'package:offline17000ft/forms/in_person_quantitative/in_person_quantitative.dart';
 import 'package:offline17000ft/forms/school_enrolment/school_enrolment.dart';
 import 'package:offline17000ft/forms/school_recce_form/school_recce_form.dart';
@@ -20,7 +20,7 @@ import '../components/custom_snackbar.dart';
 import '../forms/alfa_observation_form/alfa_observation_form.dart';
 import '../forms/cab_meter_tracking_form/cab_meter.dart';
 import '../forms/issue_tracker/issue_tracker_form.dart';
-import '../forms/school_facilities_&_mapping_form/SchoolFacilitiesForm.dart';
+import '../forms/school_facilities_&_mapping_form/school_facilities_form.dart';
 import '../forms/school_staff_vec_form/school_vec_from.dart';
 import '../forms/user_controller/user_controller.dart';
 import '../helper/shared_prefernce.dart';
@@ -120,9 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
 
-    return WillPopScope(
-      onWillPop: () async {
-        return await showDialog(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
           context: context,
           builder: (_) => Confirmation(
             iconname: Icons.check_circle,
@@ -140,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: AppStyles.appBarTitle(context, AppColors.onPrimary),
           ),
           backgroundColor: AppColors.primary,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
               color: Colors.white), // Set drawer icon color to white
           actions: [
             Row(
@@ -148,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Grant Permission Button (Visible only if permission is not granted)
                 if (!_isPermissionGranted)
                   IconButton(
-                    icon: Icon(Icons.lock_open, color: Colors.white),
+                    icon: const Icon(Icons.lock_open, color: Colors.white),
                     onPressed: () async {
                       if (await requestPermission()) {
                         setState(() {

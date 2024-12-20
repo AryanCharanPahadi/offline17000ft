@@ -26,8 +26,8 @@ class SchoolStaffVecController extends GetxController with BaseController {
   final TextEditingController chairPhoneNumberController = TextEditingController();
   final TextEditingController email2Controller = TextEditingController();
   final TextEditingController totalVecStaffController = TextEditingController();
-  final TextEditingController QualSpecifyController = TextEditingController();
-  final TextEditingController QualSpecify2Controller = TextEditingController();
+  final TextEditingController qualSpecifyController = TextEditingController();
+  final TextEditingController qualSpecify2Controller = TextEditingController();
 
   // Start of Showing Fields
   bool showBasicDetails = true; // For show Basic Details
@@ -91,8 +91,8 @@ class SchoolStaffVecController extends GetxController with BaseController {
     chairPhoneNumberController.clear();
     email2Controller.clear();
     totalVecStaffController.clear();
-    QualSpecifyController.clear();
-    QualSpecify2Controller.clear();
+    qualSpecifyController.clear();
+    qualSpecify2Controller.clear();
 
 update();
 

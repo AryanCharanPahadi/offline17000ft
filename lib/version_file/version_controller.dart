@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -23,7 +24,9 @@ class VersionController extends GetxController {
     try {
       // Step 1: Check for network connectivity
       if (!await _isConnected()) {
-        print('DEBUG: No internet connection, loading version from local storage.');
+        if (kDebugMode) {
+          print('DEBUG: No internet connection, loading version from local storage.');
+        }
         await _loadVersion();
         _checkForUpdate();
         return;
@@ -31,14 +34,20 @@ class VersionController extends GetxController {
 
       // Step 2: Fetch version from API
       final response = await http.get(Uri.parse('https://mis.17000ft.org/apis/fast_apis/version.php'));
-      print('DEBUG: Status Code: ${response.statusCode}');
-      print('DEBUG: Response body: ${response.body}');
+      if (kDebugMode) {
+        print('DEBUG: Status Code: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('DEBUG: Response body: ${response.body}');
+      }
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data.containsKey('version')) {
           version.value = data['version'] ?? '';
-          print('DEBUG: Version from API: ${version.value}');
+          if (kDebugMode) {
+            print('DEBUG: Version from API: ${version.value}');
+          }
 
           // Store the version locally
           await _storeVersion(version.value);
@@ -46,15 +55,21 @@ class VersionController extends GetxController {
           // Compare versions
           _checkForUpdate();
         } else {
-          print('ERROR: "version" field not found in API response.');
+          if (kDebugMode) {
+            print('ERROR: "version" field not found in API response.');
+          }
         }
       } else {
-        print('ERROR: Error fetching version from API: ${response.statusCode}, ${response.body}');
+        if (kDebugMode) {
+          print('ERROR: Error fetching version from API: ${response.statusCode}, ${response.body}');
+        }
         await _loadVersion();
         _checkForUpdate();
       }
     } catch (e) {
-      print('EXCEPTION: Exception during version fetch: $e');
+      if (kDebugMode) {
+        print('EXCEPTION: Exception during version fetch: $e');
+      }
       await _loadVersion();
       _checkForUpdate();
     } finally {
@@ -73,9 +88,13 @@ class VersionController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('app_version', version);
-      print('DEBUG: Version stored locally: $version');
+      if (kDebugMode) {
+        print('DEBUG: Version stored locally: $version');
+      }
     } catch (e) {
-      print('ERROR: Error storing version locally: $e');
+      if (kDebugMode) {
+        print('ERROR: Error storing version locally: $e');
+      }
     }
   }
 
@@ -86,12 +105,18 @@ class VersionController extends GetxController {
       String? savedVersion = prefs.getString('app_version');
       if (savedVersion != null) {
         version.value = savedVersion;
-        print('DEBUG: Loaded version from local storage: $savedVersion');
+        if (kDebugMode) {
+          print('DEBUG: Loaded version from local storage: $savedVersion');
+        }
       } else {
-        print('DEBUG: No version found in local storage.');
+        if (kDebugMode) {
+          print('DEBUG: No version found in local storage.');
+        }
       }
     } catch (e) {
-      print('ERROR: Error loading version from local storage: $e');
+      if (kDebugMode) {
+        print('ERROR: Error loading version from local storage: $e');
+      }
     }
   }
 
@@ -100,18 +125,28 @@ class VersionController extends GetxController {
     double? apiVersion = double.tryParse(version.value);
 
     if (apiVersion == null) {
-      print('ERROR: Failed to parse API version as a double.');
+      if (kDebugMode) {
+        print('ERROR: Failed to parse API version as a double.');
+      }
       return;
     }
 
-    print('DEBUG: Parsed API version as double: $apiVersion');
-    print('DEBUG: Current version: $currentVersion');
+    if (kDebugMode) {
+      print('DEBUG: Parsed API version as double: $apiVersion');
+    }
+    if (kDebugMode) {
+      print('DEBUG: Current version: $currentVersion');
+    }
 
     if (apiVersion != currentVersion) {
-      print('DEBUG: API version is newer than the current version, showing upgrade prompt.');
+      if (kDebugMode) {
+        print('DEBUG: API version is newer than the current version, showing upgrade prompt.');
+      }
       showUpgradePrompt();
     } else {
-      print('DEBUG: Current version is up-to-date.');
+      if (kDebugMode) {
+        print('DEBUG: Current version is up-to-date.');
+      }
     }
   }
 
@@ -123,7 +158,9 @@ class VersionController extends GetxController {
           title: "Update Available",
           desc: "A new version of the app is available. Please update to the latest version.",
           onPressed: () {
-            print("DEBUG: Navigating to update..."); // Handle update action
+            if (kDebugMode) {
+              print("DEBUG: Navigating to update...");
+            } // Handle update action
             // TODO: Add actual navigation or logic for updating the app
           },
           yes: "OK",

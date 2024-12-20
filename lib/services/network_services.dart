@@ -1,6 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
-import 'package:offline17000ft/home/home_screen.dart';
 import 'package:offline17000ft/utils/general_screen.dart';
 
 class NetworkStatusService extends GetxService {

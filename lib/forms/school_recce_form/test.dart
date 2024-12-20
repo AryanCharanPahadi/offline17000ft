@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class GradeEnrollmentScreen extends StatefulWidget {
+  const GradeEnrollmentScreen({super.key});
+
   @override
-  _GradeEnrollmentScreenState createState() => _GradeEnrollmentScreenState();
+  GradeEnrollmentScreenState createState() => GradeEnrollmentScreenState();
 }
 
-class _GradeEnrollmentScreenState extends State<GradeEnrollmentScreen> {
+class GradeEnrollmentScreenState extends State<GradeEnrollmentScreen> {
   var jsonData = <String, Map<String, String>>{};
   final List<TextEditingController> boysControllers = [];
   final List<TextEditingController> girlsControllers = [];
@@ -227,27 +229,27 @@ class _GradeEnrollmentScreenState extends State<GradeEnrollmentScreen> {
                 child: Table(
                   border: TableBorder.all(),
                   children: [
-                    TableRow(
+                    const TableRow(
                       children: [
-                        const TableCell(
+                        TableCell(
                           child: Center(
                               child: Text('Class Name',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold))),
                         ),
-                        const TableCell(
+                        TableCell(
                           child: Center(
                               child: Text('Boys',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold))),
                         ),
-                        const TableCell(
+                        TableCell(
                           child: Center(
                               child: Text('Girls',
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold))),
                         ),
-                        const TableCell(
+                        TableCell(
                           child: Center(
                               child: Text('Total',
                                   style:
@@ -264,7 +266,7 @@ class _GradeEnrollmentScreenState extends State<GradeEnrollmentScreen> {
                         girlsControllers[index],
                         totalNotifiers[index],
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

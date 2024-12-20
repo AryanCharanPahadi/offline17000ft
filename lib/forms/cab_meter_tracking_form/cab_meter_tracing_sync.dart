@@ -295,7 +295,7 @@ Future<Map<String, dynamic>> insertCabMeterTracing(
         // Delete local record if sync is successful
         await SqfliteDatabaseHelper().queryDelete(
           arg: id.toString(),
-          table: 'cabMeter_tracing',
+          table: 'cabMeterTracing',
           field: 'id',
         );
         if (kDebugMode) {

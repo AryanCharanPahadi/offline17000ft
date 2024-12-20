@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 // Function to convert a JSON string to a list of TourDetails
 List<TourDetails> tourDetailsFromJson(String str) {
     try {
@@ -15,7 +17,9 @@ List<TourDetails> tourDetailsFromJson(String str) {
             throw Exception("Expected a list of TourDetails");
         }
     } catch (e) {
-        print("Error parsing JSON to TourDetails: $e");
+        if (kDebugMode) {
+          print("Error parsing JSON to TourDetails: $e");
+        }
         return []; // Return an empty list on error
     }
 }
@@ -25,7 +29,9 @@ String tourDetailsToJson(List<TourDetails> data) {
     try {
         return json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
     } catch (e) {
-        print("Error converting TourDetails to JSON: $e");
+        if (kDebugMode) {
+          print("Error converting TourDetails to JSON: $e");
+        }
         return ''; // Return an empty string on error
     }
 }
@@ -49,7 +55,9 @@ class TourDetails {
                 allSchool: json["AllSchool"] ?? "", // Default to empty string if key doesn't exist
             );
         } catch (e) {
-            print("Error creating TourDetails from JSON: $e");
+            if (kDebugMode) {
+              print("Error creating TourDetails from JSON: $e");
+            }
             return TourDetails(); // Return an empty instance on error
         }
     }
@@ -62,7 +70,9 @@ class TourDetails {
                 "AllSchool": allSchool,
             };
         } catch (e) {
-            print("Error converting TourDetails to JSON map: $e");
+            if (kDebugMode) {
+              print("Error converting TourDetails to JSON map: $e");
+            }
             return {}; // Return an empty map on error
         }
     }

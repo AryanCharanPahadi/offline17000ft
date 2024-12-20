@@ -5,6 +5,7 @@ import 'package:offline17000ft/components/custom_dialog.dart';
 import 'package:offline17000ft/components/custom_snackbar.dart';
 import 'package:offline17000ft/constants/color_const.dart';
 import 'package:offline17000ft/helper/database_helper.dart';
+import 'package:offline17000ft/home/home_screen.dart';
 import 'package:offline17000ft/services/network_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,21 +33,24 @@ class _SchoolStaffVecSyncState extends State<SchoolStaffVecSync> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool shouldExit = await showDialog(
-            context: context,
-            builder: (_) => Confirmation(
-                iconname: icon,
-                title: 'Confirm Exit',
-                yes: 'Exit',
-                no: 'Cancel',
-                desc: 'Are you sure you want to Exit?',
-                onPressed: () async {
-                  Navigator.of(context).pop(true);
-                }));
-        return shouldExit;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (_) => Confirmation(
+            iconname: Icons.check_circle,
+            title: 'Exit Confirmation',
+            yes: 'Yes',
+            no: 'No',
+            desc: 'Are you sure you want to leave?',
+            onPressed: () {
+              Navigator.of(context).pop(true);
+
+            },
+          ),
+        );
       },
       child: Scaffold(
         appBar: const CustomAppbar(title: 'School Staff & SMC/VEC Details'),
@@ -147,7 +151,7 @@ class _SchoolStaffVecSyncState extends State<SchoolStaffVecSync> {
                                         item.totalTeachingStaff,
                                         item.totalNonTeachingStaff,
                                         item.totalStaff,
-                                        item.SmcVecName,
+                                        item.smcVecName,
                                         item.genderVec,
                                         item.vecMobile,
                                         item.vecEmail,
@@ -222,7 +226,7 @@ Future insertSchoolStaffVec(
     String? totalTeachingStaff,
     String? totalNonTeachingStaff,
     String? totalStaff,
-    String? SmcVecName,
+    String? smcVecName,
     String? genderVec,
     String? vecMobile,
     String? vecEmail,
@@ -251,7 +255,7 @@ Future insertSchoolStaffVec(
     print('totalTeachingStaff: $totalTeachingStaff');
     print('totalNonTeachingStaff: $totalNonTeachingStaff');
     print('totalStaff: $totalStaff');
-    print('SmcVecName: $SmcVecName');
+    print('SmcVecName: $smcVecName');
     print('genderVec: $genderVec');
     print('vecMobile: $vecMobile');
     print('vecEmail: $vecEmail');
@@ -287,7 +291,7 @@ Future insertSchoolStaffVec(
     'totalTeachingStaff': totalTeachingStaff?.toString() ?? '',
     'totalNonTeachingStaff': totalNonTeachingStaff?.toString() ?? '',
     'totalStaff': totalStaff?.toString() ?? '',
-    'SmcVecName': SmcVecName ?? '',
+    'SmcVecName': smcVecName ?? '',
     'genderVec': genderVec ?? '',
     'vecMobile': vecMobile ?? '',
     'vecEmail': vecEmail ?? '',

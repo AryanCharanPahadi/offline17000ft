@@ -35,21 +35,24 @@ class _SchoolFacilitiesSyncState extends State<SchoolFacilitiesSync> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool shouldExit = await showDialog(
-            context: context,
-            builder: (_) => Confirmation(
-                iconname: icon,
-                title: 'Confirm Exit',
-                yes: 'Exit',
-                no: 'Cancel',
-                desc: 'Are you sure you want to Exit?',
-                onPressed: () async {
-                  Navigator.of(context).pop(true);
-                }));
-        return shouldExit;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (_) => Confirmation(
+            iconname: Icons.check_circle,
+            title: 'Exit Confirmation',
+            yes: 'Yes',
+            no: 'No',
+            desc: 'Are you sure you want to leave?',
+            onPressed: () {
+              Navigator.of(context).pop(true);
+
+            },
+          ),
+        );
       },
       child: Scaffold(
         appBar: const CustomAppbar(title: 'School Facilities & Mapping Form'),
@@ -176,8 +179,8 @@ class _SchoolFacilitiesSyncState extends State<SchoolFacilitiesSync> {
                                                     item.librarianName,
                                                     item.librarianTraining,
                                                     item.libRegisterValue,
-                                                    item.created_by,
-                                                    item.created_at,
+                                                    item.createdBy,
+                                                    item.createdAt,
                                                     item.office,
                                                     item.id,
                                                     (progress) {
@@ -251,8 +254,8 @@ Future insertSchoolFacilities(
   String? librarianName,
   String? librarianTraining,
   String? libRegisterValue,
-  String? created_by,
-  String? created_at,
+  String? createdBy,
+  String? createdAt,
   String? office,
   int? id,
   Function(double) updateProgress, // Progress callback
@@ -277,8 +280,8 @@ Future insertSchoolFacilities(
     print('Librarian Training: $librarianTraining');
     print('Library Register Value: $libRegisterValue');
     print('Image Register: $imgRegister');
-    print('Created By: $created_by');
-    print('Created At: $created_at');
+    print('Created By: $createdBy');
+    print('Created At: $createdAt');
     print('office sync: $office');
     print(id);
   }
@@ -306,8 +309,8 @@ Future insertSchoolFacilities(
     'librarianName': librarianName ?? '',
     'librarianTraining': librarianTraining ?? '',
     'libRegisterValue': libRegisterValue ?? '',
-    'created_by': created_by ?? '',
-    'created_at': created_at ?? '',
+    'created_by': createdBy ?? '',
+    'created_at': createdAt ?? '',
     'office': office ?? 'N/A',
   });
 

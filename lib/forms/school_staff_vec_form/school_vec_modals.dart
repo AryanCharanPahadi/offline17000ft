@@ -21,7 +21,7 @@ class SchoolStaffVecRecords {
     this.totalTeachingStaff,
     this.totalNonTeachingStaff,
     this.totalStaff,
-    this.SmcVecName,
+    this.smcVecName,
     this.genderVec,
     this.vecMobile,
     this.vecEmail,
@@ -51,7 +51,7 @@ class SchoolStaffVecRecords {
   String? totalTeachingStaff;
   String? totalNonTeachingStaff;
   String? totalStaff;
-  String? SmcVecName;  // Updated from nameOfSmc
+  String? smcVecName;  // Updated from nameOfSmc
   String? genderVec;   // Updated from genderOfSmc
   String? vecMobile;   // Updated from mobileOfSmc
   String? vecEmail;    // Updated from emailOfSmc
@@ -83,7 +83,7 @@ class SchoolStaffVecRecords {
     totalTeachingStaff: json["totalTeachingStaff"],
     totalNonTeachingStaff: json["totalTeachingStaff"],
     totalStaff: json["totalStaff"],
-    SmcVecName: json["SmcVecName"],  // Updated to match field name
+    smcVecName: json["SmcVecName"],  // Updated to match field name
     genderVec: json["genderVec"],  // Updated to match field name
     vecMobile: json["vecMobile"],  // Updated to match field name
     vecEmail: json["vecEmail"],  // Updated to match field name
@@ -115,7 +115,7 @@ class SchoolStaffVecRecords {
     "totalTeachingStaff": totalTeachingStaff,
     "totalNonTeachingStaff": totalNonTeachingStaff,
     "totalStaff": totalStaff,
-    "SmcVecName": SmcVecName,
+    "SmcVecName": smcVecName,
     "genderVec": genderVec,
     "vecMobile": vecMobile,
     "vecEmail": vecEmail,

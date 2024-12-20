@@ -32,12 +32,12 @@ import '../../home/home_screen.dart';
 import '../select_tour_id/select_controller.dart';
 
 class SchoolFacilitiesForm extends StatefulWidget {
-  String? userid;
-  String? office;
-  String? tourId; // Add this line
-  String? school; // Add this line for school
+  final String? userid;
+ final String? office;
+ final String? tourId; // Add this line
+  final String? school; // Add this line for school
   final SchoolFacilitiesRecords? existingRecord;
-  SchoolFacilitiesForm({
+  const SchoolFacilitiesForm({
     super.key,
     this.userid,
     this.office,
@@ -111,34 +111,24 @@ class _SchoolFacilitiesFormState extends State<SchoolFacilitiesForm> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final responsive = Responsive(context);
-    return WillPopScope(
-        onWillPop: () async {
-          IconData icon = Icons.check_circle;
-          bool? shouldExit = await showDialog<bool>(
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          showDialog(
             context: context,
             builder: (_) => Confirmation(
-              iconname: icon,
+              iconname: Icons.check_circle,
               title: 'Exit Confirmation',
               yes: 'Yes',
               no: 'No',
               desc: 'Are you sure you want to leave?',
               onPressed: () {
-                // Close the dialog and return true
                 Navigator.of(context).pop(true);
+
               },
             ),
           );
-
-          // If the user confirmed exit, navigate to HomeScreen
-          if (shouldExit == true) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) =>  const HomeScreen()),
-            );
-          }
-
-          // Return false to prevent the default back navigation
-          return false;
         },
         child: Scaffold(
             appBar:  const CustomAppbar(
@@ -1941,10 +1931,10 @@ class _SchoolFacilitiesFormState extends State<SchoolFacilitiesForm> {
                                                           libRegisterValue:
                                                               schoolFacilitiesController
                                                                   .selectedValue10,
-                                                          created_at:
+                                                          createdAt:
                                                               formattedDate
                                                                   .toString(),
-                                                          created_by: widget
+                                                          createdBy: widget
                                                               .userid
                                                               .toString(),
                                                           office: widget
@@ -2060,14 +2050,13 @@ class _SchoolFacilitiesFormState extends State<SchoolFacilitiesForm> {
                                                               Icons.verified);
 
                                                           // Navigate to HomeScreen
-                                                          Navigator
-                                                              .pushReplacement(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                         const HomeScreen()),
-                                                          );
+                                                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                            Navigator.of(context).pushReplacement(
+                                                              MaterialPageRoute(
+                                                                builder: (context) => const HomeScreen(),
+                                                              ),
+                                                            );
+                                                          });
                                                         } else {
                                                           customSnackbar(
                                                               'Error',

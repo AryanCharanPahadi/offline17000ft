@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io;
+import 'package:flutter/foundation.dart';
 import 'package:offline17000ft/forms/alfa_observation_form/alfa_obervation_modal.dart';
 import 'package:offline17000ft/forms/fln_observation_form/fln_observation_modal.dart';
 import 'package:offline17000ft/forms/in_person_quantitative/in_person_quantitative_modal.dart';
@@ -38,19 +39,19 @@ class SqfliteDatabaseHelper {
   static const tableStaffNames = 'tableStaffNames';
 
   static const schoolEnrolment = 'schoolEnrolment';
-  static const cabMeter_tracing = 'cabMeter_tracing';
-  static const inPerson_quantitative = 'inPerson_quantitative';
+  static const cabMeterTracing = 'cabMeterTracing';
+  static const inPersonQuantitative = 'inPersonQuantitative';
   static const schoolFacilities = 'schoolFacilities';
   static const schoolStaffVec = 'schoolStaffVec';
   static const issueTracker = 'issueTracker';
   static const libIssueTable = 'libIssueTable';
-  static const play_issue = 'play_issue';
-  static const furniture_issue = 'furniture_issue';
-  static const digiLab_issue = 'digiLab_issue';
-  static const alexa_issue = 'alexa_issue';
+  static const playIssue = 'playIssue';
+  static const furnitureIssue = 'furnitureIssue';
+  static const digiLabIssue = 'digiLabIssue';
+  static const alexaIssue = 'alexaIssue';
   static const alfaObservation = 'alfaObservation';
   static const flnObservation = 'flnObservation';
-  static const inPerson_qualitative = 'inPerson_qualitative';
+  static const inPersonQualitative = 'inPersonQualitative';
   static const schoolRecce = 'schoolRecce';
   static const _dbName = "offline17000ft.db";
   static const _dbVersion = 62; // Increment this when you make schema changes
@@ -69,7 +70,9 @@ class SqfliteDatabaseHelper {
   // Perform tasks
   Future<Database> init() async {
     var dbPath = await getDatabasesPath();
-    print('Database path: $dbPath'); // Add this log to check path on the device
+    if (kDebugMode) {
+      print('Database path: $dbPath');
+    } // Add this log to check path on the device
     String dbPathHomeWorkout = path.join(dbPath, _dbName);
 
     bool dbExists = await io.File(dbPathHomeWorkout).exists();
@@ -89,15 +92,21 @@ class SqfliteDatabaseHelper {
   }
 
   void _onCreate(Database db, int version) async {
-    print('oncreate is called $version');
+    if (kDebugMode) {
+      print('onCreate is called $version');
+    }
     await _createTables(db);
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    print('onUpgrade is called from $oldVersion to $newVersion');
+    if (kDebugMode) {
+      print('onUpgrade is called from $oldVersion to $newVersion');
+    }
     if (oldVersion < newVersion) {
       if (oldVersion == 61 && newVersion == 62) {
-        print("upgrading database schema");
+        if (kDebugMode) {
+          print("upgrading database schema");
+        }
         await _createTables(db);
       }
       // Add more migration steps if needed for future versions
@@ -128,9 +137,13 @@ class SqfliteDatabaseHelper {
       )
     ''');
 
-      print("Table formDataTable created successfully");
+      if (kDebugMode) {
+        print("Table formDataTable created successfully");
+      }
     } catch (e) {
-      print("Error creating table: $e");
+      if (kDebugMode) {
+        print("Error creating table: $e");
+      }
     }
 
     try {
@@ -142,9 +155,13 @@ class SqfliteDatabaseHelper {
       )
     ''');
 
-      print("Table formDataTable  staff created successfully");
+      if (kDebugMode) {
+        print("Table formDataTable  staff created successfully");
+      }
     } catch (e) {
-      print("Error creating table: $e");
+      if (kDebugMode) {
+        print("Error creating table: $e");
+      }
     }
 
     await db.execute('''
@@ -157,7 +174,7 @@ class SqfliteDatabaseHelper {
     ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $cabMeter_tracing(
+    CREATE TABLE IF NOT EXISTS $cabMeterTracing(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tour_id TEXT,
     place_visit TEXT,
@@ -177,7 +194,7 @@ class SqfliteDatabaseHelper {
     );
 ''');
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $inPerson_quantitative (
+    CREATE TABLE IF NOT EXISTS $inPersonQuantitative (
  id INTEGER PRIMARY KEY AUTOINCREMENT,
 tourId TEXT,
 school TEXT,
@@ -326,7 +343,7 @@ office TEXT
   ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $play_issue(
+    CREATE TABLE IF NOT EXISTS $playIssue(
      id INTEGER PRIMARY KEY AUTOINCREMENT,
       play_issue TEXT,
       play_issue_value TEXT,
@@ -342,7 +359,7 @@ office TEXT
   ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $digiLab_issue(
+    CREATE TABLE IF NOT EXISTS $digiLabIssue(
      id INTEGER PRIMARY KEY AUTOINCREMENT,
       digi_issue TEXT,
       digi_issueValue TEXT,
@@ -359,7 +376,7 @@ office TEXT
   ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $furniture_issue(
+    CREATE TABLE IF NOT EXISTS $furnitureIssue(
      id INTEGER PRIMARY KEY AUTOINCREMENT,
       furniture_issue TEXT,
       furniture_issue_value TEXT,
@@ -376,7 +393,7 @@ office TEXT
   ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $alexa_issue(
+    CREATE TABLE IF NOT EXISTS $alexaIssue(
      id INTEGER PRIMARY KEY AUTOINCREMENT,
       alexa_issue TEXT,
       alexa_issueValue TEXT,
@@ -468,7 +485,7 @@ office TEXT
   ''');
 
     await db.execute('''
-    CREATE TABLE IF NOT EXISTS $inPerson_qualitative(
+    CREATE TABLE IF NOT EXISTS $inPersonQualitative(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       tourId TEXT,
       school TEXT,
@@ -634,11 +651,17 @@ office TEXT
       );
 
       // Debugging output
-      print(
+      if (kDebugMode) {
+        print(
           "Data inserted for tourId: $tourId, school: $school, result: $result");
-      print("Inserted data: $jsonData");
+      }
+      if (kDebugMode) {
+        print("Inserted data: $jsonData");
+      }
     } catch (e) {
-      print("Error inserting data into SQLite: $e");
+      if (kDebugMode) {
+        print("Error inserting data into SQLite: $e");
+      }
     }
   }
 
@@ -654,15 +677,21 @@ office TEXT
     );
 
     // Debugging output
-    print("Data fetched for tourId: $tourId, school: $school");
+    if (kDebugMode) {
+      print("Data fetched for tourId: $tourId, school: $school");
+    }
     if (result.isNotEmpty) {
-      print("Fetched data: ${result.first['data']}");
+      if (kDebugMode) {
+        print("Fetched data: ${result.first['data']}");
+      }
       String jsonData = result.first['data'];
       return jsonDecode(jsonData);
     }
 
     // If no data is found
-    print("No data found for tourId: $tourId, school: $school");
+    if (kDebugMode) {
+      print("No data found for tourId: $tourId, school: $school");
+    }
     return {};
   }
 
@@ -710,7 +739,9 @@ office TEXT
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print('Inserted staff name: $staffName for category: $category');
+    if (kDebugMode) {
+      print('Inserted staff name: $staffName for category: $category');
+    }
   }
 
   Future<List<String>> getStaffNamesByCategory(int category) async {
@@ -723,9 +754,13 @@ office TEXT
     );
 
     if (result.isEmpty) {
-      print('No staff names found for category: $category');
+      if (kDebugMode) {
+        print('No staff names found for category: $category');
+      }
     } else {
-      print('Staff names found: $result');
+      if (kDebugMode) {
+        print('Staff names found: $result');
+      }
     }
 
     return result.map((e) => e['staff_name'] as String).toList();
@@ -734,7 +769,9 @@ office TEXT
   Future<void> verifyInsertedData() async {
     final dbClient = await instance.db;
     var result = await dbClient.query(tableStaffNames);
-    print('All data in SQLite: $result');
+    if (kDebugMode) {
+      print('All data in SQLite: $result');
+    }
   }
 
   // Delete function for deleting records from table
@@ -745,7 +782,9 @@ office TEXT
       throw ArgumentError("tableName cannot be null");
     }
 
-    print('delete is called $tableName');
+    if (kDebugMode) {
+      print('delete is called $tableName');
+    }
 
     String sql = "DELETE FROM $tableName";
     if (where != null) {
@@ -755,7 +794,9 @@ office TEXT
     try {
       return await dbClient.rawDelete(sql, whereArgs);
     } catch (e) {
-      print('Error executing delete: $e');
+      if (kDebugMode) {
+        print('Error executing delete: $e');
+      }
       rethrow;
     }
   }
@@ -767,13 +808,17 @@ office TEXT
       throw ArgumentError("Arguments cannot be null");
     }
 
-    print('query delete is called');
+    if (kDebugMode) {
+      print('query delete is called');
+    }
 
     try {
       return await dbClient
           .rawDelete('DELETE FROM $table WHERE $field = ?', [arg]);
     } catch (e) {
-      print('Error executing query delete: $e');
+      if (kDebugMode) {
+        print('Error executing query delete: $e');
+      }
       rethrow;
     }
   }
@@ -819,7 +864,9 @@ class LocalDbController {
     try {
       // Insert TourDetails
       if (tourDetails != null) {
-        print('tourDetails called to insert');
+        if (kDebugMode) {
+          print('tourDetails called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.tourDetails,
           tourDetails.toJson(),
@@ -828,7 +875,9 @@ class LocalDbController {
 
       // Insert EnrolmentCollectionModel
       if (enrolmentCollectionModel != null) {
-        print('enrolmentCollectionModel called to insert');
+        if (kDebugMode) {
+          print('enrolmentCollectionModel called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.schoolEnrolment,
           enrolmentCollectionModel.toJson(),
@@ -837,25 +886,31 @@ class LocalDbController {
 
       // Insert CabMeterTracingRecords
       if (cabMeterTracingRecords != null) {
-        print('cabMeterTracingRecords called to insert');
+        if (kDebugMode) {
+          print('cabMeterTracingRecords called to insert');
+        }
         result = await dbClient.insert(
-          SqfliteDatabaseHelper.cabMeter_tracing,
+          SqfliteDatabaseHelper.cabMeterTracing,
           cabMeterTracingRecords.toJson(),
         );
       }
 
       // Insert InPersonQuantitativeRecords
       if (inPersonQuantitativeRecords != null) {
-        print('inPersonQuantitativeRecords called to insert');
+        if (kDebugMode) {
+          print('inPersonQuantitativeRecords called to insert');
+        }
         result = await dbClient.insert(
-          SqfliteDatabaseHelper.inPerson_quantitative,
+          SqfliteDatabaseHelper.inPersonQuantitative,
           inPersonQuantitativeRecords.toJson(),
         );
       }
 
       // Insert SchoolFacilitiesRecords
       if (schoolFacilitiesRecords != null) {
-        print('schoolFacilitiesRecords called to insert');
+        if (kDebugMode) {
+          print('schoolFacilitiesRecords called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.schoolFacilities,
           schoolFacilitiesRecords.toJson(),
@@ -864,7 +919,9 @@ class LocalDbController {
 
       // Insert SchoolStaffVecRecords
       if (schoolStaffVecRecords != null) {
-        print('schoolStaffVecRecords called to insert');
+        if (kDebugMode) {
+          print('schoolStaffVecRecords called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.schoolStaffVec,
           schoolStaffVecRecords.toJson(),
@@ -877,7 +934,9 @@ class LocalDbController {
         var issueJson = issueTrackerRecords.toJson();
         var issueJsonString = jsonEncode(issueJson);
 
-        print('Inserting issueTrackerRecords: $issueJsonString');
+        if (kDebugMode) {
+          print('Inserting issueTrackerRecords: $issueJsonString');
+        }
 
         int issueResult = await dbClient.insert(
           SqfliteDatabaseHelper.issueTracker,
@@ -889,10 +948,14 @@ class LocalDbController {
 
 // Library issue
       if (libIssues != null && libIssues.isNotEmpty) {
-        print(
+        if (kDebugMode) {
+          print(
             'Inserting libIssues: ${libIssues.map((issue) => issue.toJson()).toList()}');
+        }
         for (var issue in libIssues) {
-          print('Inserting library issue: ${issue.toJson()}');
+          if (kDebugMode) {
+            print('Inserting library issue: ${issue.toJson()}');
+          }
           await dbClient.insert(
             SqfliteDatabaseHelper
                 .libIssueTable, // Adjust this table name accordingly
@@ -903,13 +966,17 @@ class LocalDbController {
 
 // Playground issue
       if (playgroundIssues != null && playgroundIssues.isNotEmpty) {
-        print(
+        if (kDebugMode) {
+          print(
             'Inserting playgroundIssues: ${playgroundIssues.map((issue) => issue.toJson()).toList()}');
+        }
         for (var issue in playgroundIssues) {
-          print('Inserting playground issue: ${issue.toJson()}');
+          if (kDebugMode) {
+            print('Inserting playground issue: ${issue.toJson()}');
+          }
           await dbClient.insert(
             SqfliteDatabaseHelper
-                .play_issue, // Adjust this table name accordingly
+                .playIssue, // Adjust this table name accordingly
             issue.toJson(),
           );
         }
@@ -917,13 +984,17 @@ class LocalDbController {
 
 // Alexa issue
       if (alexaIssues != null && alexaIssues.isNotEmpty) {
-        print(
+        if (kDebugMode) {
+          print(
             'Inserting alexaIssues: ${alexaIssues.map((issue) => issue.toJson()).toList()}');
+        }
         for (var issue in alexaIssues) {
-          print('Inserting alexa issue: ${issue.toJson()}');
+          if (kDebugMode) {
+            print('Inserting alexa issue: ${issue.toJson()}');
+          }
           await dbClient.insert(
             SqfliteDatabaseHelper
-                .alexa_issue, // Adjust this table name accordingly
+                .alexaIssue, // Adjust this table name accordingly
             issue.toJson(),
           );
         }
@@ -931,13 +1002,17 @@ class LocalDbController {
 
 // DigiLab issue
       if (digiLabIssues != null && digiLabIssues.isNotEmpty) {
-        print(
+        if (kDebugMode) {
+          print(
             'Inserting digiLabIssues: ${digiLabIssues.map((issue) => issue.toJson()).toList()}');
+        }
         for (var issue in digiLabIssues) {
-          print('Inserting digiLab issue: ${issue.toJson()}');
+          if (kDebugMode) {
+            print('Inserting digiLab issue: ${issue.toJson()}');
+          }
           await dbClient.insert(
             SqfliteDatabaseHelper
-                .digiLab_issue, // Adjust this table name accordingly
+                .digiLabIssue, // Adjust this table name accordingly
             issue.toJson(),
           );
         }
@@ -945,20 +1020,26 @@ class LocalDbController {
 
 // Furniture issue
       if (furnitureIssues != null && furnitureIssues.isNotEmpty) {
-        print(
+        if (kDebugMode) {
+          print(
             'Inserting furnitureIssues: ${furnitureIssues.map((issue) => issue.toJson()).toList()}');
+        }
         for (var issue in furnitureIssues) {
-          print('Inserting furniture issue: ${issue.toJson()}');
+          if (kDebugMode) {
+            print('Inserting furniture issue: ${issue.toJson()}');
+          }
           await dbClient.insert(
             SqfliteDatabaseHelper
-                .furniture_issue, // Adjust this table name accordingly
+                .furnitureIssue, // Adjust this table name accordingly
             issue.toJson(),
           );
         }
       }
 
       if (alfaObservationModel != null) {
-        print('alfaObservationModel called to insert');
+        if (kDebugMode) {
+          print('alfaObservationModel called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.alfaObservation,
           alfaObservationModel.toJson(),
@@ -966,7 +1047,9 @@ class LocalDbController {
       }
 
       if (flnObservationModel != null) {
-        print('flnObservationModel called to insert');
+        if (kDebugMode) {
+          print('flnObservationModel called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.flnObservation,
           flnObservationModel.toJson(),
@@ -974,24 +1057,32 @@ class LocalDbController {
       }
 
       if (inPersonQualitativeRecords != null) {
-        print('flnObservationModel called to insert');
+        if (kDebugMode) {
+          print('flnObservationModel called to insert');
+        }
         result = await dbClient.insert(
-          SqfliteDatabaseHelper.inPerson_qualitative,
+          SqfliteDatabaseHelper.inPersonQualitative,
           inPersonQualitativeRecords.toJson(),
         );
       }
 
       if (schoolRecceModal != null) {
-        print('flnObservationModel called to insert');
+        if (kDebugMode) {
+          print('flnObservationModel called to insert');
+        }
         result = await dbClient.insert(
           SqfliteDatabaseHelper.schoolRecce,
           schoolRecceModal.toJson(),
         );
       }
 
-      print('Insert successful: $result');
+      if (kDebugMode) {
+        print('Insert successful: $result');
+      }
     } catch (e) {
-      print('Error inserting record: $e');
+      if (kDebugMode) {
+        print('Error inserting record: $e');
+      }
       result = -1; // Return -1 on error
     }
 
@@ -1009,7 +1100,9 @@ class LocalDbController {
         tourList.add(TourDetails.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching tourDetails form records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching tourDetails form records: $e");
+      }
     }
     return tourList;
   }
@@ -1027,25 +1120,34 @@ class LocalDbController {
         tourList.add(EnrolmentCollectionModel.fromJson(element));
       }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching enrolmentCollection form records: $e");
+      }
     }
     return tourList;
   }
+
+
+
 
   Future<List<CabMeterTracingRecords>> fetchLocalCabMeterTracingRecord() async {
     var dbClient = await conn.db;
     List<CabMeterTracingRecords> tourList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient
-          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.cabMeter_tracing}');
+          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.cabMeterTracing}');
       for (var element in maps) {
         tourList.add(CabMeterTracingRecords.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local CabMeterTracing record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching CabMeterTracingRecords form records: $e");
+      }
     }
     return tourList;
   }
@@ -1056,14 +1158,18 @@ class LocalDbController {
     List<InPersonQuantitativeRecords> tourList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient.rawQuery(
-          'SELECT * FROM ${SqfliteDatabaseHelper.inPerson_quantitative}');
+          'SELECT * FROM ${SqfliteDatabaseHelper.inPersonQuantitative}');
       for (var element in maps) {
         tourList.add(InPersonQuantitativeRecords.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local InPersonQuantitative record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching InPersonQuantitativeRecords form records: $e");
+      }
     }
     return tourList;
   }
@@ -1078,10 +1184,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(SchoolFacilitiesRecords.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local SchoolFacilities record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching SchoolFacilitiesRecords form records: $e");
+      }
     }
     return tourList;
   }
@@ -1095,10 +1205,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(SchoolStaffVecRecords.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local SchoolStaffVec record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching SchoolStaffVecRecords form records: $e");
+      }
     }
     return tourList;
   }
@@ -1113,10 +1227,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(IssueTrackerRecords.fromJson(element));
       }
-      print('local Issue record length is ${tourList.length}');
+      if (kDebugMode) {
+        print('local Issue record length is ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching IssueTrackerRecords records: $e");
+      }
     }
     return tourList;
   }
@@ -1132,7 +1250,9 @@ class LocalDbController {
         libIssueList.add(LibIssue.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching LibIssue records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching LibIssue records: $e");
+      }
     }
     return libIssueList;
   }
@@ -1143,12 +1263,14 @@ class LocalDbController {
     List<FurnitureIssue> furnitureIssueList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient
-          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.furniture_issue}');
+          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.furnitureIssue}');
       for (var element in maps) {
         furnitureIssueList.add(FurnitureIssue.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching FurnitureIssue records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching FurnitureIssue records: $e");
+      }
     }
     return furnitureIssueList;
   }
@@ -1159,12 +1281,14 @@ class LocalDbController {
     List<PlaygroundIssue> playgroundIssueList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient
-          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.play_issue}');
+          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.playIssue}');
       for (var element in maps) {
         playgroundIssueList.add(PlaygroundIssue.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching PlaygroundIssue records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching PlaygroundIssue records: $e");
+      }
     }
     return playgroundIssueList;
   }
@@ -1175,12 +1299,14 @@ class LocalDbController {
     List<DigiLabIssue> digiLabIssueList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient
-          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.digiLab_issue}');
+          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.digiLabIssue}');
       for (var element in maps) {
         digiLabIssueList.add(DigiLabIssue.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching DigiLabIssue records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching DigiLabIssue records: $e");
+      }
     }
     return digiLabIssueList;
   }
@@ -1191,12 +1317,14 @@ class LocalDbController {
     List<AlexaIssue> alexaIssueList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient
-          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.alexa_issue}');
+          .rawQuery('SELECT * FROM ${SqfliteDatabaseHelper.alexaIssue}');
       for (var element in maps) {
         alexaIssueList.add(AlexaIssue.fromJson(element));
       }
     } catch (e) {
-      print("Exception occurred while fetching AlexaIssue records: $e");
+      if (kDebugMode) {
+        print("Exception occurred while fetching AlexaIssue records: $e");
+      }
     }
     return alexaIssueList;
   }
@@ -1210,10 +1338,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(AlfaObservationModel.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('localAlfaObservation record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching AlfaObservationModel form records: $e");
+      }
     }
     return tourList;
   }
@@ -1227,10 +1359,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(FlnObservationModel.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local FlnObservation record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching FlnObservationModel form records: $e");
+      }
     }
     return tourList;
   }
@@ -1241,14 +1377,18 @@ class LocalDbController {
     List<InPersonQualitativeRecords> tourList = [];
     try {
       List<Map<String, dynamic>> maps = await dbClient.rawQuery(
-          'SELECT * FROM ${SqfliteDatabaseHelper.inPerson_qualitative}');
+          'SELECT * FROM ${SqfliteDatabaseHelper.inPersonQualitative}');
       for (var element in maps) {
         tourList.add(InPersonQualitativeRecords.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local InPersonQualitative record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching InPersonQualitativeRecords form records: $e");
+      }
     }
     return tourList;
   }
@@ -1262,10 +1402,14 @@ class LocalDbController {
       for (var element in maps) {
         tourList.add(SchoolRecceModal.fromJson(element));
       }
-      print('localcab meter reoord length us ${tourList.length}');
+      if (kDebugMode) {
+        print('local SchoolRecce record length us ${tourList.length}');
+      }
     } catch (e) {
-      print(
+      if (kDebugMode) {
+        print(
           "Exception occurred while fetching SchoolRecceModal form records: $e");
+      }
     }
     return tourList;
   }

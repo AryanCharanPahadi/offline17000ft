@@ -10,20 +10,22 @@ import 'version_controller.dart'; // Import your controller
 class VersionCheckPage extends StatelessWidget {
   final VersionController versionController = Get.put(VersionController());
 
+   VersionCheckPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Version Check'),
+        title: const Text('Version Check'),
       ),
       body: Obx(() {
         if (versionController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           return Center(
             child: Text(
               'Current Version: ${versionController.version.value}',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           );
         }

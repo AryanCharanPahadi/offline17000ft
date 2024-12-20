@@ -59,7 +59,7 @@ class InpersonQualitativeController extends GetxController with BaseController {
       TextEditingController();
   final TextEditingController timeDigiLabController = TextEditingController();
   final TextEditingController booksReadingController = TextEditingController();
-  final TextEditingController LibraryController = TextEditingController();
+  final TextEditingController libraryController = TextEditingController();
   final TextEditingController playingplaygroundController =
       TextEditingController();
   final TextEditingController questionsAlexaController =
@@ -148,6 +148,7 @@ class InpersonQualitativeController extends GetxController with BaseController {
     List<XFile> selectedImages = [];
     XFile? pickedImage;
 
+
     if (source == ImageSource.gallery) {
       selectedImages = await picker.pickMultiImage(
         imageQuality: 50, // Set the image quality (0-100)
@@ -193,45 +194,36 @@ class InpersonQualitativeController extends GetxController with BaseController {
       color: AppColors.primary,
       height: 100,
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: <Widget>[
           const Text(
             "Select Image",
             style: TextStyle(fontSize: 20.0, color: Colors.white),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // ignore: deprecated_member_use
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                 onPressed: () async {
-
-                  // uploadFile(userdata.read('customerID'));
+                  await takePhoto(ImageSource.camera);
                   Get.back();
-                  //  update();
                 },
                 child: const Text(
                   'Camera',
                   style: TextStyle(fontSize: 20.0, color: AppColors.primary),
                 ),
               ),
-              const SizedBox(
-                width: 30,
-              ),
+              const SizedBox(width: 30),
             ],
           )
         ],
       ),
     );
   }
+
 
   void showImagePreview(String imagePath, BuildContext context) {
     showDialog(

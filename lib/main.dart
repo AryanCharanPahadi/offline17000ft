@@ -5,7 +5,7 @@ import 'package:offline17000ft/login/login_screen.dart';
 import 'package:offline17000ft/splash/splash_screen.dart';
 import 'package:offline17000ft/utils/dependency_injection.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart ';
+import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:offline17000ft/theme/theme_constants.dart';
 import 'package:offline17000ft/theme/theme_manager.dart';
@@ -53,14 +53,19 @@ class _MyAppState extends State<MyApp> {
     // Add a short delay to allow the splash screen to display briefly
     await Future.delayed(const Duration(seconds: 4));
 
-    // Fetch login state and store in _isLoggedIn
-    _isLoggedIn = await SharedPreferencesHelper.getLoginState();
+    // Check login state and store it in _isLoggedIn
+    final isLoggedIn = await SharedPreferencesHelper.getLoginState();
 
-    // Navigate based on login state
+    // Update the state and navigate based on login state
+    setState(() {
+      _isLoggedIn = isLoggedIn;
+    });
+
     _navigateBasedOnAuth();
   }
 
   void _navigateBasedOnAuth() {
+    // Navigate to the appropriate screen based on login state
     if (_isLoggedIn == true) {
       Get.offAll(() => const HomeScreen());
     } else {

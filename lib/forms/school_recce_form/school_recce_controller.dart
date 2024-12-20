@@ -45,7 +45,7 @@ class SchoolRecceController extends GetxController with BaseController {
   final TextEditingController specifyOtherController = TextEditingController();
   final TextEditingController supportingNgoController = TextEditingController();
   final TextEditingController keyPointsController = TextEditingController();
-  final TextEditingController QualSpecifyController = TextEditingController();
+  final TextEditingController qualSpecifyController = TextEditingController();
   final TextEditingController freSpecifyController = TextEditingController();
 
   // Start of show Details
@@ -460,7 +460,7 @@ class SchoolRecceController extends GetxController with BaseController {
     supportingNgoController.clear();
     keyPointsController.clear();
     freSpecifyController.clear();
-    QualSpecifyController.clear();
+    qualSpecifyController.clear();
 
     update();
   }

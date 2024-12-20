@@ -29,9 +29,9 @@ import '../../home/home_screen.dart';
 import '../select_tour_id/select_controller.dart';
 
 class SchoolRecceForm extends StatefulWidget {
-  String? userid;
-  String? office;
-  SchoolRecceForm({
+ final String? userid;
+ final String? office;
+  const SchoolRecceForm({
     super.key,
     this.userid,
     this.office,
@@ -1138,25 +1138,24 @@ class _SchoolRecceFormState extends State<SchoolRecceForm> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final responsive = Responsive(context);
-    return WillPopScope(
-        onWillPop: () async {
-          IconData icon = Icons.check_circle;
-          bool? shouldExit = await showDialog<bool>(
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          showDialog(
             context: context,
             builder: (_) => Confirmation(
-              iconname: icon,
+              iconname: Icons.check_circle,
               title: 'Exit Confirmation',
               yes: 'Yes',
               no: 'No',
               desc: 'Are you sure you want to leave?',
               onPressed: () {
-                Navigator.of(context).pop(true); // User confirms exit
+                Navigator.of(context).pop(true);
+
               },
             ),
           );
-
-          // If shouldExit is null, default to false
-          return shouldExit ?? false;
         },
         child: Scaffold(
             appBar: const CustomAppbar(
@@ -2504,7 +2503,7 @@ class _SchoolRecceFormState extends State<SchoolRecceForm> {
                                             CustomTextFormField(
                                               textController:
                                                   schoolRecceController
-                                                      .QualSpecifyController,
+                                                      .qualSpecifyController,
                                               labelText: 'Write here...',
                                               maxlines: 3,
                                               validator: (value) {
@@ -6101,7 +6100,7 @@ class _SchoolRecceFormState extends State<SchoolRecceForm> {
                                                           .selectedQualification,
                                                       qualOther:
                                                           schoolRecceController
-                                                              .QualSpecifyController
+                                                              .qualSpecifyController
                                                               .text,
                                                       totalSmc:
                                                           schoolRecceController
@@ -6279,12 +6278,13 @@ class _SchoolRecceFormState extends State<SchoolRecceForm> {
                                                           Icons.verified);
 
                                                       // Navigate to HomeScreen
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                 const HomeScreen()),
-                                                      );
+                                                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                        Navigator.of(context).pushReplacement(
+                                                          MaterialPageRoute(
+                                                            builder: (context) => const HomeScreen(),
+                                                          ),
+                                                        );
+                                                      });
                                                     } else {
                                                       customSnackbar(
                                                           'Error',

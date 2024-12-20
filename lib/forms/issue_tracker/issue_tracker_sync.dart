@@ -31,7 +31,7 @@ class _FinalIssueTrackerSyncState extends State<FinalIssueTrackerSync> {
 
   List<IssueTrackerRecords> finalList = [];
   final IssueTrackerController _issueTrackerController =
-      Get.put(IssueTrackerController());
+  Get.put(IssueTrackerController());
   double _percent = 0.0; // To track the sync percentage
   bool _isSubmitting = false; // To track whether syncing is in progress
 
@@ -94,541 +94,541 @@ class _FinalIssueTrackerSyncState extends State<FinalIssueTrackerSync> {
                           Expanded(
                               child: finalList.isEmpty
                                   ? const Center(
-                                      child: Text(
-                                      'No Records Found',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primary),
-                                    ))
+                                  child: Text(
+                                    'No Records Found',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary),
+                                  ))
                                   : Stack(
-                                      children: [
-                                        ListView.separated(
-                                          itemCount: finalList.length,
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                      int index) =>
-                                                  const Divider(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return ListTile(
-                                              leading: Text("(${(index + 1)})"),
+                                children: [
+                                  ListView.separated(
+                                    itemCount: finalList.length,
+                                    separatorBuilder:
+                                        (BuildContext context,
+                                        int index) =>
+                                    const Divider(),
+                                    itemBuilder: (BuildContext context,
+                                        int index) {
+                                      return ListTile(
+                                        leading: Text("(${(index + 1)})"),
 
-                                              subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    "TourId:${finalList[index].tourId ?? 'N/A'}",
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    "School: ${finalList[index].school.toString()}",
-                                                    style: const TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16),
-                                                  ),
-                                                ],
-                                              ),
-                                              trailing: networkManager
-                                                          .connectionType !=
-                                                      0
-                                                  ? IconButton(
-                                                      icon: const Icon(
-                                                          Icons.sync,
-                                                          color: AppColors
-                                                              .primary),
-                                                      onPressed: () async {
-                                                        filterdByUniqueId = [
-                                                          finalList[index]
-                                                        ];
-                                                        libIssueList = Get.find<
-                                                                IssueTrackerController>()
-                                                            .libIssueList
-                                                            .toList();
-                                                        playgroundIssueList = Get
-                                                                .find<
-                                                                    IssueTrackerController>()
-                                                            .playgroundIssueList
-                                                            .toList();
-                                                        furnitureIssueList = Get
-                                                                .find<
-                                                                    IssueTrackerController>()
-                                                            .furnitureIssueList
-                                                            .toList();
-                                                        digiLabIssueList = Get.find<
-                                                                IssueTrackerController>()
-                                                            .digiLabIssueList
-                                                            .toList();
-                                                        alexaIssueList = Get.find<
-                                                                IssueTrackerController>()
-                                                            .alexaIssueList
-                                                            .toList();
-
-                                                        setState(() {
-                                                          _isSubmitting = true;
-                                                          _percent =
-                                                              0.0; // Reset percentage
-                                                        });
-
-                                                        IconData icon =
-                                                            Icons.check_circle;
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                Confirmation(
-                                                                  iconname:
-                                                                      icon,
-                                                                  title:
-                                                                      'Confirm Submission',
-                                                                  yes:
-                                                                      'Confirm',
-                                                                  no: 'Cancel',
-                                                                  desc:
-                                                                      'Are you sure you want to Sync this record?',
-                                                                  onPressed:
-                                                                      () async {
-                                                                    for (int i =
-                                                                            0;
-                                                                        i < filterdByUniqueId!.length;
-                                                                        i++) {
-                                                                      if (kDebugMode) {
-                                                                        print(
-                                                                          '$i no of row inserted');
-                                                                      }
-                                                                      if (kDebugMode) {
-                                                                        print(
-                                                                          'TABLE 1 BASIC RECORDS ');
-                                                                      }
-
-                                                                      var rsp = await insertBasicRecords(
-                                                                          filterdByUniqueId![i]
-                                                                              .tourId!
-                                                                              .toString(),
-                                                                          filterdByUniqueId![i].school ??
-                                                                              'NA',
-                                                                          filterdByUniqueId![i].udiseCode ??
-                                                                              'NA',
-                                                                          filterdByUniqueId![i].correctUdise ??
-                                                                              'NA',
-                                                                          filterdByUniqueId![i].uniqueId ??
-                                                                              'NA',
-                                                                          filterdByUniqueId![i]
-                                                                              .office,
-                                                                          filterdByUniqueId![i]
-                                                                              .createdAt!,
-                                                                          filterdByUniqueId![i]
-                                                                              .created_by!,
-                                                                          filterdByUniqueId![i]
-                                                                              .id);
-                                                                      if (rsp !=
-                                                                              null &&
-                                                                          rsp['status'] ==
-                                                                              1) {
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'TABLE of Library ${libIssueList?.length ?? 0}');
-                                                                        }
-
-                                                                        if (libIssueList !=
-                                                                                null &&
-                                                                            libIssueList!.isNotEmpty) {
-                                                                          for (int i = 0;
-                                                                              i < libIssueList!.length;
-                                                                              i++) {
-                                                                            if (kDebugMode) {
-                                                                              print('library records of num row $i');
-                                                                            }
-
-                                                                            var rsplib =
-                                                                                await insertIssueRecords(
-                                                                              libIssueList![i].uniqueId,
-                                                                              libIssueList![i].issueExist!,
-                                                                              libIssueList![i].issueName,
-                                                                              libIssueList![i].lib_issue_img,
-                                                                              libIssueList![i].issueDescription!,
-                                                                              libIssueList![i].issueReportOn!,
-                                                                              libIssueList![i].issueReportBy!,
-                                                                              libIssueList![i].issueResolvedOn!,
-                                                                              libIssueList![i].issueResolvedBy!,
-                                                                              libIssueList![i].issueStatus!,
-                                                                              libIssueList![i].id,
-                                                                            );
-
-                                                                            // Debug print statements to track the value of rsplib
-                                                                            if (kDebugMode) {
-                                                                              print('rsplib response: $rsplib');
-                                                                            }
-
-                                                                            if (rsplib != null &&
-                                                                                rsplib.containsKey('status') &&
-                                                                                rsplib['status'] == 1) {
-                                                                              customSnackbar(
-                                                                                'Successfully',
-                                                                                "${rsp['message']}",
-                                                                                AppColors.secondary,
-                                                                                AppColors.onSecondary,
-                                                                                Icons.check,
-                                                                              );
-                                                                            } else {
-                                                                              customSnackbar(
-                                                                                'Error',
-                                                                                rsplib != null ? rsplib['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
-                                                                                AppColors.errorContainer,
-                                                                                AppColors.onBackground,
-                                                                                Icons.warning,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                        }
-
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'TABLE of Playground ${playgroundIssueList?.length ?? 0}');
-                                                                        }
-
-                                                                        if (playgroundIssueList !=
-                                                                                null &&
-                                                                            playgroundIssueList!.isNotEmpty) {
-                                                                          for (int i = 0;
-                                                                              i < playgroundIssueList!.length;
-                                                                              i++) {
-                                                                            if (kDebugMode) {
-                                                                              print('Playground records of num row $i');
-                                                                            }
-
-                                                                            var rspPlay =
-                                                                                await insertPlayRecords(
-                                                                              playgroundIssueList![i].uniqueId,
-                                                                              playgroundIssueList![i].issueExist!,
-                                                                              playgroundIssueList![i].issueName,
-                                                                              playgroundIssueList![i].play_issue_img,
-                                                                              playgroundIssueList![i].issueDescription!,
-                                                                              playgroundIssueList![i].issueReportOn!,
-                                                                              playgroundIssueList![i].issueReportBy!,
-                                                                              playgroundIssueList![i].issueResolvedOn!,
-                                                                              playgroundIssueList![i].issueResolvedBy!,
-                                                                              playgroundIssueList![i].issueStatus!,
-                                                                              playgroundIssueList![i].id,
-                                                                            );
-
-                                                                            // Debug print statements to track the value of rsplib
-                                                                            if (kDebugMode) {
-                                                                              print('rspPlay response: $rspPlay');
-                                                                            }
-
-                                                                            if (rspPlay != null &&
-                                                                                rspPlay.containsKey('status') &&
-                                                                                rspPlay['status'] == 1) {
-                                                                              customSnackbar(
-                                                                                'Successfully',
-                                                                                "${rsp['message']}",
-                                                                                AppColors.secondary,
-                                                                                AppColors.onSecondary,
-                                                                                Icons.check,
-                                                                              );
-                                                                            } else {
-                                                                              customSnackbar(
-                                                                                'Error',
-                                                                                rspPlay != null ? rspPlay['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
-                                                                                AppColors.errorContainer,
-                                                                                AppColors.onBackground,
-                                                                                Icons.warning,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                        }
-
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'TABLE of Furniture ${furnitureIssueList?.length ?? 0}');
-                                                                        }
-
-                                                                        if (furnitureIssueList !=
-                                                                                null &&
-                                                                            furnitureIssueList!.isNotEmpty) {
-                                                                          for (int i = 0;
-                                                                              i < furnitureIssueList!.length;
-                                                                              i++) {
-                                                                            if (kDebugMode) {
-                                                                              print('Furniture records of num row $i');
-                                                                            }
-
-                                                                            var rspFurn =
-                                                                                await insertFurnRecords(
-                                                                              furnitureIssueList![i].uniqueId,
-                                                                              furnitureIssueList![i].issueExist!,
-                                                                              furnitureIssueList![i].issueName,
-                                                                              furnitureIssueList![i].furn_issue_img,
-                                                                              furnitureIssueList![i].issueDescription!,
-                                                                              furnitureIssueList![i].issueReportOn!,
-                                                                              furnitureIssueList![i].issueReportBy!,
-                                                                              furnitureIssueList![i].issueResolvedOn!,
-                                                                              furnitureIssueList![i].issueResolvedBy!,
-                                                                              furnitureIssueList![i].issueStatus!,
-                                                                              furnitureIssueList![i].id,
-                                                                            );
-
-                                                                            // Debug print statements to track the value of rsplib
-                                                                            if (kDebugMode) {
-                                                                              print('rspFurn response: $rspFurn');
-                                                                            }
-
-                                                                            if (rspFurn != null &&
-                                                                                rspFurn.containsKey('status') &&
-                                                                                rspFurn['status'] == 1) {
-                                                                              customSnackbar(
-                                                                                'Successfully',
-                                                                                "${rsp['message']}",
-                                                                                AppColors.secondary,
-                                                                                AppColors.onSecondary,
-                                                                                Icons.check,
-                                                                              );
-                                                                            } else {
-                                                                              customSnackbar(
-                                                                                'Error',
-                                                                                rspFurn != null ? rspFurn['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
-                                                                                AppColors.errorContainer,
-                                                                                AppColors.onBackground,
-                                                                                Icons.warning,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                        }
-
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'TABLE of DigiLab ${digiLabIssueList?.length ?? 0}');
-                                                                        }
-
-                                                                        if (digiLabIssueList !=
-                                                                                null &&
-                                                                            digiLabIssueList!.isNotEmpty) {
-                                                                          for (int i = 0;
-                                                                              i < digiLabIssueList!.length;
-                                                                              i++) {
-                                                                            if (kDebugMode) {
-                                                                              print('DigiLab records of num row $i');
-                                                                            }
-
-                                                                            var rspDig =
-                                                                                await insertDigRecords(
-                                                                              digiLabIssueList![i].uniqueId,
-                                                                              digiLabIssueList![i].issueExist!,
-                                                                              digiLabIssueList![i].issueName,
-                                                                              digiLabIssueList![i].dig_issue_img,
-                                                                              digiLabIssueList![i].issueDescription!,
-                                                                              digiLabIssueList![i].issueReportOn,
-                                                                              digiLabIssueList![i].issueReportBy,
-                                                                              digiLabIssueList![i].issueResolvedOn?.toString() ?? 'Not Resolved Yet',
-                                                                              digiLabIssueList![i].issueResolvedBy?.toString() ?? 'Not Resolved Yet',
-                                                                              digiLabIssueList![i].issueStatus!,
-                                                                              digiLabIssueList![i].tabletNumber?.toString() ?? 'N/A',
-                                                                              digiLabIssueList![i].id,
-                                                                            );
-
-                                                                            // Debug print statements to track the value of rsplib
-                                                                            if (kDebugMode) {
-                                                                              print('rspDig response: $rspDig');
-                                                                            }
-
-                                                                            if (rspDig != null &&
-                                                                                rspDig.containsKey('status') &&
-                                                                                rspDig['status'] == 1) {
-                                                                              customSnackbar(
-                                                                                'Successfully',
-                                                                                "${rsp['message']}",
-                                                                                AppColors.secondary,
-                                                                                AppColors.onSecondary,
-                                                                                Icons.check,
-                                                                              );
-                                                                            } else {
-                                                                              customSnackbar(
-                                                                                'Error',
-                                                                                rspDig != null ? rspDig['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
-                                                                                AppColors.errorContainer,
-                                                                                AppColors.onBackground,
-                                                                                Icons.warning,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                        }
-
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'TABLE of Alexa ${alexaIssueList?.length ?? 0}');
-                                                                        }
-
-                                                                        if (alexaIssueList !=
-                                                                                null &&
-                                                                            alexaIssueList!.isNotEmpty) {
-                                                                          for (int i = 0;
-                                                                              i < alexaIssueList!.length;
-                                                                              i++) {
-                                                                            if (kDebugMode) {
-                                                                              print('Alexa records of num row $i');
-                                                                            }
-
-                                                                            var rspAlexa =
-                                                                                await insertAlexaRecords(
-                                                                              alexaIssueList![i].uniqueId,
-                                                                              alexaIssueList![i].issueExist!,
-                                                                              alexaIssueList![i].issueName,
-                                                                              alexaIssueList![i].alexa_issue_img,
-                                                                              alexaIssueList![i].issueDescription!,
-                                                                              alexaIssueList![i].issueReportOn!,
-                                                                              alexaIssueList![i].issueReportBy!,
-                                                                              alexaIssueList![i].issueResolvedOn!,
-                                                                              alexaIssueList![i].issueResolvedBy!,
-                                                                              alexaIssueList![i].issueStatus!,
-                                                                              alexaIssueList![i].other?.toString() ?? 'N/A',
-                                                                              alexaIssueList![i].missingDot?.toString() ?? 'N/A',
-                                                                              alexaIssueList![i].notConfiguredDot?.toString() ?? 'N/A',
-                                                                              alexaIssueList![i].notConnectingDot?.toString() ?? 'N/A',
-                                                                              alexaIssueList![i].notChargingDot?.toString() ?? 'N/A',
-                                                                              alexaIssueList![i].id,
-                                                                            );
-
-                                                                            // Debug print statements to track the value of rsplib
-                                                                            if (kDebugMode) {
-                                                                              print('rspAlexa response: $rspAlexa');
-                                                                            }
-
-                                                                            if (rspAlexa != null &&
-                                                                                rspAlexa.containsKey('status') &&
-                                                                                rspAlexa['status'] == 1) {
-                                                                              customSnackbar(
-                                                                                'Successfully',
-                                                                                "${rsp['message']}",
-                                                                                AppColors.secondary,
-                                                                                AppColors.onSecondary,
-                                                                                Icons.check,
-                                                                              );
-                                                                            } else {
-                                                                              customSnackbar(
-                                                                                'Error',
-                                                                                rspAlexa != null ? rspAlexa['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
-                                                                                AppColors.errorContainer,
-                                                                                AppColors.onBackground,
-                                                                                Icons.warning,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                        }
-                                                                        // Update the percentage after each sync operation
-                                                                        setState(
-                                                                            () {
-                                                                          _percent =
-                                                                              ((i + 1) / filterdByUniqueId!.length) * 100;
-
-                                                                          // Remove the synced record from the list
-                                                                          finalList
-                                                                              .removeAt(index);
-                                                                        });
-
-                                                                        // Introduce a delay to simulate processing time
-                                                                        await Future.delayed(const Duration(
-                                                                            milliseconds:
-                                                                                500));
-
-                                                                        if (i ==
-                                                                            (filterdByUniqueId!.length -
-                                                                                1)) {
-                                                                          customSnackbar(
-                                                                              'Synced Successfully',
-                                                                              "${rsp['message']}",
-                                                                              AppColors.secondary,
-                                                                              AppColors.onSecondary,
-                                                                              Icons.check);
-                                                                        } else {
-                                                                          customSnackbar(
-                                                                            'Error',
-                                                                            rsp['message'],
-                                                                            AppColors.errorContainer,
-                                                                            AppColors.onBackground,
-                                                                            Icons.warning,
-                                                                          );
-                                                                        }
-
-                                                                        if (kDebugMode) {
-                                                                          print(
-                                                                            'ALL data is removed from tables');
-                                                                        }
-
-                                                                        issueTrackerController
-                                                                            .libIssueList
-                                                                            .clear();
-                                                                        issueTrackerController
-                                                                            .digiLabIssueList
-                                                                            .clear();
-                                                                        issueTrackerController
-                                                                            .furnitureIssueList
-                                                                            .clear();
-                                                                        issueTrackerController
-                                                                            .playgroundIssueList
-                                                                            .clear();
-                                                                        issueTrackerController
-                                                                            .issueTrackerList
-                                                                            .clear();
-                                                                        issueTrackerController
-                                                                            .alexaIssueList
-                                                                            .clear();
-                                                                      }
-
-                                                                      // Stop the loading
-                                                                      setState(
-                                                                          () {
-                                                                        _isSubmitting =
-                                                                            false; // Stop spinner
-                                                                        _percent =
-                                                                            0.0; // Reset percentage
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                ));
-                                                      },
-                                                    )
-                                                  : null, // Hide sync icon when offline
-                                            );
-                                          },
-                                        ),
-                                        if (_isSubmitting)
-                                          Positioned.fill(
-                                            child: Center(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: _percent / 100,
-                                                      backgroundColor:
-                                                          Colors.grey[300],
-                                                      color: AppColors.primary,
-                                                      strokeWidth: 8,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                  Text(
-                                                    "${_percent.toStringAsFixed(0)}%",
-                                                    style: const TextStyle(
-                                                        fontSize: 20),
-                                                  ),
-                                                ],
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "TourId:${finalList[index].tourId ?? 'N/A'}",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
                                               ),
                                             ),
-                                          ),
-                                      ],
-                                    ))
+
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "School: ${finalList[index].school.toString()}",
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: networkManager
+                                            .connectionType !=
+                                            0
+                                            ? IconButton(
+                                          icon: const Icon(
+                                              Icons.sync,
+                                              color: AppColors
+                                                  .primary),
+                                          onPressed: () async {
+                                            filterdByUniqueId = [
+                                              finalList[index]
+                                            ];
+                                            libIssueList = Get.find<
+                                                IssueTrackerController>()
+                                                .libIssueList
+                                                .toList();
+                                            playgroundIssueList = Get
+                                                .find<
+                                                IssueTrackerController>()
+                                                .playgroundIssueList
+                                                .toList();
+                                            furnitureIssueList = Get
+                                                .find<
+                                                IssueTrackerController>()
+                                                .furnitureIssueList
+                                                .toList();
+                                            digiLabIssueList = Get.find<
+                                                IssueTrackerController>()
+                                                .digiLabIssueList
+                                                .toList();
+                                            alexaIssueList = Get.find<
+                                                IssueTrackerController>()
+                                                .alexaIssueList
+                                                .toList();
+
+                                            setState(() {
+                                              _isSubmitting = true;
+                                              _percent =
+                                              0.0; // Reset percentage
+                                            });
+
+                                            IconData icon =
+                                                Icons.check_circle;
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    Confirmation(
+                                                      iconname:
+                                                      icon,
+                                                      title:
+                                                      'Confirm Submission',
+                                                      yes:
+                                                      'Confirm',
+                                                      no: 'Cancel',
+                                                      desc:
+                                                      'Are you sure you want to Sync this record?',
+                                                      onPressed:
+                                                          () async {
+                                                        for (int i =
+                                                        0;
+                                                        i < filterdByUniqueId!.length;
+                                                        i++) {
+                                                          if (kDebugMode) {
+                                                            print(
+                                                                '$i no of row inserted');
+                                                          }
+                                                          if (kDebugMode) {
+                                                            print(
+                                                                'TABLE 1 BASIC RECORDS ');
+                                                          }
+
+                                                          var rsp = await insertBasicRecords(
+                                                              filterdByUniqueId![i]
+                                                                  .tourId!
+                                                                  .toString(),
+                                                              filterdByUniqueId![i].school ??
+                                                                  'NA',
+                                                              filterdByUniqueId![i].udiseCode ??
+                                                                  'NA',
+                                                              filterdByUniqueId![i].correctUdise ??
+                                                                  'NA',
+                                                              filterdByUniqueId![i].uniqueId ??
+                                                                  'NA',
+                                                              filterdByUniqueId![i]
+                                                                  .office,
+                                                              filterdByUniqueId![i]
+                                                                  .createdAt!,
+                                                              filterdByUniqueId![i]
+                                                                  .created_by!,
+                                                              filterdByUniqueId![i]
+                                                                  .id);
+                                                          if (rsp !=
+                                                              null &&
+                                                              rsp['status'] ==
+                                                                  1) {
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'TABLE of Library ${libIssueList?.length ?? 0}');
+                                                            }
+
+                                                            if (libIssueList !=
+                                                                null &&
+                                                                libIssueList!.isNotEmpty) {
+                                                              for (int i = 0;
+                                                              i < libIssueList!.length;
+                                                              i++) {
+                                                                if (kDebugMode) {
+                                                                  print('library records of num row $i');
+                                                                }
+
+                                                                var rsplib =
+                                                                await insertIssueRecords(
+                                                                  libIssueList![i].uniqueId,
+                                                                  libIssueList![i].issueExist!,
+                                                                  libIssueList![i].issueName,
+                                                                  libIssueList![i].lib_issue_img,
+                                                                  libIssueList![i].issueDescription!,
+                                                                  libIssueList![i].issueReportOn!,
+                                                                  libIssueList![i].issueReportBy!,
+                                                                  libIssueList![i].issueResolvedOn!,
+                                                                  libIssueList![i].issueResolvedBy!,
+                                                                  libIssueList![i].issueStatus!,
+                                                                  libIssueList![i].id,
+                                                                );
+
+                                                                // Debug print statements to track the value of rsplib
+                                                                if (kDebugMode) {
+                                                                  print('rsplib response: $rsplib');
+                                                                }
+
+                                                                if (rsplib != null &&
+                                                                    rsplib.containsKey('status') &&
+                                                                    rsplib['status'] == 1) {
+                                                                  customSnackbar(
+                                                                    'Successfully',
+                                                                    "${rsp['message']}",
+                                                                    AppColors.secondary,
+                                                                    AppColors.onSecondary,
+                                                                    Icons.check,
+                                                                  );
+                                                                } else {
+                                                                  customSnackbar(
+                                                                    'Error',
+                                                                    rsplib != null ? rsplib['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
+                                                                    AppColors.errorContainer,
+                                                                    AppColors.onBackground,
+                                                                    Icons.warning,
+                                                                  );
+                                                                }
+                                                              }
+                                                            }
+
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'TABLE of Playground ${playgroundIssueList?.length ?? 0}');
+                                                            }
+
+                                                            if (playgroundIssueList !=
+                                                                null &&
+                                                                playgroundIssueList!.isNotEmpty) {
+                                                              for (int i = 0;
+                                                              i < playgroundIssueList!.length;
+                                                              i++) {
+                                                                if (kDebugMode) {
+                                                                  print('Playground records of num row $i');
+                                                                }
+
+                                                                var rspPlay =
+                                                                await insertPlayRecords(
+                                                                  playgroundIssueList![i].uniqueId,
+                                                                  playgroundIssueList![i].issueExist!,
+                                                                  playgroundIssueList![i].issueName,
+                                                                  playgroundIssueList![i].play_issue_img,
+                                                                  playgroundIssueList![i].issueDescription!,
+                                                                  playgroundIssueList![i].issueReportOn!,
+                                                                  playgroundIssueList![i].issueReportBy!,
+                                                                  playgroundIssueList![i].issueResolvedOn!,
+                                                                  playgroundIssueList![i].issueResolvedBy!,
+                                                                  playgroundIssueList![i].issueStatus!,
+                                                                  playgroundIssueList![i].id,
+                                                                );
+
+                                                                // Debug print statements to track the value of rsplib
+                                                                if (kDebugMode) {
+                                                                  print('rspPlay response: $rspPlay');
+                                                                }
+
+                                                                if (rspPlay != null &&
+                                                                    rspPlay.containsKey('status') &&
+                                                                    rspPlay['status'] == 1) {
+                                                                  customSnackbar(
+                                                                    'Successfully',
+                                                                    "${rsp['message']}",
+                                                                    AppColors.secondary,
+                                                                    AppColors.onSecondary,
+                                                                    Icons.check,
+                                                                  );
+                                                                } else {
+                                                                  customSnackbar(
+                                                                    'Error',
+                                                                    rspPlay != null ? rspPlay['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
+                                                                    AppColors.errorContainer,
+                                                                    AppColors.onBackground,
+                                                                    Icons.warning,
+                                                                  );
+                                                                }
+                                                              }
+                                                            }
+
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'TABLE of Furniture ${furnitureIssueList?.length ?? 0}');
+                                                            }
+
+                                                            if (furnitureIssueList !=
+                                                                null &&
+                                                                furnitureIssueList!.isNotEmpty) {
+                                                              for (int i = 0;
+                                                              i < furnitureIssueList!.length;
+                                                              i++) {
+                                                                if (kDebugMode) {
+                                                                  print('Furniture records of num row $i');
+                                                                }
+
+                                                                var rspFurn =
+                                                                await insertFurnRecords(
+                                                                  furnitureIssueList![i].uniqueId,
+                                                                  furnitureIssueList![i].issueExist!,
+                                                                  furnitureIssueList![i].issueName,
+                                                                  furnitureIssueList![i].furn_issue_img,
+                                                                  furnitureIssueList![i].issueDescription!,
+                                                                  furnitureIssueList![i].issueReportOn!,
+                                                                  furnitureIssueList![i].issueReportBy!,
+                                                                  furnitureIssueList![i].issueResolvedOn!,
+                                                                  furnitureIssueList![i].issueResolvedBy!,
+                                                                  furnitureIssueList![i].issueStatus!,
+                                                                  furnitureIssueList![i].id,
+                                                                );
+
+                                                                // Debug print statements to track the value of rsplib
+                                                                if (kDebugMode) {
+                                                                  print('rspFurn response: $rspFurn');
+                                                                }
+
+                                                                if (rspFurn != null &&
+                                                                    rspFurn.containsKey('status') &&
+                                                                    rspFurn['status'] == 1) {
+                                                                  customSnackbar(
+                                                                    'Successfully',
+                                                                    "${rsp['message']}",
+                                                                    AppColors.secondary,
+                                                                    AppColors.onSecondary,
+                                                                    Icons.check,
+                                                                  );
+                                                                } else {
+                                                                  customSnackbar(
+                                                                    'Error',
+                                                                    rspFurn != null ? rspFurn['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
+                                                                    AppColors.errorContainer,
+                                                                    AppColors.onBackground,
+                                                                    Icons.warning,
+                                                                  );
+                                                                }
+                                                              }
+                                                            }
+
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'TABLE of DigiLab ${digiLabIssueList?.length ?? 0}');
+                                                            }
+
+                                                            if (digiLabIssueList !=
+                                                                null &&
+                                                                digiLabIssueList!.isNotEmpty) {
+                                                              for (int i = 0;
+                                                              i < digiLabIssueList!.length;
+                                                              i++) {
+                                                                if (kDebugMode) {
+                                                                  print('DigiLab records of num row $i');
+                                                                }
+
+                                                                var rspDig =
+                                                                await insertDigRecords(
+                                                                  digiLabIssueList![i].uniqueId,
+                                                                  digiLabIssueList![i].issueExist!,
+                                                                  digiLabIssueList![i].issueName,
+                                                                  digiLabIssueList![i].dig_issue_img,
+                                                                  digiLabIssueList![i].issueDescription!,
+                                                                  digiLabIssueList![i].issueReportOn,
+                                                                  digiLabIssueList![i].issueReportBy,
+                                                                  digiLabIssueList![i].issueResolvedOn?.toString() ?? 'Not Resolved Yet',
+                                                                  digiLabIssueList![i].issueResolvedBy?.toString() ?? 'Not Resolved Yet',
+                                                                  digiLabIssueList![i].issueStatus!,
+                                                                  digiLabIssueList![i].tabletNumber?.toString() ?? 'N/A',
+                                                                  digiLabIssueList![i].id,
+                                                                );
+
+                                                                // Debug print statements to track the value of rsplib
+                                                                if (kDebugMode) {
+                                                                  print('rspDig response: $rspDig');
+                                                                }
+
+                                                                if (rspDig != null &&
+                                                                    rspDig.containsKey('status') &&
+                                                                    rspDig['status'] == 1) {
+                                                                  customSnackbar(
+                                                                    'Successfully',
+                                                                    "${rsp['message']}",
+                                                                    AppColors.secondary,
+                                                                    AppColors.onSecondary,
+                                                                    Icons.check,
+                                                                  );
+                                                                } else {
+                                                                  customSnackbar(
+                                                                    'Error',
+                                                                    rspDig != null ? rspDig['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
+                                                                    AppColors.errorContainer,
+                                                                    AppColors.onBackground,
+                                                                    Icons.warning,
+                                                                  );
+                                                                }
+                                                              }
+                                                            }
+
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'TABLE of Alexa ${alexaIssueList?.length ?? 0}');
+                                                            }
+
+                                                            if (alexaIssueList !=
+                                                                null &&
+                                                                alexaIssueList!.isNotEmpty) {
+                                                              for (int i = 0;
+                                                              i < alexaIssueList!.length;
+                                                              i++) {
+                                                                if (kDebugMode) {
+                                                                  print('Alexa records of num row $i');
+                                                                }
+
+                                                                var rspAlexa =
+                                                                await insertAlexaRecords(
+                                                                  alexaIssueList![i].uniqueId,
+                                                                  alexaIssueList![i].issueExist!,
+                                                                  alexaIssueList![i].issueName,
+                                                                  alexaIssueList![i].alexa_issue_img,
+                                                                  alexaIssueList![i].issueDescription!,
+                                                                  alexaIssueList![i].issueReportOn!,
+                                                                  alexaIssueList![i].issueReportBy!,
+                                                                  alexaIssueList![i].issueResolvedOn!,
+                                                                  alexaIssueList![i].issueResolvedBy!,
+                                                                  alexaIssueList![i].issueStatus!,
+                                                                  alexaIssueList![i].other?.toString() ?? 'N/A',
+                                                                  alexaIssueList![i].missingDot?.toString() ?? 'N/A',
+                                                                  alexaIssueList![i].notConfiguredDot?.toString() ?? 'N/A',
+                                                                  alexaIssueList![i].notConnectingDot?.toString() ?? 'N/A',
+                                                                  alexaIssueList![i].notChargingDot?.toString() ?? 'N/A',
+                                                                  alexaIssueList![i].id,
+                                                                );
+
+                                                                // Debug print statements to track the value of rsplib
+                                                                if (kDebugMode) {
+                                                                  print('rspAlexa response: $rspAlexa');
+                                                                }
+
+                                                                if (rspAlexa != null &&
+                                                                    rspAlexa.containsKey('status') &&
+                                                                    rspAlexa['status'] == 1) {
+                                                                  customSnackbar(
+                                                                    'Successfully',
+                                                                    "${rsp['message']}",
+                                                                    AppColors.secondary,
+                                                                    AppColors.onSecondary,
+                                                                    Icons.check,
+                                                                  );
+                                                                } else {
+                                                                  customSnackbar(
+                                                                    'Error',
+                                                                    rspAlexa != null ? rspAlexa['message'] ?? 'Unknown error occurred' : 'Failed to upload issue record',
+                                                                    AppColors.errorContainer,
+                                                                    AppColors.onBackground,
+                                                                    Icons.warning,
+                                                                  );
+                                                                }
+                                                              }
+                                                            }
+                                                            // Update the percentage after each sync operation
+                                                            setState(
+                                                                    () {
+                                                                  _percent =
+                                                                      ((i + 1) / filterdByUniqueId!.length) * 100;
+
+                                                                  // Remove the synced record from the list
+                                                                  finalList
+                                                                      .removeAt(index);
+                                                                });
+
+                                                            // Introduce a delay to simulate processing time
+                                                            await Future.delayed(const Duration(
+                                                                milliseconds:
+                                                                500));
+
+                                                            if (i ==
+                                                                (filterdByUniqueId!.length -
+                                                                    1)) {
+                                                              customSnackbar(
+                                                                  'Synced Successfully',
+                                                                  "${rsp['message']}",
+                                                                  AppColors.secondary,
+                                                                  AppColors.onSecondary,
+                                                                  Icons.check);
+                                                            } else {
+                                                              customSnackbar(
+                                                                'Error',
+                                                                rsp['message'],
+                                                                AppColors.errorContainer,
+                                                                AppColors.onBackground,
+                                                                Icons.warning,
+                                                              );
+                                                            }
+
+                                                            if (kDebugMode) {
+                                                              print(
+                                                                  'ALL data is removed from tables');
+                                                            }
+
+                                                            issueTrackerController
+                                                                .libIssueList
+                                                                .clear();
+                                                            issueTrackerController
+                                                                .digiLabIssueList
+                                                                .clear();
+                                                            issueTrackerController
+                                                                .furnitureIssueList
+                                                                .clear();
+                                                            issueTrackerController
+                                                                .playgroundIssueList
+                                                                .clear();
+                                                            issueTrackerController
+                                                                .issueTrackerList
+                                                                .clear();
+                                                            issueTrackerController
+                                                                .alexaIssueList
+                                                                .clear();
+                                                          }
+
+                                                          // Stop the loading
+                                                          setState(
+                                                                  () {
+                                                                _isSubmitting =
+                                                                false; // Stop spinner
+                                                                _percent =
+                                                                0.0; // Reset percentage
+                                                              });
+                                                        }
+                                                      },
+                                                    ));
+                                          },
+                                        )
+                                            : null, // Hide sync icon when offline
+                                      );
+                                    },
+                                  ),
+                                  if (_isSubmitting)
+                                    Positioned.fill(
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 100,
+                                              height: 100,
+                                              child:
+                                              CircularProgressIndicator(
+                                                value: _percent / 100,
+                                                backgroundColor:
+                                                Colors.grey[300],
+                                                color: AppColors.primary,
+                                                strokeWidth: 8,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              "${_percent.toStringAsFixed(0)}%",
+                                              style: const TextStyle(
+                                                  fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ))
                         ],
                       )
                     ]);
@@ -641,18 +641,18 @@ class _FinalIssueTrackerSyncState extends State<FinalIssueTrackerSync> {
 
 var baseurl = "https://mis.17000ft.org/17000ft_apis/";
 Future insertIssueRecords(
-  String? uniqueId,
-  String? issueExist,
-  String? issueValue,
-  String? lib_issue_img,
-  String? issueDescription,
-  String? reportedOn,
-  String? reportedBy,
-  String? resolvedOn,
-  String? resolvedBy,
-  String? issueStatus,
-  int? id,
-) async {
+    String? uniqueId,
+    String? issueExist,
+    String? issueValue,
+    String? lib_issue_img,
+    String? issueDescription,
+    String? reportedOn,
+    String? reportedBy,
+    String? resolvedOn,
+    String? resolvedBy,
+    String? issueStatus,
+    int? id,
+    ) async {
   if (uniqueId == null || issueExist == null) {
     if (kDebugMode) {
       print('Missing critical data: uniqueId or issueExist is null.');
@@ -763,16 +763,16 @@ Future insertIssueRecords(
 }
 
 Future insertBasicRecords(
-  String? tourId,
-  String? school,
-  String? udiseCode,
-  String? correctUdise,
-  String? uniqueId,
-  String? office,
-  String? createdAt,
-  String? created_by,
-  int? id,
-) async {
+    String? tourId,
+    String? school,
+    String? udiseCode,
+    String? correctUdise,
+    String? uniqueId,
+    String? office,
+    String? createdAt,
+    String? created_by,
+    int? id,
+    ) async {
   var request = http.MultipartRequest(
     'POST',
     Uri.parse('${baseurl}IssueTracker/issueTrackerSave_new.php'),
@@ -887,37 +887,37 @@ Future insertBasicRecords(
 }
 
 Future insertPlayRecords(
-  String? uniqueId,
-  String? issueExist,
-  String? issueValue,
-  String? play_issue_img,
-  String? issueDescription,
-  String? reportedOn,
-  String? reportedBy,
-  String? resolvedOn,
-  String? resolvedBy,
-  String? issueStatus,
-  int? id,
-) async {
+    String? uniqueId,
+    String? issueExist,
+    String? issueValue,
+    String? play_issue_img,
+    String? issueDescription,
+    String? reportedOn,
+    String? reportedBy,
+    String? resolvedOn,
+    String? resolvedBy,
+    String? issueStatus,
+    int? id,
+    ) async {
   if (uniqueId == null || issueExist == null) {
     if (kDebugMode) {
       print('Missing critical data: uniqueId or issueExist is null.');
     }
     return null;
   }
-if(kDebugMode) {
-  print('Insert Playground issue records called');
-  print('uniqueId: $uniqueId');
-  print('issueExist: $issueExist');
-  print('issueValue: $issueValue');
-  print('play_issue_img: $play_issue_img');
-  print('issueDescription: $issueDescription');
-  print('reportedOn: $reportedOn');
-  print('reportedBy: $reportedBy');
-  print('resolvedOn: $resolvedOn');
-  print('resolvedBy: $resolvedBy');
-  print('issueStatus: $issueStatus');
-}
+  if(kDebugMode) {
+    print('Insert Playground issue records called');
+    print('uniqueId: $uniqueId');
+    print('issueExist: $issueExist');
+    print('issueValue: $issueValue');
+    print('play_issue_img: $play_issue_img');
+    print('issueDescription: $issueDescription');
+    print('reportedOn: $reportedOn');
+    print('reportedBy: $reportedBy');
+    print('resolvedOn: $resolvedOn');
+    print('resolvedBy: $resolvedBy');
+    print('issueStatus: $issueStatus');
+  }
   var request = http.MultipartRequest(
     'POST',
     Uri.parse('${baseurl}IssueTracker/issueTrackerSave_new.php'),
@@ -984,7 +984,7 @@ if(kDebugMode) {
     if (response.statusCode == 200 && parsedResponse['status'] == 1) {
       await SqfliteDatabaseHelper().queryDelete(
         arg: uniqueId.toString(),
-        table: 'play_issue',
+        table: 'playIssue',
         field: 'unique_id',
       );
       await Get.find<IssueTrackerController>().fetchData();
@@ -1006,37 +1006,37 @@ if(kDebugMode) {
 }
 
 Future insertFurnRecords(
-  String? uniqueId,
-  String? issueExist,
-  String? issueValue,
-  String? furn_issue_img,
-  String? issueDescription,
-  String? reportedOn,
-  String? reportedBy,
-  String? resolvedOn,
-  String? resolvedBy,
-  String? issueStatus,
-  int? id,
-) async {
+    String? uniqueId,
+    String? issueExist,
+    String? issueValue,
+    String? furn_issue_img,
+    String? issueDescription,
+    String? reportedOn,
+    String? reportedBy,
+    String? resolvedOn,
+    String? resolvedBy,
+    String? issueStatus,
+    int? id,
+    ) async {
   if (uniqueId == null || issueExist == null) {
     if (kDebugMode) {
       print('Missing critical data: uniqueId or issueExist is null.');
     }
     return null;
   }
-if(kDebugMode) {
-  print('Insert Furniture issue records called');
-  print('uniqueId: $uniqueId');
-  print('issueExist: $issueExist');
-  print('issueValue: $issueValue');
-  print('furn_issue_img: $furn_issue_img');
-  print('issueDescription: $issueDescription');
-  print('reportedOn: $reportedOn');
-  print('reportedBy: $reportedBy');
-  print('resolvedOn: $resolvedOn');
-  print('resolvedBy: $resolvedBy');
-  print('issueStatus: $issueStatus');
-}
+  if(kDebugMode) {
+    print('Insert Furniture issue records called');
+    print('uniqueId: $uniqueId');
+    print('issueExist: $issueExist');
+    print('issueValue: $issueValue');
+    print('furn_issue_img: $furn_issue_img');
+    print('issueDescription: $issueDescription');
+    print('reportedOn: $reportedOn');
+    print('reportedBy: $reportedBy');
+    print('resolvedOn: $resolvedOn');
+    print('resolvedBy: $resolvedBy');
+    print('issueStatus: $issueStatus');
+  }
   var request = http.MultipartRequest(
     'POST',
     Uri.parse('${baseurl}IssueTracker/issueTrackerSave_new.php'),
@@ -1104,7 +1104,7 @@ if(kDebugMode) {
     if (response.statusCode == 200 && parsedResponse['status'] == 1) {
       await SqfliteDatabaseHelper().queryDelete(
         arg: uniqueId.toString(),
-        table: 'furniture_issue',
+        table: 'furnitureIssue',
         field: 'unique_id',
       );
       await Get.find<IssueTrackerController>().fetchData();
@@ -1126,19 +1126,19 @@ if(kDebugMode) {
 }
 
 Future insertDigRecords(
-  String? uniqueId,
-  String? issueExist,
-  String? issueValue,
-  String? dig_issue_img,
-  String? issueDescription,
-  String? reportedOn,
-  String? reportedBy,
-  String? resolvedOn,
-  String? resolvedBy,
-  String? issueStatus,
-  String? tabletNumber,
-  int? id,
-) async {
+    String? uniqueId,
+    String? issueExist,
+    String? issueValue,
+    String? dig_issue_img,
+    String? issueDescription,
+    String? reportedOn,
+    String? reportedBy,
+    String? resolvedOn,
+    String? resolvedBy,
+    String? issueStatus,
+    String? tabletNumber,
+    int? id,
+    ) async {
   // Validate mandatory fields
   if (uniqueId == null || issueExist == null) {
     if (kDebugMode) {
@@ -1146,20 +1146,20 @@ Future insertDigRecords(
     }
     return null;
   }
-if(kDebugMode) {
-  print('Insert DigiLab issue records called');
-  print('uniqueId: $uniqueId');
-  print('issueExist: $issueExist');
-  print('issueValue: $issueValue');
-  print('dig_issue_img: $dig_issue_img');
-  print('issueDescription: $issueDescription');
-  print('reportedOn: $reportedOn');
-  print('reportedBy: $reportedBy');
-  print('resolvedOn: $resolvedOn');
-  print('resolvedBy: $resolvedBy');
-  print('issueStatus: $issueStatus');
-  print('tabletNumber: $tabletNumber');
-}
+  if(kDebugMode) {
+    print('Insert DigiLab issue records called');
+    print('uniqueId: $uniqueId');
+    print('issueExist: $issueExist');
+    print('issueValue: $issueValue');
+    print('dig_issue_img: $dig_issue_img');
+    print('issueDescription: $issueDescription');
+    print('reportedOn: $reportedOn');
+    print('reportedBy: $reportedBy');
+    print('resolvedOn: $resolvedOn');
+    print('resolvedBy: $resolvedBy');
+    print('issueStatus: $issueStatus');
+    print('tabletNumber: $tabletNumber');
+  }
   // Create the multipart request
   var request = http.MultipartRequest(
     'POST',
@@ -1239,7 +1239,7 @@ if(kDebugMode) {
         // Perform database delete operation after successful response
         await SqfliteDatabaseHelper().queryDelete(
           arg: uniqueId.toString(),
-          table: 'digiLab_issue',
+          table: 'digiLabIssue',
           field: 'unique_id',
         );
 
@@ -1278,23 +1278,23 @@ if(kDebugMode) {
 
 //insert Alexa Issues
 Future insertAlexaRecords(
-  String? uniqueId,
-  String? issueExist,
-  String? issueValue,
-  String? alexa_issue_img,
-  String? issueDescription,
-  String? reportedOn,
-  String? reportedBy,
-  String? resolvedOn,
-  String? resolvedBy,
-  String? issueStatus,
-  String? other,
-  String? missing,
-  String? notConfigured,
-  String? notConnecting,
-  String? notCharging,
-  int? id,
-) async {
+    String? uniqueId,
+    String? issueExist,
+    String? issueValue,
+    String? alexa_issue_img,
+    String? issueDescription,
+    String? reportedOn,
+    String? reportedBy,
+    String? resolvedOn,
+    String? resolvedBy,
+    String? issueStatus,
+    String? other,
+    String? missing,
+    String? notConfigured,
+    String? notConnecting,
+    String? notCharging,
+    int? id,
+    ) async {
   if (uniqueId == null || issueExist == null) {
     if (kDebugMode) {
       print('Missing critical data: uniqueId or issueExist is null.');
@@ -1393,7 +1393,7 @@ Future insertAlexaRecords(
     if (response.statusCode == 200 && parsedResponse['status'] == 1) {
       await SqfliteDatabaseHelper().queryDelete(
         arg: uniqueId.toString(),
-        table: 'alexa_issue',
+        table: 'alexaIssue',
         field: 'unique_id',
       );
       await SqfliteDatabaseHelper().queryDelete(

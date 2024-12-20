@@ -9,7 +9,6 @@ import 'package:offline17000ft/components/custom_snackbar.dart';
 import 'package:offline17000ft/constants/color_const.dart';
 import 'package:offline17000ft/helper/database_helper.dart';
 import 'package:offline17000ft/services/network_manager.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -35,21 +34,24 @@ class _SchoolRecceSyncState extends State<SchoolRecceSync> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool shouldExit = await showDialog(
-            context: context,
-            builder: (_) => Confirmation(
-                iconname: icon,
-                title: 'Confirm Exit',
-                yes: 'Exit',
-                no: 'Cancel',
-                desc: 'Are you sure you want to Exit?',
-                onPressed: () async {
-                  Navigator.of(context).pop(true);
-                }));
-        return shouldExit;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (_) => Confirmation(
+            iconname: Icons.check_circle,
+            title: 'Exit Confirmation',
+            yes: 'Yes',
+            no: 'No',
+            desc: 'Are you sure you want to leave?',
+            onPressed: () {
+              Navigator.of(context).pop(true);
+
+            },
+          ),
+        );
       },
       child: Scaffold(
         appBar: const CustomAppbar(title: 'School Recce Sync'),
@@ -244,7 +246,7 @@ Future insertSchoolRecce(
     String? tourId,
     String? school,
     String? udiseValue,
-    String? udise_correct,
+    String? udiseCorrect,
     String? boardImg,
     String? buildingImg,
     String? gradeTaught,
@@ -282,7 +284,7 @@ Future insertSchoolRecce(
     String? gradeReportYear1,
     String? gradeReportYear2,
     String? gradeReportYear3,
-    String? DigiLabRoomImg,
+    String? digiLabRoomImg,
     String? libRoomImg,
     String? remoteInfo,
     String? motorableRoad,
@@ -302,7 +304,7 @@ Future insertSchoolRecce(
     print('Tour ID: $tourId');
     print('School: $school');
     print('UDISE Value: $udiseValue');
-    print('UDISE Correct: $udise_correct');
+    print('UDISE Correct: $udiseCorrect');
     print('Board Image: $boardImg');
     print('Building Image: $buildingImg');
     print('Grade Taught: $gradeTaught');
@@ -340,7 +342,7 @@ Future insertSchoolRecce(
     print('Grade Report Year 1: $gradeReportYear1');
     print('Grade Report Year 2: $gradeReportYear2');
     print('Grade Report Year 3: $gradeReportYear3');
-    print('Digital Lab Room Image: $DigiLabRoomImg');
+    print('Digital Lab Room Image: $digiLabRoomImg');
     print('Library Room Image: $libRoomImg');
     print('Remote Info: $remoteInfo');
     print('Motorable Road: $motorableRoad');
@@ -371,7 +373,7 @@ Future insertSchoolRecce(
     'tourId': tourId ?? '',
     'school': school ?? '',
     'udiseValue': udiseValue ?? '',
-    'udise_correct': udise_correct ?? '',
+    'udise_correct': udiseCorrect ?? '',
     'gradeTaught': gradeTaught ?? '',
     'instituteHead': instituteHead ?? '',
     'headDesignation': headDesignation ?? '',
@@ -395,11 +397,11 @@ Future insertSchoolRecce(
     'digitalLearning': digitalLearning ?? '',
     'libraryExisting': libraryExisting ?? '',
     'playGroundSpace': playGroundSpace ?? '',
-    'enrollmentReport': enrollmentReportJsonData ?? '',
+    'enrollmentReport': enrollmentReportJsonData,
     'academicYear': academicYear ?? '',
-    'gradeReportYear1': gradeReportYear1JsonData ?? '',
-    'gradeReportYear2': gradeReportYear2JsonData ?? '',
-    'gradeReportYear3': gradeReportYear3JsonData ?? '',
+    'gradeReportYear1': gradeReportYear1JsonData,
+    'gradeReportYear2': gradeReportYear2JsonData,
+    'gradeReportYear3': gradeReportYear3JsonData,
     'remoteInfo': remoteInfo ?? '',
     'motorableRoad': motorableRoad ?? '',
     'languageSchool': languageSchool ?? '',
@@ -673,8 +675,8 @@ Future insertSchoolRecce(
       }
     }
 
-    if (DigiLabRoomImg != null && DigiLabRoomImg.isNotEmpty) {
-      List<String> imagePaths = DigiLabRoomImg.split(',');
+    if (digiLabRoomImg != null && digiLabRoomImg.isNotEmpty) {
+      List<String> imagePaths = digiLabRoomImg.split(',');
 
       for (String path in imagePaths) {
         File imageFile = File(path.trim());

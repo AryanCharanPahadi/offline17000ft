@@ -71,18 +71,16 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                     child: GetBuilder<TourController>(
                       init: TourController(),
                       builder: (tourController) {
-                        // Fetch tour details
+                        // Fetch tour details when the builder is triggered
                         tourController.fetchTourDetails();
 
-                        // Get locked tour ID from SelectController
                         final selectController = Get.put(SelectController());
                         String? lockedTourId = selectController.lockedTourId;
 
-                        // Consider the lockedTourId as the selected tour ID if it's not null
                         String? selectedTourId =
                             lockedTourId ?? cabMeterController.tourValue;
 
-                        // Fetch the corresponding schools if lockedTourId or selectedTourId is present
+                        // Fetch corresponding schools for the selected tour
                         if (selectedTourId != null) {
                           splitSchoolLists = tourController.getLocalTourList
                               .where((e) => e.tourId == selectedTourId)
@@ -95,17 +93,10 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                         }
 
                         return Column(children: [
-                          LabelText(
-                            label: 'Tour ID',
-                            astrick: true,
-                          ),
-                          CustomSizedBox(
-                            value: 20,
-                            side: 'height',
-                          ),
+                          LabelText(label: 'Tour ID', astrick: true),
+                          CustomSizedBox(value: 20, side: 'height'),
                           CustomDropdownFormField(
                             focusNode: cabMeterController.tourIdFocusNode,
-                            // Show the locked tour ID directly, and disable dropdown interaction if locked
                             options: lockedTourId != null
                                 ? [lockedTourId] // Show only the locked tour ID
                                 : tourController.getLocalTourList
@@ -113,10 +104,8 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                                         .tourId!) // Ensure tourId is non-nullable
                                     .toList(),
                             selectedOption: selectedTourId,
-                            onChanged: lockedTourId ==
-                                    null // Disable changing when tour ID is locked
+                            onChanged: lockedTourId == null
                                 ? (value) {
-                                    // Fetch and set the schools for the selected tour
                                     splitSchoolLists = tourController
                                         .getLocalTourList
                                         .where((e) => e.tourId == value)
@@ -127,7 +116,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                                         .expand((x) => x)
                                         .toList();
 
-                                    // Single setState call for efficiency
                                     setState(() {
                                       cabMeterController.setSchool(null);
                                       cabMeterController.setTour(value);

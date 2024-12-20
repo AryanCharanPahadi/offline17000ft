@@ -36,21 +36,24 @@ class _EnrolmentSyncState extends State<EnrolmentSync> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool shouldExit = await showDialog(
-            context: context,
-            builder: (_) => Confirmation(
-                iconname: icon,
-                title: 'Confirm Exit',
-                yes: 'Exit',
-                no: 'Cancel',
-                desc: 'Are you sure you want to Exit?',
-                onPressed: () async {
-                  Navigator.of(context).pop(true);
-                }));
-        return shouldExit;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (_) => Confirmation(
+            iconname: Icons.check_circle,
+            title: 'Exit Confirmation',
+            yes: 'Yes',
+            no: 'No',
+            desc: 'Are you sure you want to leave?',
+            onPressed: () {
+              Navigator.of(context).pop(true);
+
+            },
+          ),
+        );
       },
       child: Scaffold(
         appBar: const CustomAppbar(title: 'Enrollment Sync'),

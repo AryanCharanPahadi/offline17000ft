@@ -13,7 +13,6 @@ import 'package:offline17000ft/components/custom_appBar.dart';
 import 'package:offline17000ft/components/custom_button.dart';
 import 'package:offline17000ft/components/custom_textField.dart';
 import 'package:offline17000ft/constants/color_const.dart';
-import 'package:offline17000ft/helper/responsive_helper.dart';
 import 'package:offline17000ft/tourDetails/tour_controller.dart';
 import 'package:offline17000ft/components/custom_dropdown.dart';
 import 'package:offline17000ft/components/custom_labeltext.dart';
@@ -31,12 +30,12 @@ import '../edit_form/edit controller.dart';
 import '../select_tour_id/select_controller.dart';
 
 class SchoolStaffVecForm extends StatefulWidget {
-  String? userid;
-  String? office;
-  String? tourId; // Add this line
-  String? school; // Add this line for school
+ final String? userid;
+ final String? office;
+ final String? tourId; // Add this line
+ final String? school; // Add this line for school
   final SchoolStaffVecRecords? existingRecord;
-  SchoolStaffVecForm({
+  const SchoolStaffVecForm({
     super.key,
     this.userid,
     this.office,
@@ -90,14 +89,14 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
       schoolStaffVecController.emailController.text =
           existingRecord.headEmail ?? '';
       schoolStaffVecController.nameOfchairpersonController.text =
-          existingRecord.SmcVecName ?? '';
+          existingRecord.smcVecName ?? '';
       schoolStaffVecController.email2Controller.text =
           existingRecord.vecEmail ?? '';
       schoolStaffVecController.totalVecStaffController.text =
           existingRecord.vecTotal ?? '';
-      schoolStaffVecController.QualSpecify2Controller.text =
+      schoolStaffVecController.qualSpecify2Controller.text =
           existingRecord.other ?? '';
-      schoolStaffVecController.QualSpecifyController.text =
+      schoolStaffVecController.qualSpecifyController.text =
           existingRecord.otherQual ?? '';
       schoolStaffVecController.chairPhoneNumberController.text =
           existingRecord.vecMobile ?? '';
@@ -143,34 +142,24 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool? shouldExit = await showDialog<bool>(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
           context: context,
           builder: (_) => Confirmation(
-            iconname: icon,
+            iconname: Icons.check_circle,
             title: 'Exit Confirmation',
             yes: 'Yes',
             no: 'No',
             desc: 'Are you sure you want to leave?',
             onPressed: () {
-              // Close the dialog and return true
               Navigator.of(context).pop(true);
+
             },
           ),
         );
-
-        // If the user confirmed exit, navigate to HomeScreen
-        if (shouldExit == true) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
-        }
-
-        // Return false to prevent the default back navigation
-        return false;
       },
       child: Scaffold(
           appBar: const CustomAppbar(
@@ -1099,7 +1088,7 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                           CustomTextFormField(
                                             textController:
                                                 schoolStaffVecController
-                                                    .QualSpecifyController,
+                                                    .qualSpecifyController,
                                             labelText: 'Write here...',
                                             maxlines: 2,
                                             validator: (value) {
@@ -1199,7 +1188,7 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                           CustomTextFormField(
                                             textController:
                                                 schoolStaffVecController
-                                                    .QualSpecify2Controller,
+                                                    .qualSpecify2Controller,
                                             labelText: 'Write here...',
                                             maxlines: 2,
                                             validator: (value) {
@@ -1323,9 +1312,9 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                                         vecMobile: schoolStaffVecController.chairPhoneNumberController.text,
                                                         vecEmail: schoolStaffVecController.email2Controller.text,
                                                         vecTotal: schoolStaffVecController.totalVecStaffController.text,
-                                                        otherQual: schoolStaffVecController.QualSpecifyController.text,
-                                                        other: schoolStaffVecController.QualSpecify2Controller.text,
-                                                        SmcVecName: schoolStaffVecController.nameOfchairpersonController.text,
+                                                        otherQual: schoolStaffVecController.qualSpecifyController.text,
+                                                        other: schoolStaffVecController.qualSpecify2Controller.text,
+                                                        smcVecName: schoolStaffVecController.nameOfchairpersonController.text,
                                                         headGender: schoolStaffVecController.selectedValue2!,
                                                         genderVec: schoolStaffVecController.selectedValue3!,
                                                         headDesignation: schoolStaffVecController.selectedDesignation!,
@@ -1391,10 +1380,10 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                                             .email2Controller
                                                             .clear();
                                                         schoolStaffVecController
-                                                                .QualSpecifyController
+                                                                .qualSpecifyController
                                                             .clear();
                                                         schoolStaffVecController
-                                                                .QualSpecify2Controller
+                                                                .qualSpecify2Controller
                                                             .clear();
                                                       });
 
@@ -1441,12 +1430,13 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                                           Icons.verified);
 
                                                       // Navigate to HomeScreen
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const HomeScreen()),
-                                                      );
+                                                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                        Navigator.of(context).pushReplacement(
+                                                          MaterialPageRoute(
+                                                            builder: (context) => const HomeScreen(),
+                                                          ),
+                                                        );
+                                                      });
                                                     } else {
                                                       customSnackbar(
                                                           'Error',

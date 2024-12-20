@@ -474,7 +474,7 @@ Future insertInPersonQuantitativeRecords(
         // Delete local record if sync is successful
         await SqfliteDatabaseHelper().queryDelete(
           arg: id.toString(),
-          table: 'inPerson_quantitative',
+          table: 'inPersonQuantitative',
           field: 'id',
         );
         if (kDebugMode) {

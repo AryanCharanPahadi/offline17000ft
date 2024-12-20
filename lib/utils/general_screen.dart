@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ExceptionClass extends StatefulWidget {
-  String? message;
-  String? assetsUrl;
-  String? buttonText;
+ final String? message;
+ final String? assetsUrl;
+ final String? buttonText;
 
-   ExceptionClass({this.message, this.assetsUrl,this.buttonText,super.key});
+   const ExceptionClass({this.message, this.assetsUrl,this.buttonText,super.key});
   
 
   @override

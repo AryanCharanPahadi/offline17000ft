@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -37,7 +38,9 @@ class PermissionHelper {
     } 
 
     final exPath = directory.path; 
-    print("Saved Path: $exPath"); 
+    if (kDebugMode) {
+      print("Saved Path: $exPath");
+    }
     await Directory(exPath).create(recursive: true); 
     return exPath; 
   } 
@@ -55,7 +58,9 @@ class PermissionHelper {
     // Create a file for the path of 
     // device and file name with extension 
     File file = File('$path/$name');
-    print("Save file"); 
+    if (kDebugMode) {
+      print("Save file");
+    }
     
     // Truncate the file to remove existing content before writing new data
     if (file.existsSync()) {
@@ -101,7 +106,9 @@ class FileStorage {
     } 
 
     final exPath = directory.path; 
-    print("Saved Path: $exPath"); 
+    if (kDebugMode) {
+      print("Saved Path: $exPath");
+    }
     await Directory(exPath).create(recursive: true); 
     return exPath; 
   } 
@@ -119,7 +126,9 @@ class FileStorage {
     // Create a file for the path of 
     // device and file name with extension 
     File file = File('$path/$name');
-    print("Save file"); 
+    if (kDebugMode) {
+      print("Save file");
+    }
     
     // Truncate the file to remove existing content before writing new data
     if (file.existsSync()) {

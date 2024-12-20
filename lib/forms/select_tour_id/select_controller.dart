@@ -87,6 +87,11 @@ class SelectController extends GetxController with BaseController {
     update();
   }
 
+  void unlockTourId() {
+    lockedTourId = null; // Unlock the tour ID
+    update(); // Notify listeners about the change
+  }
+
   // Update the school list based on selected tour ID
   void updateSchoolList(String? tourId) {
     if (tourId != null) {

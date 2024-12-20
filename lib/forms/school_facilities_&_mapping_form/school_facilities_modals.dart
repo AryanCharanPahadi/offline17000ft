@@ -2,7 +2,7 @@ import 'dart:convert';
 
 List<SchoolFacilitiesRecords?>? schoolFacilitiesRecordsFromJson(String str) =>
     str.isEmpty ? [] : List<SchoolFacilitiesRecords?>.from(json.decode(str).map((x) => SchoolFacilitiesRecords.fromJson(x)));
-String SchoolFacilitiesRecordsToJson(List<SchoolFacilitiesRecords?>? data) =>
+String schoolFacilitiesRecordsToJson(List<SchoolFacilitiesRecords?>? data) =>
     json.encode(data == null ? [] : List<dynamic>.from(data.map((x) => x!.toJson())));
 class SchoolFacilitiesRecords {
   SchoolFacilitiesRecords({
@@ -26,8 +26,8 @@ class SchoolFacilitiesRecords {
     this.librarianTraining,
     this.libRegisterValue,
     this.imgRegister,
-    this.created_by,
-    this.created_at,
+    this.createdBy,
+    this.createdAt,
     this.office,
 
 
@@ -52,8 +52,8 @@ class SchoolFacilitiesRecords {
   String? librarianTraining;
   String? libRegisterValue;
   String? imgRegister;
-  String? created_by;
-  String? created_at;
+  String? createdBy;
+  String? createdAt;
   String? office;
 
 
@@ -79,8 +79,8 @@ class SchoolFacilitiesRecords {
     librarianTraining: json["librarianTraining"],
     libRegisterValue: json["libRegisterValue"],
     imgRegister: json["imgRegister"],
-    created_by: json["created_by"],
-    created_at: json["created_at"],
+    createdBy: json["created_by"],
+    createdAt: json["created_at"],
     office: json["office"],
 
 
@@ -106,8 +106,8 @@ class SchoolFacilitiesRecords {
     "librarianTraining": librarianTraining,
     "libRegisterValue": libRegisterValue,
     "imgRegister": imgRegister,
-    "created_by": created_by,
-    "created_at": created_at,
+    "created_by": createdBy,
+    "created_at": createdAt,
     "office": office,
 
 

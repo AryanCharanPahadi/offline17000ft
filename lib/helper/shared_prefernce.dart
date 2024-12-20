@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -7,7 +8,9 @@ class SharedPreferencesHelper {
 
   // Method to store user data
   static Future<void> storeUserData(Map<String, dynamic> userData) async {
-    print('this is user data $userData');
+    if (kDebugMode) {
+      print('this is user data $userData');
+    }
     final prefs = await SharedPreferences.getInstance();
     String userDataJson = json.encode(userData);
     await prefs.setString(_userDataKey, userDataJson);

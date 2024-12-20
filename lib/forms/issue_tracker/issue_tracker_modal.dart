@@ -18,7 +18,7 @@ class IssueTrackerRecords {
   String? created_by;
   int? id;
 
-   // Add this field for LibIssue list
+  // Add this field for LibIssue list
   // List<LibIssue?>? libIssueList;
 
   IssueTrackerRecords({
@@ -61,4 +61,3 @@ class IssueTrackerRecords {
 
   };
 }
-

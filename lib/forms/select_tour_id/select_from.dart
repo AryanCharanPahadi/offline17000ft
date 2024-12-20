@@ -12,44 +12,37 @@ import 'package:connectivity_plus/connectivity_plus.dart'; // For checking netwo
 import 'dart:convert'; // For jsonDecode
 import 'package:http/http.dart' as http; // For HTTP requests
 import '../../components/custom_appBar.dart';
+import '../../components/custom_confirmation.dart';
 import '../../components/custom_sizedBox.dart';
-
-
 import '../../components/custom_button.dart';
 import '../../components/custom_labeltext.dart';
 import '../../helper/database_helper.dart';
 import '../../home/home_screen.dart';
 import '../cab_meter_tracking_form/cab_meter_tracing_controller.dart';
-import '../inPerson_qualitative_form/inPerson_qualitative_controller.dart';
+import '../inPerson_qualitative_form/in_person_qualitative_controller.dart';
 import '../school_recce_form/school_recce_controller.dart';
 
 class SelectForm extends StatefulWidget {
   const SelectForm({super.key});
 
   @override
-  _SelectFormState createState() => _SelectFormState();
+  SelectFormState createState() => SelectFormState();
 }
 
-class _SelectFormState extends State<SelectForm> {
+class SelectFormState extends State<SelectForm> {
   bool isConnected = true; // To track network connection status
-  final schoolEnrolmentController =
-  Get.put(SchoolEnrolmentController());
-  final cabMeterTracingController =
-  Get.put(CabMeterTracingController());
+  final schoolEnrolmentController = Get.put(SchoolEnrolmentController());
+  final cabMeterTracingController = Get.put(CabMeterTracingController());
   final inPersonQuantitativeController =
   Get.put(InPersonQuantitativeController());
   final inpersonQualitativeController =
   Get.put(InpersonQualitativeController());
-  final issueTrackerController =
-  Get.put(IssueTrackerController());
-  final flnObservationController =
-  Get.put(FlnObservationController());
-  final schoolStaffVecController =
-  Get.put(SchoolStaffVecController());
-  final schoolFacilitiesController =
-  Get.put(SchoolFacilitiesController());
-  final schoolRecceController =
-  Get.put(SchoolRecceController());
+  final issueTrackerController = Get.put(IssueTrackerController());
+  final flnObservationController = Get.put(FlnObservationController());
+  final schoolStaffVecController = Get.put(SchoolStaffVecController());
+  final schoolFacilitiesController = Get.put(SchoolFacilitiesController());
+  final schoolRecceController = Get.put(SchoolRecceController());
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +53,26 @@ class _SelectFormState extends State<SelectForm> {
         isConnected = (result != ConnectivityResult.none);
       });
     });
+  }
+
+  Future<bool> checkDataInTable(String tableName) async {
+    final conn = SqfliteDatabaseHelper.instance;
+    final dbClient = await conn.db;
+
+    try {
+      List<Map<String, dynamic>> maps = await dbClient.rawQuery(
+        'SELECT COUNT(*) AS count FROM $tableName',
+      );
+
+      if (maps.isNotEmpty && maps[0]['count'] > 0) {
+        return true; // Data exists
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error checking data in table $tableName: $e");
+      }
+    }
+    return false; // No data found
   }
 
   Future<void> _checkConnectivity() async {
@@ -181,38 +194,151 @@ class _SelectFormState extends State<SelectForm> {
                               CustomButton(
                                 title: 'Select',
                                 onPressedButton: () async {
+                                  print(
+                                      'Select button pressed'); // Debug: Button pressed
+
+                                  // List to track tables with data
+                                  List<String> tablesWithData = [];
+
+                                  // Check if there is data in the `schoolEnrolment` table
+                                  bool hasDataInEnrolmentTable =
+                                  await checkDataInTable(
+                                      SqfliteDatabaseHelper
+                                          .schoolEnrolment);
+                                  if (hasDataInEnrolmentTable) {
+                                    tablesWithData.add('schoolEnrolment');
+                                  }
+                                  print(
+                                      'Has data in schoolEnrolment table: $hasDataInEnrolmentTable');
+
+                                  // Check if there is data in the `schoolStaffVec` table
+                                  bool hasDataInStaffVecTable =
+                                  await checkDataInTable(
+                                      SqfliteDatabaseHelper.schoolStaffVec);
+                                  if (hasDataInStaffVecTable) {
+                                    tablesWithData.add('schoolStaffVec');
+                                  }
+                                  print(
+                                      'Has data in schoolStaffVec table: $hasDataInStaffVecTable');
+
+                                  // Check if there is data in the `schoolFacilities` table
+                                  bool hasDataInFacilitiesTable =
+                                  await checkDataInTable(
+                                      SqfliteDatabaseHelper
+                                          .schoolFacilities);
+                                  if (hasDataInFacilitiesTable) {
+                                    tablesWithData.add('schoolFacilities');
+                                  }
+                                  print(
+                                      'Has data in schoolFacilities table: $hasDataInFacilitiesTable');
+
+                                  // Show a popup if data exists in any of the tables
+                                  if (tablesWithData.isNotEmpty) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        List<String> tablesWithData = [];
+
+                                        // Check if there is data in the tables
+                                        if (hasDataInEnrolmentTable) {
+                                          tablesWithData
+                                              .add('School Enrollment Form');
+                                        }
+                                        if (hasDataInStaffVecTable) {
+                                          tablesWithData.add('School Vec Form');
+                                        }
+                                        if (hasDataInFacilitiesTable) {
+                                          tablesWithData
+                                              .add('School Facilities Form');
+                                        }
+
+                                        return Confirmation(
+                                          desc:
+                                          'Please sync all data from the following forms before proceeding:\n\n${tablesWithData.join(', ')}',
+                                          title: 'Data Exists',
+                                          yes: 'OK',
+                                          no: null, // No "Cancel" button needed
+                                          iconname: Icons
+                                              .warning, // Use an appropriate icon
+                                          onPressed: () {
+                                            print(
+                                                'OK button pressed in Confirmation dialog');
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                        );
+                                      },
+                                    );
+
+                                    return; // Stop further execution
+                                  }
+
+                                  print(
+                                      'Clearing the schoolEnrolment, schoolStaffVec, and schoolFacilities tables'); // Debug: Clearing tables
+                                  // Clear the local database tables
+                                  final dbHelper = SqfliteDatabaseHelper();
+                                  await dbHelper.delete(
+                                      SqfliteDatabaseHelper.schoolEnrolment);
+                                  print(
+                                      'schoolEnrolment table cleared'); // Debug: Table cleared
+                                  await dbHelper.delete(
+                                      SqfliteDatabaseHelper.schoolStaffVec);
+                                  print(
+                                      'schoolStaffVec table cleared'); // Debug: Table cleared
+                                  await dbHelper.delete(
+                                      SqfliteDatabaseHelper.schoolFacilities);
+                                  print(
+                                      'schoolFacilities table cleared'); // Debug: Table cleared
+                                  await dbHelper.delete(
+                                      SqfliteDatabaseHelper.formDataTable);
+                                  print(
+                                      'formDataTable table cleared'); // Debug: Table cleared
+
+                                  // Continue with existing logic...
                                   if (selectController.selectedRadioTourId !=
                                       null) {
-                                    // If no specific school is selected, lock all schools
+                                    print(
+                                        'Selected tour ID: ${selectController.selectedRadioTourId}'); // Debug: Selected tour ID
+
                                     List<String> schoolsToLock =
                                     selectController.schoolValue != null
                                         ? [selectController.schoolValue!]
                                         : selectController.splitSchoolLists;
+                                    print(
+                                        'Schools to lock: $schoolsToLock'); // Debug: Schools to lock
 
-                                    // Lock the selected tour ID and schools
                                     selectController.lockTourAndSchools(
                                       selectController.selectedRadioTourId!,
                                       schoolsToLock,
                                     );
+                                    print(
+                                        'Tour and schools locked'); // Debug: Lock successful
 
-                                    // Fetch and save data in the background without navigating
+                                    // Fetch new data and save it to the local database
+                                    print(
+                                        'Fetching data for tour ID: ${selectController.selectedRadioTourId}');
                                     await fetchData(
-                                        selectController.selectedRadioTourId!,
-                                        schoolsToLock,
-                                        context);
-
-                                    // Navigate to the HomeScreen after data is fetched and saved
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => const HomeScreen()),
+                                      selectController.selectedRadioTourId!,
+                                      schoolsToLock,
+                                      context,
                                     );
+                                    print(
+                                        'Data fetched and saved to local DB'); // Debug: Data fetch successful
+
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      print(
+                                          'Navigating to HomeScreen'); // Debug: Navigation
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const HomeScreen(),
+                                        ),
+                                      );
+                                    });
                                   } else {
-                                    // Handle the case where no tour ID is selected
-                                    // Get.snackbar(
-                                    //   'Error',
-                                    //   'Please select a tour ID',
-                                    //   snackPosition: SnackPosition.BOTTOM,
-                                    // );
+                                    print(
+                                        'No tour ID selected'); // Debug: No selection
                                   }
                                 },
                               ),
@@ -221,35 +347,14 @@ class _SelectFormState extends State<SelectForm> {
                               CustomButton(
                                 title: 'Unselect',
                                 onPressedButton: () async {
-                               await   selectController.unlockTourAndSchools();
-                               schoolEnrolmentController.setTour(null);
-                               schoolEnrolmentController.setSchool(null);
-                               cabMeterTracingController.setTour(null);
-                               cabMeterTracingController.setSchool(null);
-                               inpersonQualitativeController.setTour(null);
-                               inpersonQualitativeController.setSchool(null);
-                               inPersonQuantitativeController.setTour(null);
-                               inPersonQuantitativeController.setSchool(null);
-                               issueTrackerController.setTour(null);
-                               issueTrackerController.setSchool(null);
-                               flnObservationController.setTour(null);
-                               flnObservationController.setSchool(null);
-                               schoolStaffVecController.setTour(null);
-                               schoolStaffVecController.setSchool(null);
-                               schoolFacilitiesController.setTour(null);
-                               schoolFacilitiesController.setSchool(null);
-                               schoolRecceController.setTour(null);
-                               schoolRecceController.setSchool(null);
-                                  //   'Unlocked',
-                                  //   'All tour IDs and schools have been unlocked.',
-                                  //   snackPosition: SnackPosition.BOTTOM,
-                                  // );
+                                  selectController.unlockTourAndSchools();
+                                  selectController.unlockTourId();
+
+
                                 },
                               ),
                             ],
                           ),
-
-
                         ],
                       ],
                     ),

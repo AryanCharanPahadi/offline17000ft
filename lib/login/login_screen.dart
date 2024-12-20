@@ -20,7 +20,6 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _loginFormkey = GlobalKey<FormState>();
   final loginController = Get.put(LoginController());
@@ -30,17 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     passwordVisible = true;
-
-    // Check if the user is already logged in
-    _checkLoginState();
   }
 
-  Future<void> _checkLoginState() async {
-    bool isLoggedIn = await SharedPreferencesHelper.getLoginState();
-    if (isLoggedIn) {
-      // If already logged in, navigate to HomeScreen
-      Get.offAll(() => const HomeScreen());
-    }
+  Future<void> storeUserData(Map<String, dynamic> userData) async {
+    await SharedPreferencesHelper.storeUserData(userData);
+    await Future.delayed(const Duration(milliseconds: 500)); // Add delay
+  }
+
+  Future<void> setLoginState(bool state) async {
+    await SharedPreferencesHelper.setLoginState(state);
   }
 
   @override
@@ -69,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Login',
                       style:
-                          AppStyles.heading1(context, AppColors.onBackground),
+                      AppStyles.heading1(context, AppColors.onBackground),
                     ),
                   ),
                 ),
@@ -77,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _loginFormkey,
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 40, right: 40, top: 40),
+                    const EdgeInsets.only(left: 40, right: 40, top: 40),
                     child: Column(
                       children: [
                         SizedBox(
@@ -142,8 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 AppColors.onSecondary,
                                 Icons.error,
                               );
-                            }
-                            else {
+                            } else {
                               if (_loginFormkey.currentState!.validate()) {
                                 // Authenticate user
                                 var myrsp = await loginController.authUser(
@@ -152,13 +148,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
 
                                 if (myrsp != null && myrsp['status'] == 1) {
-                                  // Store user data persistently
-                                  await SharedPreferencesHelper.storeUserData(
-                                      myrsp);
+                                  // Store user data
+                                  await storeUserData(myrsp);
 
                                   // Persist login state
-                                  await SharedPreferencesHelper.setLoginState(
-                                      true);
+                                  await setLoginState(true);
 
                                   customSnackbar(
                                     'Success',
@@ -171,11 +165,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   loginController.clearFields();
 
                                   final IssueTrackerController controller =
-                                      Get.put(IssueTrackerController());
+                                  Get.put(IssueTrackerController());
                                   controller.office = myrsp['office'];
 
                                   final SelectController selectController =
-                                      Get.put(SelectController());
+                                  Get.put(SelectController());
                                   selectController.unlockTourAndSchools();
                                   selectController
                                       .clearFields(); // Reset fields for new data

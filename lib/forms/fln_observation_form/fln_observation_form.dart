@@ -36,9 +36,9 @@ import '../select_tour_id/select_controller.dart';
 import 'fln_observation_controller.dart';
 
 class FlnObservationForm extends StatefulWidget {
-  String? userid;
-  String? office;
-  FlnObservationForm({
+ final String? userid;
+ final String? office;
+  const FlnObservationForm({
     super.key,
     this.userid,
     this.office,

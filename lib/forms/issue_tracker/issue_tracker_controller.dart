@@ -39,28 +39,28 @@ class IssueTrackerController extends GetxController with BaseController {
   bool isLoading = false;
 
   final TextEditingController correctUdiseCodeController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController libraryDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController playgroundDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController digiLabDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController classroomDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController alexaDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController otherSolarDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController tabletNumberController = TextEditingController();
   final TextEditingController dotDeviceMissingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController dotDeviceNotConfiguredController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController dotDeviceNotConnectingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController dotDeviceNotChargingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController dotOtherIssueController = TextEditingController();
   final TextEditingController tabletNumber3Controller = TextEditingController();
   final TextEditingController dateController = TextEditingController();
@@ -259,7 +259,7 @@ class IssueTrackerController extends GetxController with BaseController {
     // Load the image
     final File imageFile = File(imagePath);
     final img.Image? originalImage =
-        img.decodeImage(imageFile.readAsBytesSync());
+    img.decodeImage(imageFile.readAsBytesSync());
 
     if (originalImage == null) {
       return imagePath; // Return original path if decoding fails
@@ -267,9 +267,9 @@ class IssueTrackerController extends GetxController with BaseController {
 
     // Resize the image (optional) and compress
     final img.Image resizedImage =
-        img.copyResize(originalImage, width: 768); // Change the width as needed
+    img.copyResize(originalImage, width: 768); // Change the width as needed
     final List<int> compressedImage =
-        img.encodeJpg(resizedImage, quality: 40); // Adjust quality (0-100)
+    img.encodeJpg(resizedImage, quality: 40); // Adjust quality (0-100)
 
     // Save the compressed image to a new file
     final Directory appDir = await getTemporaryDirectory();
@@ -853,7 +853,7 @@ class IssueTrackerController extends GetxController with BaseController {
     try {
       final dbController = SqfliteDatabaseHelper();
       List<String> staffNames =
-          await dbController.getStaffNamesByCategory(category);
+      await dbController.getStaffNamesByCategory(category);
 
       switch (category) {
         case 1:
@@ -937,11 +937,11 @@ class IssueTrackerController extends GetxController with BaseController {
     isLoading = true;
 
     _issueTrackerList =
-        await LocalDbController().fetchLocalIssueTrackerRecords();
+    await LocalDbController().fetchLocalIssueTrackerRecords();
     _libIssueList = await LocalDbController().fetchLocalLibIssueRecords();
     _furnitureIssueList = await LocalDbController().fetchLocalFurnitureIssue();
     _playgroundIssueList =
-        await LocalDbController().fetchLocalPlaygroundIssue();
+    await LocalDbController().fetchLocalPlaygroundIssue();
     _digiLabIssueList = await LocalDbController().fetchLocalDigiLabIssue();
     _alexaIssueList = await LocalDbController().fetchLocalAlexaIssue();
 

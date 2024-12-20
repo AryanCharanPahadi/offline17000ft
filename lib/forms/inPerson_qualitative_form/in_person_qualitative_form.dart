@@ -31,13 +31,13 @@ import 'package:offline17000ft/home/home_screen.dart';
 import '../../components/custom_confirmation.dart';
 import '../../helper/database_helper.dart';
 import '../select_tour_id/select_controller.dart';
-import 'inPerson_qualitative_controller.dart';
+import 'in_person_qualitative_controller.dart';
 import 'inPerson_qualitative_modal.dart';
 
 class InPersonQualitativeForm extends StatefulWidget {
-  String? userid;
-  String? office;
-  InPersonQualitativeForm({
+ final String? userid;
+ final String? office;
+  const InPersonQualitativeForm({
     super.key,
     this.userid,
     this.office,
@@ -60,25 +60,24 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final responsive = Responsive(context);
-    return WillPopScope(
-        onWillPop: () async {
-          IconData icon = Icons.check_circle;
-          bool? shouldExit = await showDialog<bool>(
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          showDialog(
             context: context,
             builder: (_) => Confirmation(
-              iconname: icon,
+              iconname: Icons.check_circle,
               title: 'Exit Confirmation',
               yes: 'Yes',
               no: 'No',
               desc: 'Are you sure you want to leave?',
               onPressed: () {
-                Navigator.of(context).pop(true); // User confirms exit
+                Navigator.of(context).pop(true);
+
               },
             ),
           );
-
-          // If shouldExit is null, default to false
-          return shouldExit ?? false;
         },
         child: Scaffold(
             appBar:  const CustomAppbar(
@@ -2198,8 +2197,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       inpersonQualitativeController.componentsDigiLabController.clear();
                                                       inpersonQualitativeController.timeDigiLabController.clear();
                                                       inpersonQualitativeController.booksReadingController.clear();
-                                                      inpersonQualitativeController.LibraryController.clear();
-                                                      inpersonQualitativeController.LibraryController.clear();
+                                                      inpersonQualitativeController.libraryController.clear();
                                                       inpersonQualitativeController.questionsAlexaController.clear();
                                                       inpersonQualitativeController.additionalTypeController.clear();
                                                       inpersonQualitativeController.questionsAlexaNotAbleController.clear();
@@ -2544,7 +2542,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                             CustomTextFormField(
                                               textController:
                                                   inpersonQualitativeController
-                                                      .LibraryController,
+                                                      .libraryController,
                                               maxlines: 2,
                                               labelText: 'Write here...',
                                               validator: (value) {
@@ -3761,9 +3759,8 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                             .validateRadioSelection(
                                                                 'interviewSmc');
 
-                                                    bool isRadioValid17 =
-                                                        interviewSmcValue ==
-                                                            'Yes';
+                                                    bool isRadioValid17 = interviewSmcValue == 'Yes';
+
                                                     bool isRadioValid18 =
                                                         true; // Default to true
                                                     bool isRadioValid19 =
@@ -3783,8 +3780,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                                     if (_formKey.currentState!
                                                             .validate() &&
-                                                        (interviewSmcValue !=
-                                                                'Yes' ||
+                                                        (interviewSmcValue != 'Yes' ||
                                                             (isRadioValid18 &&
                                                                 isRadioValid19))) {
                                                       String generateUniqueId(
@@ -4020,7 +4016,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                                 .text,
                                                         stuques7:
                                                             inpersonQualitativeController
-                                                                .LibraryController
+                                                                .libraryController
                                                                 .text,
                                                         stuques8: inpersonQualitativeController
                                                                 .getSelectedValue(
@@ -4168,13 +4164,13 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                             AppColors.onPrimary,
                                                             Icons.verified);
                                                         // Navigate to HomeScreen
-                                                        Navigator
-                                                            .pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                   const HomeScreen()),
-                                                        );
+                                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                          Navigator.of(context).pushReplacement(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => const HomeScreen(),
+                                                            ),
+                                                          );
+                                                        });
                                                       } else {
                                                         customSnackbar(
                                                             'Error',

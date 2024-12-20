@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import 'inPerson_qualitative_controller.dart';
+import 'in_person_qualitative_controller.dart';
 class InpersonQualitativeSync extends StatefulWidget {
   const InpersonQualitativeSync({super.key});
 
@@ -35,21 +35,24 @@ class _InpersonQualitativeSyncState extends State<InpersonQualitativeSync> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool shouldExit = await showDialog(
-            context: context,
-            builder: (_) => Confirmation(
-                iconname: icon,
-                title: 'Confirm Exit',
-                yes: 'Exit',
-                no: 'Cancel',
-                desc: 'Are you sure you want to Exit?',
-                onPressed: () async {
-                  Navigator.of(context).pop(true);
-                }));
-        return shouldExit;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
+          context: context,
+          builder: (_) => Confirmation(
+            iconname: Icons.check_circle,
+            title: 'Exit Confirmation',
+            yes: 'Yes',
+            no: 'No',
+            desc: 'Are you sure you want to leave?',
+            onPressed: () {
+              Navigator.of(context).pop(true);
+
+            },
+          ),
+        );
       },
       child: Scaffold(
         appBar: const CustomAppbar(title: 'In-Person Qualitative Sync'),
@@ -529,7 +532,7 @@ Future insertInPersonQualitative(
         // Delete local record if sync is successful
         await SqfliteDatabaseHelper().queryDelete(
           arg: id.toString(),
-          table: 'inPerson_Qualitative',
+          table: 'inPersonQualitative',
           field: 'id',
         );
         if (kDebugMode) {

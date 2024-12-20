@@ -89,12 +89,6 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
   final ValueNotifier<int> grandTotalGirls = ValueNotifier<int>(0);
   final ValueNotifier<int> grandTotal = ValueNotifier<int>(0);
   var jsonData = <String, Map<String, String>>{};
-  Timer? _debounce;
-
-  void debounceUpdate(void Function() action) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), action);
-  }
 
   // Function to collect data and convert to JSON
   void collectData() {
@@ -276,34 +270,23 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
 
-    return WillPopScope(
-      onWillPop: () async {
-        IconData icon = Icons.check_circle;
-        bool? shouldExit = await showDialog<bool>(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        showDialog(
           context: context,
           builder: (_) => Confirmation(
-            iconname: icon,
+            iconname: Icons.check_circle,
             title: 'Exit Confirmation',
             yes: 'Yes',
             no: 'No',
             desc: 'Are you sure you want to leave?',
             onPressed: () {
-              // Close the dialog and return true
               Navigator.of(context).pop(true);
             },
           ),
         );
-
-        // If the user confirmed exit, navigate to HomeScreen
-        if (shouldExit == true) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-          );
-        }
-
-        // Return false to prevent the default back navigation
-        return false;
       },
       child: Scaffold(
         appBar: const CustomAppbar(
@@ -708,8 +691,23 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                                       maxLength: 3,
                                                       textAlign:
                                                           TextAlign.center,
-                                                      onChanged: (value) =>
-                                                          updateTotal(index),
+                                                      onChanged: (value) {
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    300), () {
+                                                          if (boysControllers[
+                                                                          index]
+                                                                      .text ==
+                                                                  value ||
+                                                              girlsControllers[
+                                                                          index]
+                                                                      .text ==
+                                                                  value) {
+                                                            updateTotal(index);
+                                                          }
+                                                        });
+                                                      },
                                                       decoration:
                                                           const InputDecoration(
                                                         counterText: '',
@@ -1011,13 +1009,16 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                             );
 
                                             // Navigate to HomeScreen
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HomeScreen(),
-                                              ),
-                                            );
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const HomeScreen(),
+                                                ),
+                                              );
+                                            });
                                           } else {
                                             customSnackbar(
                                               'Error',
