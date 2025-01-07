@@ -25,6 +25,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
 import '../../components/custom_confirmation.dart';
 import '../../components/custom_snackbar.dart';
+import '../../components/radio_component.dart';
 import '../../helper/database_helper.dart';
 import '../../home/home_screen.dart';
 import '../select_tour_id/select_controller.dart';
@@ -78,7 +79,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
   }
 
   final IssueTrackerController issueTrackerController =
-  Get.put(IssueTrackerController());
+      Get.put(IssueTrackerController());
 
   DateTime? selectedDate; // Holds the selected date from commented cases
 
@@ -116,15 +117,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
           case 5: // digi
           case 7: // class
           case 9: // alexa
-          // Store the date for commented cases
+            // Store the date for commented cases
             selectedDate = picked;
             issueTrackerController.getDateController(index)?.text =
-            "${picked.toLocal()}".split(' ')[0];
+                "${picked.toLocal()}".split(' ')[0];
             break;
           default:
-          // Update the date in uncommented cases
+            // Update the date in uncommented cases
             issueTrackerController.getDateController(index)?.text =
-            "${picked.toLocal()}".split(' ')[0];
+                "${picked.toLocal()}".split(' ')[0];
             break;
         }
       });
@@ -222,22 +223,22 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         lib_issue_imgFiles.add(File(imagePath)); // Convert image path to File
       }
       String lib_issue_imgFilesPaths =
-      lib_issue_imgFiles.map((file) => file.path).join(',');
+          lib_issue_imgFiles.map((file) => file.path).join(',');
 
       // Add issue to the list
       lib_issuesList.add({
         'lib_issue':
-        issueTrackerController.selectedValue2!, // Default to 'No' if null
+            issueTrackerController.selectedValue2!, // Default to 'No' if null
         'lib_issue_value':
-        issueTrackerController.selectedValue3!, // Default to empty if null
+            issueTrackerController.selectedValue3!, // Default to empty if null
         'lib_desc': issueTrackerController.libraryDescriptionController.text,
         'reported_on': issueTrackerController.dateController.text,
         'resolved_on': issueTrackerController.dateController2.text,
         'reported_by':
-        issueTrackerController.selectedValue4!, // Default to empty if null
+            issueTrackerController.selectedValue4!, // Default to empty if null
         'resolved_by': _selectedStaff ?? '', // Default to empty if null
         'issue_status':
-        issueTrackerController.selectedValue5!, // Default to empty if null
+            issueTrackerController.selectedValue5!, // Default to empty if null
         'lib_issue_img': lib_issue_imgFilesPaths,
         'unique_id': uniqueId, // Add unique ID here
       });
@@ -346,13 +347,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         play_issue_imgFiles.add(File(imagePath)); // Convert image path to File
       }
       String play_issue_imgFilesPaths =
-      play_issue_imgFiles.map((file) => file.path).join(',');
+          play_issue_imgFiles.map((file) => file.path).join(',');
 
       issuesList2.add({
         'play_issue': issueTrackerController.selectedValue6!,
         'play_issue_value': issueTrackerController.selectedValue7!,
         'play_desc':
-        issueTrackerController.playgroundDescriptionController.text,
+            issueTrackerController.playgroundDescriptionController.text,
         'reported_on': issueTrackerController.dateController3.text,
         'resolved_on': issueTrackerController.dateController4.text,
         'reported_by': issueTrackerController.selectedValue8!,
@@ -465,7 +466,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         imagesFiles.add(File(imagePath)); // Convert image path to File
       }
       String imagesFilesFilesPaths =
-      imagesFiles.map((file) => file.path).join(',');
+          imagesFiles.map((file) => file.path).join(',');
 
       issuesList3.add({
         'issue': issueTrackerController.selectedValue12!,
@@ -584,13 +585,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         images2Files.add(File(imagePath)); // Convert image path to File
       }
       String images2FilesPaths =
-      images2Files.map((file) => file.path).join(',');
+          images2Files.map((file) => file.path).join(',');
 
       issuesList4.add({
         'issue': issueTrackerController.selectedValue14!,
         'part': issueTrackerController.selectedValue15!,
         'description':
-        issueTrackerController.classroomDescriptionController.text,
+            issueTrackerController.classroomDescriptionController.text,
         'reportedOn': issueTrackerController.dateController7.text,
         'resolvedOn': issueTrackerController.dateController8.text,
         'reportedBy': issueTrackerController.selectedValue16!,
@@ -672,7 +673,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
     } else {
       setState(() {
         issueTrackerController.dateFieldError10 =
-        false; // Corrected this from _dateFieldError8
+            false; // Corrected this from _dateFieldError8
       });
     }
 
@@ -711,7 +712,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         images3Files.add(File(imagePath)); // Convert image path to File
       }
       String images3FilesPaths =
-      images3Files.map((file) => file.path).join(',');
+          images3Files.map((file) => file.path).join(',');
 
       issuesList5.add({
         'issue': issueTrackerController.selectedValue18!,
@@ -724,11 +725,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
         'other': issueTrackerController.otherSolarDescriptionController.text,
         'missingDot': issueTrackerController.dotDeviceMissingController.text,
         'notConfiguredDot':
-        issueTrackerController.dotDeviceNotConfiguredController.text,
+            issueTrackerController.dotDeviceNotConfiguredController.text,
         'notConnectingDot':
-        issueTrackerController.dotDeviceNotConnectingController.text,
+            issueTrackerController.dotDeviceNotConnectingController.text,
         'notChargingDot':
-        issueTrackerController.dotDeviceNotChargingController.text,
+            issueTrackerController.dotDeviceNotChargingController.text,
         'images': images3FilesPaths,
         'resolvedBy': _selectedStaff5 ?? '',
         'unique_id': uniqueId,
@@ -803,7 +804,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                   // Get locked tour ID from SelectController
                                   final selectController =
-                                  Get.put(SelectController());
+                                      Get.put(SelectController());
                                   String? lockedTourId =
                                       selectController.lockedTourId;
 
@@ -818,9 +819,9 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         .where(
                                             (e) => e.tourId == selectedTourId)
                                         .map((e) => e.allSchool!
-                                        .split(',')
-                                        .map((s) => s.trim())
-                                        .toList())
+                                            .split(',')
+                                            .map((s) => s.trim())
+                                            .toList())
                                         .expand((x) => x)
                                         .toList();
                                   }
@@ -849,39 +850,39 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         // Show the locked tour ID directly, and disable dropdown interaction if locked
                                         options: lockedTourId != null
                                             ? [
-                                          lockedTourId
-                                        ] // Show only the locked tour ID
+                                                lockedTourId
+                                              ] // Show only the locked tour ID
                                             : tourController.getLocalTourList
-                                            .map((e) => e
-                                            .tourId!) // Ensure tourId is non-nullable
-                                            .toList(),
+                                                .map((e) => e
+                                                    .tourId!) // Ensure tourId is non-nullable
+                                                .toList(),
                                         selectedOption: selectedTourId,
                                         onChanged: lockedTourId ==
-                                            null // Disable changing when tour ID is locked
+                                                null // Disable changing when tour ID is locked
                                             ? (value) {
-                                          // Fetch and set the schools for the selected tour
-                                          splitSchoolLists =
-                                              tourController
-                                                  .getLocalTourList
-                                                  .where((e) =>
-                                              e.tourId == value)
-                                                  .map((e) =>
-                                                  e.allSchool!
-                                                      .split(',')
-                                                      .map((s) =>
-                                                      s.trim())
-                                                      .toList())
-                                                  .expand((x) => x)
-                                                  .toList();
+                                                // Fetch and set the schools for the selected tour
+                                                splitSchoolLists =
+                                                    tourController
+                                                        .getLocalTourList
+                                                        .where((e) =>
+                                                            e.tourId == value)
+                                                        .map((e) =>
+                                                            e.allSchool!
+                                                                .split(',')
+                                                                .map((s) =>
+                                                                    s.trim())
+                                                                .toList())
+                                                        .expand((x) => x)
+                                                        .toList();
 
-                                          // Single setState call for efficiency
-                                          setState(() {
-                                            issueTrackerController
-                                                .setSchool(null);
-                                            issueTrackerController
-                                                .setTour(value);
-                                          });
-                                        }
+                                                // Single setState call for efficiency
+                                                setState(() {
+                                                  issueTrackerController
+                                                      .setSchool(null);
+                                                  issueTrackerController
+                                                      .setTour(value);
+                                                });
+                                              }
                                             : null, // Disable dropdown if lockedTourId is present
                                         labelText: "Select Tour ID",
                                       ),
@@ -912,11 +913,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   'I'), // Disable based on condition
                                         ),
                                         items:
-                                        splitSchoolLists, // Show schools based on selected or locked tour ID
+                                            splitSchoolLists, // Show schools based on selected or locked tour ID
                                         dropdownDecoratorProps:
-                                        const DropDownDecoratorProps(
+                                            const DropDownDecoratorProps(
                                           dropdownSearchDecoration:
-                                          InputDecoration(
+                                              InputDecoration(
                                             labelText: "Select School",
                                             hintText: "Select School",
                                           ),
@@ -929,7 +930,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           });
                                         },
                                         selectedItem:
-                                        issueTrackerController.schoolValue,
+                                            issueTrackerController.schoolValue,
                                       ),
                                       CustomSizedBox(
                                         value: 20,
@@ -939,81 +940,50 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         label: 'Is this UDISE code is correct?',
                                         astrick: true,
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: screenWidth * 0.1),
-                                        child: Row(
-                                          children: [
-                                            Radio(
-                                              value: 'Yes',
-                                              groupValue: issueTrackerController
-                                                  .selectedValue,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  issueTrackerController
-                                                      .selectedValue =
-                                                      value;
-                                                });
-                                                if (value == 'Yes') {
-                                                  issueTrackerController
-                                                      .correctUdiseCodeController
-                                                      .clear();
-                                                }
-                                              },
-                                            ),
-                                            const Text('Yes'),
-                                          ],
-                                        ),
+                                      CustomRadioButton(
+                                        value: 'Yes',
+                                        groupValue: issueTrackerController
+                                            .selectedValue,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            issueTrackerController
+                                                .selectedValue = value;
+                                          });
+                                          if (value == 'Yes') {
+                                            issueTrackerController
+                                                .correctUdiseCodeController
+                                                .clear();
+                                          }
+                                        },
+                                        label: 'Yes',
+                                        screenWidth: screenWidth,
                                       ),
-                                      CustomSizedBox(
-                                        value: 150,
-                                        side: 'width',
+                                      SizedBox(width: screenWidth * 0.4),
+                                      CustomRadioButton(
+                                        value: 'No',
+                                        groupValue: issueTrackerController
+                                            .selectedValue,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            issueTrackerController
+                                                .selectedValue = value;
+                                          });
+                                        },
+                                        label: 'No',
+                                        screenWidth: screenWidth,
+                                        showError: issueTrackerController
+                                            .radioFieldError,
                                       ),
-                                      // make it that user can also edit the tourId and school
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: screenWidth * 0.1),
-                                        child: Row(
-                                          children: [
-                                            Radio(
-                                              value: 'No',
-                                              groupValue: issueTrackerController
-                                                  .selectedValue,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  issueTrackerController
-                                                      .selectedValue =
-                                                      value;
-                                                });
-                                              },
-                                            ),
-                                            const Text('No'),
-                                          ],
-                                        ),
-                                      ),
-                                      if (issueTrackerController
-                                          .radioFieldError)
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Please select an option',
-                                              style:
-                                              TextStyle(color: Colors.red),
-                                            ),
-                                          ),
-                                        ),
                                       CustomSizedBox(
                                         value: 20,
                                         side: 'height',
                                       ),
                                       if (issueTrackerController
-                                          .selectedValue ==
+                                              .selectedValue ==
                                           'No') ...[
                                         LabelText(
                                           label:
-                                          'Write Correct UDISE school code',
+                                              'Write Correct UDISE school code',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -1049,7 +1019,6 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           side: 'height',
                                         ),
                                       ],
-
                                       CustomButton(
                                         title: 'Next',
                                         onPressedButton: () {
@@ -1059,16 +1028,16 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                           setState(() {
                                             issueTrackerController
-                                                .radioFieldError =
+                                                    .radioFieldError =
                                                 issueTrackerController
-                                                    .selectedValue ==
-                                                    null ||
+                                                            .selectedValue ==
+                                                        null ||
                                                     issueTrackerController
                                                         .selectedValue!.isEmpty;
                                           });
 
                                           if (_formKey.currentState!
-                                              .validate() &&
+                                                  .validate() &&
                                               !issueTrackerController
                                                   .radioFieldError) {
                                             setState(() {
@@ -1080,7 +1049,6 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           }
                                         },
                                       ),
-
                                       CustomSizedBox(
                                         value: 20,
                                         side: 'height',
@@ -1098,7 +1066,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ),
                                       LabelText(
                                         label:
-                                        'Did you find any issues in the Library?',
+                                            'Did you find any issues in the Library?',
                                         astrick: true,
                                       ),
 
@@ -1114,8 +1082,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue2 =
-                                                      value;
+                                                      .selectedValue2 = value;
                                                 });
                                               },
                                             ),
@@ -1140,8 +1107,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue2 =
-                                                      value;
+                                                      .selectedValue2 = value;
                                                 });
                                               },
                                             ),
@@ -1158,37 +1124,49 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             child: Text(
                                               'Please select an option',
                                               style:
-                                              TextStyle(color: Colors.red),
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           ),
                                         ),
+
+
+
+
+
+
+
+
+
+
+
+
                                       CustomSizedBox(
                                         value: 20,
                                         side: 'height',
                                       ),
 
                                       if (issueTrackerController
-                                          .selectedValue2 ==
+                                              .selectedValue2 ==
                                           'Yes') ...[
                                         LabelText(
                                           label:
-                                          '1) Which part of the Library is the issue related to?',
+                                              '1) Which part of the Library is the issue related to?',
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Library Register',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
@@ -1201,12 +1179,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Library Racks',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
@@ -1219,12 +1197,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Books',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
@@ -1237,12 +1215,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Carpet',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
@@ -1255,31 +1233,32 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Time table not there',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
                                                 ),
-                                                const Text('Time table not there'),
+                                                const Text(
+                                                    'Time table not there'),
                                               ],
                                             ),
                                             Row(
                                               children: [
                                                 Radio(
                                                   value:
-                                                  'Library in bad condition',
+                                                      'Library in bad condition',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue3,
+                                                      issueTrackerController
+                                                          .selectedValue3,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue3 =
+                                                              .selectedValue3 =
                                                           value;
                                                     });
                                                   },
@@ -1294,7 +1273,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError3)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -1310,7 +1289,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         LabelText(
                                           label:
-                                          '2) Click an Image related to the selected issue',
+                                              '2) Click an Image related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -1321,40 +1300,41 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           height: 60,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(10.0),
+                                                BorderRadius.circular(10.0),
                                             border: Border.all(
                                                 width: 2,
                                                 color: issueTrackerController
-                                                    .isImageUploaded ==
-                                                    false
+                                                            .isImageUploaded ==
+                                                        false
                                                     ? AppColors.primary
                                                     : AppColors.error),
                                           ),
                                           child: ListTile(
                                               title: issueTrackerController
-                                                  .isImageUploaded ==
-                                                  false
+                                                          .isImageUploaded ==
+                                                      false
                                                   ? const Text(
-                                                'Click or Upload Image',
-                                              )
+                                                      'Click or Upload Image',
+                                                    )
                                                   : const Text(
-                                                'Click or Upload Image',
-                                                style: TextStyle(
-                                                    color:
-                                                    AppColors.error),
-                                              ),
-                                              trailing: const Icon(Icons.camera_alt,
+                                                      'Click or Upload Image',
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.error),
+                                                    ),
+                                              trailing: const Icon(
+                                                  Icons.camera_alt,
                                                   color:
-                                                  AppColors.onBackground),
+                                                      AppColors.onBackground),
                                               onTap: () {
                                                 showModalBottomSheet(
                                                     backgroundColor:
-                                                    AppColors.primary,
+                                                        AppColors.primary,
                                                     context: context,
                                                     builder: ((builder) =>
                                                         issueTrackerController
                                                             .bottomSheet(
-                                                            context)));
+                                                                context)));
                                               }),
                                         ),
                                         ErrorText(
@@ -1367,97 +1347,97 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           side: 'height',
                                         ),
                                         issueTrackerController
-                                            .multipleImage.isNotEmpty
+                                                .multipleImage.isNotEmpty
                                             ? Container(
-                                          width:
-                                          responsive.responsiveValue(
-                                              small: 600.0,
-                                              medium: 900.0,
-                                              large: 1400.0),
-                                          height:
-                                          responsive.responsiveValue(
-                                              small: 170.0,
-                                              medium: 170.0,
-                                              large: 170.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey),
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                          ),
-                                          child:
-                                          issueTrackerController
-                                              .multipleImage
-                                              .isEmpty
-                                              ? const Center(
-                                            child: Text(
-                                                'No images selected.'),
-                                          )
-                                              : ListView.builder(
-                                            scrollDirection:
-                                            Axis.horizontal,
-                                            itemCount:
-                                            issueTrackerController
-                                                .multipleImage
-                                                .length,
-                                            itemBuilder:
-                                                (context,
-                                                index) {
-                                              return SizedBox(
-                                                height: 200,
-                                                width: 200,
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(
-                                                          8.0),
-                                                      child:
-                                                      GestureDetector(
-                                                        onTap:
-                                                            () {
-                                                          CustomImagePreview.showImagePreview(
-                                                              issueTrackerController.multipleImage[index].path,
-                                                              context);
-                                                        },
-                                                        child: Image
-                                                            .file(
-                                                          File(issueTrackerController
-                                                              .multipleImage[index]
-                                                              .path),
-                                                          width:
-                                                          190,
-                                                          height:
-                                                          120,
-                                                          fit: BoxFit
-                                                              .fill,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap:
-                                                          () {
-                                                        setState(
-                                                                () {
-                                                              issueTrackerController
-                                                                  .multipleImage
-                                                                  .removeAt(index);
-                                                            });
-                                                      },
-                                                      child:
-                                                      const Icon(
-                                                        Icons
-                                                            .delete,
-                                                        color: Colors
-                                                            .red,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                width:
+                                                    responsive.responsiveValue(
+                                                        small: 600.0,
+                                                        medium: 900.0,
+                                                        large: 1400.0),
+                                                height:
+                                                    responsive.responsiveValue(
+                                                        small: 170.0,
+                                                        medium: 170.0,
+                                                        large: 170.0),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        )
+                                                child:
+                                                    issueTrackerController
+                                                            .multipleImage
+                                                            .isEmpty
+                                                        ? const Center(
+                                                            child: Text(
+                                                                'No images selected.'),
+                                                          )
+                                                        : ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount:
+                                                                issueTrackerController
+                                                                    .multipleImage
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return SizedBox(
+                                                                height: 200,
+                                                                width: 200,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          CustomImagePreview.showImagePreview(
+                                                                              issueTrackerController.multipleImage[index].path,
+                                                                              context);
+                                                                        },
+                                                                        child: Image
+                                                                            .file(
+                                                                          File(issueTrackerController
+                                                                              .multipleImage[index]
+                                                                              .path),
+                                                                          width:
+                                                                              190,
+                                                                          height:
+                                                                              120,
+                                                                          fit: BoxFit
+                                                                              .fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          issueTrackerController
+                                                                              .multipleImage
+                                                                              .removeAt(index);
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        color: Colors
+                                                                            .red,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                              )
                                             : const SizedBox(),
                                         CustomSizedBox(
                                           value: 40,
@@ -1465,7 +1445,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         LabelText(
                                           label:
-                                          '3) Write brief description related to the selected issue',
+                                              '3) Write brief description related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -1498,11 +1478,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           decoration: InputDecoration(
                                             labelText: 'Select Date',
                                             errorText: issueTrackerController
-                                                .dateFieldError
+                                                    .dateFieldError
                                                 ? 'Date is required'
                                                 : null,
                                             suffixIcon: IconButton(
-                                              icon: const Icon(Icons.calendar_today),
+                                              icon: const Icon(
+                                                  Icons.calendar_today),
                                               onPressed: () {
                                                 _selectDate(context,
                                                     1); // Pass index 1 for dateController
@@ -1524,19 +1505,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Teacher',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue4,
+                                                      issueTrackerController
+                                                          .selectedValue4,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue4 =
+                                                              .selectedValue4 =
                                                           value;
                                                     });
                                                   },
@@ -1549,17 +1530,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'HeadMaster/Incharge',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue4,
+                                                      issueTrackerController
+                                                          .selectedValue4,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue4 =
+                                                              .selectedValue4 =
                                                           value;
                                                     });
                                                   },
                                                 ),
-                                                const Text('HeadMaster/Incharge'),
+                                                const Text(
+                                                    'HeadMaster/Incharge'),
                                               ],
                                             ),
                                             Row(
@@ -1567,12 +1549,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'SMC/VEC',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue4,
+                                                      issueTrackerController
+                                                          .selectedValue4,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue4 =
+                                                              .selectedValue4 =
                                                           value;
                                                     });
                                                   },
@@ -1585,17 +1567,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: '17000ft Team Member',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue4,
+                                                      issueTrackerController
+                                                          .selectedValue4,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue4 =
+                                                              .selectedValue4 =
                                                           value;
                                                     });
                                                   },
                                                 ),
-                                                const Text('17000ft Team Member'),
+                                                const Text(
+                                                    '17000ft Team Member'),
                                               ],
                                             ),
                                           ],
@@ -1604,7 +1587,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError4)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -1624,19 +1607,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Open',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue5,
+                                                      issueTrackerController
+                                                          .selectedValue5,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue5 =
+                                                              .selectedValue5 =
                                                           value;
                                                     });
                                                   },
@@ -1649,12 +1632,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Closed',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue5,
+                                                      issueTrackerController
+                                                          .selectedValue5,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue5 =
+                                                              .selectedValue5 =
                                                           value;
                                                     });
                                                   },
@@ -1668,7 +1651,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError5)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -1679,7 +1662,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             ),
                                           ),
                                         if (issueTrackerController
-                                            .selectedValue5 ==
+                                                .selectedValue5 ==
                                             'Closed') ...[
                                           LabelText(
                                             label: '7) Issue resolved On',
@@ -1696,12 +1679,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             decoration: InputDecoration(
                                               labelText: 'Select Date',
                                               errorText: issueTrackerController
-                                                  .dateFieldError2
+                                                      .dateFieldError2
                                                   ? 'Date is required'
                                                   : null,
                                               suffixIcon: IconButton(
-                                                icon:
-                                                const Icon(Icons.calendar_today),
+                                                icon: const Icon(
+                                                    Icons.calendar_today),
                                                 onPressed: () {
                                                   _selectDate(context,
                                                       2); // Pass index 2 for dateController2
@@ -1729,16 +1712,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           DropdownButton<String>(
                                             value: _selectedStaff,
                                             hint: Container(
-                                              padding: const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets
+                                                  .symmetric(
                                                   vertical:
-                                                  12), // Add padding for better appearance
+                                                      12), // Add padding for better appearance
                                               child: const Text(
                                                 'Select a staff member',
                                                 style: TextStyle(
                                                   color: Colors
                                                       .grey, // Hint text color
                                                   fontSize:
-                                                  16, // Hint text size
+                                                      16, // Hint text size
                                                   fontWeight: FontWeight
                                                       .w500, // Hint text weight
                                                 ),
@@ -1750,14 +1734,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               return DropdownMenuItem<String>(
                                                 value: staff,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       vertical:
-                                                      12), // Add padding for each item
+                                                          12), // Add padding for each item
                                                   child: Text(
                                                     staff,
                                                     style: const TextStyle(
                                                       fontSize:
-                                                      16, // Item text size
+                                                          16, // Item text size
                                                       color: Colors
                                                           .black, // Item text color
                                                     ),
@@ -1772,11 +1757,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               });
                                             },
                                             isExpanded:
-                                            true, // Expand the dropdown to fill the available space
+                                                true, // Expand the dropdown to fill the available space
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize:
-                                                16), // Set the text style of the selected item
+                                                    16), // Set the text style of the selected item
                                             underline: Container(
                                               height: 1, // Underline thickness
                                               color: Colors
@@ -1817,17 +1802,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onPressedButton: () {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .radioFieldError2 =
+                                                          .radioFieldError2 =
                                                       issueTrackerController
-                                                          .selectedValue2 ==
-                                                          null ||
+                                                                  .selectedValue2 ==
+                                                              null ||
                                                           issueTrackerController
                                                               .selectedValue2!
                                                               .isEmpty;
                                                 });
 
                                                 if (_formKey.currentState!
-                                                    .validate() &&
+                                                        .validate() &&
                                                     !issueTrackerController
                                                         .radioFieldError2) {
                                                   setState(() {
@@ -1859,7 +1844,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ),
                                       LabelText(
                                         label:
-                                        'Did you find any issues in the Playground?',
+                                            'Did you find any issues in the Playground?',
                                         astrick: true,
                                       ),
 
@@ -1875,8 +1860,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue6 =
-                                                      value;
+                                                      .selectedValue6 = value;
                                                 });
                                               },
                                             ),
@@ -1901,8 +1885,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue6 =
-                                                      value;
+                                                      .selectedValue6 = value;
                                                 });
                                               },
                                             ),
@@ -1919,7 +1902,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             child: Text(
                                               'Please select an option',
                                               style:
-                                              TextStyle(color: Colors.red),
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           ),
                                         ),
@@ -1929,28 +1912,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ),
 
                                       if (issueTrackerController
-                                          .selectedValue6 ==
+                                              .selectedValue6 ==
                                           'Yes') ...[
                                         LabelText(
                                           label:
-                                          '1) Which part of the Library is the issue related to?',
+                                              '1) Which part of the Library is the issue related to?',
                                         ),
 
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Swing',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue7,
+                                                      issueTrackerController
+                                                          .selectedValue7,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue7 =
+                                                              .selectedValue7 =
                                                           value;
                                                     });
                                                   },
@@ -1963,12 +1946,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'See Saw',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue7,
+                                                      issueTrackerController
+                                                          .selectedValue7,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue7 =
+                                                              .selectedValue7 =
                                                           value;
                                                     });
                                                   },
@@ -1981,12 +1964,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Slide',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue7,
+                                                      issueTrackerController
+                                                          .selectedValue7,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue7 =
+                                                              .selectedValue7 =
                                                           value;
                                                     });
                                                   },
@@ -1999,12 +1982,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Net Scrambler',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue7,
+                                                      issueTrackerController
+                                                          .selectedValue7,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue7 =
+                                                              .selectedValue7 =
                                                           value;
                                                     });
                                                   },
@@ -2017,12 +2000,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Monkey bar',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue7,
+                                                      issueTrackerController
+                                                          .selectedValue7,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue7 =
+                                                              .selectedValue7 =
                                                           value;
                                                     });
                                                   },
@@ -2037,7 +2020,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError7)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -2054,7 +2037,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                         LabelText(
                                           label:
-                                          '1.1.2) Click an image related to the selected issue',
+                                              '1.1.2) Click an image related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -2065,144 +2048,145 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           height: 60,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(10.0),
+                                                BorderRadius.circular(10.0),
                                             border: Border.all(
                                                 width: 2,
                                                 color: issueTrackerController
-                                                    .isImageUploaded2 ==
-                                                    false
+                                                            .isImageUploaded2 ==
+                                                        false
                                                     ? AppColors.primary
                                                     : AppColors.error),
                                           ),
                                           child: ListTile(
                                               title: issueTrackerController
-                                                  .isImageUploaded2 ==
-                                                  false
+                                                          .isImageUploaded2 ==
+                                                      false
                                                   ? const Text(
-                                                'Click or Upload Image',
-                                              )
+                                                      'Click or Upload Image',
+                                                    )
                                                   : const Text(
-                                                'Click or Upload Image',
-                                                style: TextStyle(
-                                                    color:
-                                                    AppColors.error),
-                                              ),
-                                              trailing: const Icon(Icons.camera_alt,
+                                                      'Click or Upload Image',
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.error),
+                                                    ),
+                                              trailing: const Icon(
+                                                  Icons.camera_alt,
                                                   color:
-                                                  AppColors.onBackground),
+                                                      AppColors.onBackground),
                                               onTap: () {
                                                 showModalBottomSheet(
                                                     backgroundColor:
-                                                    AppColors.primary,
+                                                        AppColors.primary,
                                                     context: context,
                                                     builder: ((builder) =>
                                                         issueTrackerController
                                                             .bottomSheet2(
-                                                            context)));
+                                                                context)));
                                               }),
                                         ),
                                         ErrorText(
                                           isVisible: issueTrackerController
                                               .validateRegister2,
                                           message:
-                                          'library Register Image Required',
+                                              'library Register Image Required',
                                         ),
                                         CustomSizedBox(
                                           value: 20,
                                           side: 'height',
                                         ),
                                         issueTrackerController
-                                            .multipleImage2.isNotEmpty
+                                                .multipleImage2.isNotEmpty
                                             ? Container(
-                                          width:
-                                          responsive.responsiveValue(
-                                              small: 600.0,
-                                              medium: 900.0,
-                                              large: 1400.0),
-                                          height:
-                                          responsive.responsiveValue(
-                                              small: 170.0,
-                                              medium: 170.0,
-                                              large: 170.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey),
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                          ),
-                                          child:
-                                          issueTrackerController
-                                              .multipleImage2
-                                              .isEmpty
-                                              ? const Center(
-                                            child: Text(
-                                                'No images selected.'),
-                                          )
-                                              : ListView.builder(
-                                            scrollDirection:
-                                            Axis.horizontal,
-                                            itemCount:
-                                            issueTrackerController
-                                                .multipleImage2
-                                                .length,
-                                            itemBuilder:
-                                                (context,
-                                                index) {
-                                              return SizedBox(
-                                                height: 200,
-                                                width: 200,
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(
-                                                          8.0),
-                                                      child:
-                                                      GestureDetector(
-                                                        onTap:
-                                                            () {
-                                                          CustomImagePreview2.showImagePreview2(
-                                                              issueTrackerController.multipleImage2[index].path,
-                                                              context);
-                                                        },
-                                                        child: Image
-                                                            .file(
-                                                          File(issueTrackerController
-                                                              .multipleImage2[index]
-                                                              .path),
-                                                          width:
-                                                          190,
-                                                          height:
-                                                          120,
-                                                          fit: BoxFit
-                                                              .fill,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap:
-                                                          () {
-                                                        setState(
-                                                                () {
-                                                              issueTrackerController
-                                                                  .multipleImage2
-                                                                  .removeAt(index);
-                                                            });
-                                                      },
-                                                      child:
-                                                      const Icon(
-                                                        Icons
-                                                            .delete,
-                                                        color: Colors
-                                                            .red,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                width:
+                                                    responsive.responsiveValue(
+                                                        small: 600.0,
+                                                        medium: 900.0,
+                                                        large: 1400.0),
+                                                height:
+                                                    responsive.responsiveValue(
+                                                        small: 170.0,
+                                                        medium: 170.0,
+                                                        large: 170.0),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        )
+                                                child:
+                                                    issueTrackerController
+                                                            .multipleImage2
+                                                            .isEmpty
+                                                        ? const Center(
+                                                            child: Text(
+                                                                'No images selected.'),
+                                                          )
+                                                        : ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount:
+                                                                issueTrackerController
+                                                                    .multipleImage2
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return SizedBox(
+                                                                height: 200,
+                                                                width: 200,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          CustomImagePreview2.showImagePreview2(
+                                                                              issueTrackerController.multipleImage2[index].path,
+                                                                              context);
+                                                                        },
+                                                                        child: Image
+                                                                            .file(
+                                                                          File(issueTrackerController
+                                                                              .multipleImage2[index]
+                                                                              .path),
+                                                                          width:
+                                                                              190,
+                                                                          height:
+                                                                              120,
+                                                                          fit: BoxFit
+                                                                              .fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          issueTrackerController
+                                                                              .multipleImage2
+                                                                              .removeAt(index);
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        color: Colors
+                                                                            .red,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                              )
                                             : const SizedBox(),
 
                                         CustomSizedBox(
@@ -2211,7 +2195,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         LabelText(
                                           label:
-                                          '3) Write brief description related to the selected issue',
+                                              '3) Write brief description related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -2245,11 +2229,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           decoration: InputDecoration(
                                             labelText: 'Select Date',
                                             errorText: issueTrackerController
-                                                .dateFieldError3
+                                                    .dateFieldError3
                                                 ? 'Date is required'
                                                 : null,
                                             suffixIcon: IconButton(
-                                              icon: const Icon(Icons.calendar_today),
+                                              icon: const Icon(
+                                                  Icons.calendar_today),
                                               onPressed: () {
                                                 _selectDate(context,
                                                     3); // Pass index 3 for dateController3
@@ -2272,19 +2257,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Teacher',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue8,
+                                                      issueTrackerController
+                                                          .selectedValue8,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue8 =
+                                                              .selectedValue8 =
                                                           value;
                                                     });
                                                   },
@@ -2297,17 +2282,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'HeadMaster/Incharge',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue8,
+                                                      issueTrackerController
+                                                          .selectedValue8,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue8 =
+                                                              .selectedValue8 =
                                                           value;
                                                     });
                                                   },
                                                 ),
-                                                const Text('HeadMaster/Incharge'),
+                                                const Text(
+                                                    'HeadMaster/Incharge'),
                                               ],
                                             ),
                                             Row(
@@ -2315,12 +2301,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'SMC/VEC',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue8,
+                                                      issueTrackerController
+                                                          .selectedValue8,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue8 =
+                                                              .selectedValue8 =
                                                           value;
                                                     });
                                                   },
@@ -2333,17 +2319,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: '17000ft Team Member',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue8,
+                                                      issueTrackerController
+                                                          .selectedValue8,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue8 =
+                                                              .selectedValue8 =
                                                           value;
                                                     });
                                                   },
                                                 ),
-                                                const Text('17000ft Team Member'),
+                                                const Text(
+                                                    '17000ft Team Member'),
                                               ],
                                             ),
                                           ],
@@ -2353,7 +2340,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError8)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -2379,19 +2366,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Open',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue9,
+                                                      issueTrackerController
+                                                          .selectedValue9,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue9 =
+                                                              .selectedValue9 =
                                                           value;
                                                     });
                                                   },
@@ -2404,12 +2391,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Closed',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue9,
+                                                      issueTrackerController
+                                                          .selectedValue9,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue9 =
+                                                              .selectedValue9 =
                                                           value;
                                                     });
                                                   },
@@ -2424,7 +2411,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError9)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -2435,7 +2422,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             ),
                                           ),
                                         if (issueTrackerController
-                                            .selectedValue9 ==
+                                                .selectedValue9 ==
                                             'Closed') ...[
                                           LabelText(
                                             label: '7) Issue resolved On',
@@ -2452,12 +2439,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             decoration: InputDecoration(
                                               labelText: 'Select Date',
                                               errorText: issueTrackerController
-                                                  .dateFieldError4
+                                                      .dateFieldError4
                                                   ? 'Date is required'
                                                   : null,
                                               suffixIcon: IconButton(
-                                                icon:
-                                                const Icon(Icons.calendar_today),
+                                                icon: const Icon(
+                                                    Icons.calendar_today),
                                                 onPressed: () {
                                                   _selectDate(context,
                                                       4); // Pass index 4 for dateController4
@@ -2484,16 +2471,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           DropdownButton<String>(
                                             value: _selectedStaff2,
                                             hint: Container(
-                                              padding: const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets
+                                                  .symmetric(
                                                   vertical:
-                                                  12), // Add padding for better appearance
+                                                      12), // Add padding for better appearance
                                               child: const Text(
                                                 'Select a staff member',
                                                 style: TextStyle(
                                                   color: Colors
                                                       .grey, // Hint text color
                                                   fontSize:
-                                                  16, // Hint text size
+                                                      16, // Hint text size
                                                   fontWeight: FontWeight
                                                       .w500, // Hint text weight
                                                 ),
@@ -2505,14 +2493,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               return DropdownMenuItem<String>(
                                                 value: staff,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       vertical:
-                                                      12), // Add padding for each item
+                                                          12), // Add padding for each item
                                                   child: Text(
                                                     staff,
                                                     style: const TextStyle(
                                                       fontSize:
-                                                      16, // Item text size
+                                                          16, // Item text size
                                                       color: Colors
                                                           .black, // Item text color
                                                     ),
@@ -2527,11 +2516,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               });
                                             },
                                             isExpanded:
-                                            true, // Expand the dropdown to fill the available space
+                                                true, // Expand the dropdown to fill the available space
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize:
-                                                16), // Set the text style of the selected item
+                                                    16), // Set the text style of the selected item
                                             underline: Container(
                                               height: 1, // Underline thickness
                                               color: Colors
@@ -2552,7 +2541,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                       ], // for selectvalue6
                                       if (issueTrackerController
-                                          .selectedValue6 !=
+                                              .selectedValue6 !=
                                           'Yes') ...[
                                         Row(
                                           children: [
@@ -2572,23 +2561,23 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 onPressedButton: () {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .radioFieldError6 =
+                                                            .radioFieldError6 =
                                                         issueTrackerController
-                                                            .selectedValue6 ==
-                                                            null ||
+                                                                    .selectedValue6 ==
+                                                                null ||
                                                             issueTrackerController
                                                                 .selectedValue6!
                                                                 .isEmpty;
                                                   });
 
                                                   if (_formKey.currentState!
-                                                      .validate() &&
+                                                          .validate() &&
                                                       !issueTrackerController
                                                           .radioFieldError6) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .showPlayground =
-                                                      false;
+                                                              .showPlayground =
+                                                          false;
                                                       issueTrackerController
                                                           .showDigiLab = true;
                                                     });
@@ -2615,7 +2604,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ),
                                       LabelText(
                                         label:
-                                        'Did you find any issues in the Digilab?',
+                                            'Did you find any issues in the Digilab?',
                                         astrick: true,
                                       ),
 
@@ -2631,8 +2620,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue10 =
-                                                      value;
+                                                      .selectedValue10 = value;
                                                 });
                                               },
                                             ),
@@ -2657,8 +2645,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   issueTrackerController
-                                                      .selectedValue10 =
-                                                      value;
+                                                      .selectedValue10 = value;
                                                 });
                                               },
                                             ),
@@ -2675,7 +2662,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             child: Text(
                                               'Please select an option',
                                               style:
-                                              TextStyle(color: Colors.red),
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           ),
                                         ),
@@ -2685,27 +2672,27 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ),
 
                                       if (issueTrackerController
-                                          .selectedValue10 ==
+                                              .selectedValue10 ==
                                           'Yes') ...[
                                         LabelText(
                                           label:
-                                          '1) Which part of the DigiLab is the issue related to?',
+                                              '1) Which part of the DigiLab is the issue related to?',
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Solar',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2718,12 +2705,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Battery Box',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2736,12 +2723,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Charging Dock',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2754,12 +2741,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Raspberry Pi',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2772,12 +2759,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'TV',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2790,12 +2777,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Converter Box',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2808,12 +2795,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Tablets',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2826,12 +2813,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'CG State',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2843,14 +2830,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               children: [
                                                 Radio(
                                                   value:
-                                                  'DigiLab Room/Generic Issues',
+                                                      'DigiLab Room/Generic Issues',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue13,
+                                                      issueTrackerController
+                                                          .selectedValue13,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue13 =
+                                                              .selectedValue13 =
                                                           value;
                                                     });
                                                   },
@@ -2865,7 +2852,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError13)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -2881,27 +2868,27 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Solar') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Solar Panel',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -2914,12 +2901,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Pole and Frame',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -2932,12 +2919,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Lightning Rod',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -2950,12 +2937,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'External Wiring',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -2968,12 +2955,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Internal Wiring',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -2986,12 +2973,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3005,7 +2992,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3022,28 +3009,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Battery Box') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Battery Box-Charge Controller',
+                                                        'Battery Box-Charge Controller',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3056,52 +3043,54 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Battery Box-Battery',
+                                                        'Battery Box-Battery',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Battery Box-Battery'),
+                                                  const Text(
+                                                      'Battery Box-Battery'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Battery Box-Terminal',
+                                                        'Battery Box-Terminal',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Battery Box-Terminal'),
+                                                  const Text(
+                                                      'Battery Box-Terminal'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Battery Box-Transformer/Top up box',
+                                                        'Battery Box-Transformer/Top up box',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3115,12 +3104,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Load Switches',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3133,12 +3122,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3152,7 +3141,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3168,27 +3157,27 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                         ],
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Charging Dock') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Charging Dock',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3202,7 +3191,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3219,47 +3208,48 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Raspberry Pi') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Raspberry Pi-Pi box',
+                                                        'Raspberry Pi-Pi box',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Raspberry Pi-Pi box'),
+                                                  const Text(
+                                                      'Raspberry Pi-Pi box'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Raspberry Pi-Motherboard',
+                                                        'Raspberry Pi-Motherboard',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3272,33 +3262,34 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Raspberry Pi-SD Card',
+                                                        'Raspberry Pi-SD Card',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Raspberry Pi-SD Card'),
+                                                  const Text(
+                                                      'Raspberry Pi-SD Card'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Raspberry Pi-Ports not working',
+                                                        'Raspberry Pi-Ports not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3311,14 +3302,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Raspberry Pi-Content not coming up on the TV',
+                                                        'Raspberry Pi-Content not coming up on the TV',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3332,12 +3323,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3351,7 +3342,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3368,28 +3359,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'TV') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'TV-Screen damaged/ not working/ not turning on',
+                                                        'TV-Screen damaged/ not working/ not turning on',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3402,57 +3393,60 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'TV-HDMI not working',
+                                                        'TV-HDMI not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('TV-HDMI not working'),
+                                                  const Text(
+                                                      'TV-HDMI not working'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'TV-Ports not working',
+                                                        'TV-Ports not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('TV-Ports not working'),
+                                                  const Text(
+                                                      'TV-Ports not working'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'TV-Remote not working',
+                                                        'TV-Remote not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('TV-Remote not working'),
+                                                  const Text(
+                                                      'TV-Remote not working'),
                                                 ],
                                               ),
                                               Row(
@@ -3460,12 +3454,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3479,7 +3473,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3496,28 +3490,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Converter Box') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Converter Box-ports not working',
+                                                        'Converter Box-ports not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3530,14 +3524,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Converter Box-Faulty/Damaged/Not turning on',
+                                                        'Converter Box-Faulty/Damaged/Not turning on',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3550,14 +3544,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Converter Box-Wire Damaged',
+                                                        'Converter Box-Wire Damaged',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3571,12 +3565,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3590,7 +3584,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3607,28 +3601,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'Tablets') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Tablets-Display not working',
+                                                        'Tablets-Display not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3641,14 +3635,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Tablets-Damaged/Faulty',
+                                                        'Tablets-Damaged/Faulty',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3661,14 +3655,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Tablets-SD card not working',
+                                                        'Tablets-SD card not working',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3681,14 +3675,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Tablets-Cover not there',
+                                                        'Tablets-Cover not there',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3702,12 +3696,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3721,7 +3715,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -3738,7 +3732,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue26 ==
+                                                .selectedValue26 ==
                                             'Tablets-Display not working') ...[
                                           LabelText(
                                             label: 'Enter the tablet Number',
@@ -3749,8 +3743,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           CustomTextFormField(
                                             textController:
-                                            issueTrackerController
-                                                .tabletNumberController,
+                                                issueTrackerController
+                                                    .tabletNumberController,
                                             showCharacterCount: true,
                                           ),
                                           CustomSizedBox(
@@ -3760,7 +3754,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue26 ==
+                                                .selectedValue26 ==
                                             'Tablets-SD card not working') ...[
                                           LabelText(
                                             label: 'Enter the tablet Number',
@@ -3771,8 +3765,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           CustomTextFormField(
                                             textController:
-                                            issueTrackerController
-                                                .tabletNumberController,
+                                                issueTrackerController
+                                                    .tabletNumberController,
                                             showCharacterCount: true,
                                           ),
                                           CustomSizedBox(
@@ -3782,7 +3776,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue26 ==
+                                                .selectedValue26 ==
                                             'Tablets-Cover not there') ...[
                                           LabelText(
                                             label: 'Enter the tablet Number',
@@ -3793,8 +3787,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           CustomTextFormField(
                                             textController:
-                                            issueTrackerController
-                                                .tabletNumberController,
+                                                issueTrackerController
+                                                    .tabletNumberController,
                                             showCharacterCount: true,
                                           ),
                                           CustomSizedBox(
@@ -3804,29 +3798,29 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'CG State') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               // Wrap each Row with Expanded to manage space better on smaller screens
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-App not working/keeps crashing',
+                                                        'CG State-App not working/keeps crashing',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3841,14 +3835,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-license issue',
+                                                        'CG State-license issue',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3863,14 +3857,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-Master pin/Admin pin/Password registration problem',
+                                                        'CG State-Master pin/Admin pin/Password registration problem',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3885,14 +3879,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-Modules not loading',
+                                                        'CG State-Modules not loading',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3907,14 +3901,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-issue with the IDs',
+                                                        'CG State-issue with the IDs',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3929,14 +3923,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-Send report not happening',
+                                                        'CG State-Send report not happening',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3951,14 +3945,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-Unknown issue/some new notification popping up',
+                                                        'CG State-Unknown issue/some new notification popping up',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3973,14 +3967,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'CG State-App not there in the tablet/s',
+                                                        'CG State-App not there in the tablet/s',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -3997,7 +3991,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -4009,38 +4003,38 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             ),
                                           CustomSizedBox(
                                             value: MediaQuery.of(context)
-                                                .size
-                                                .height *
+                                                    .size
+                                                    .height *
                                                 0.02, // Dynamic sizing based on screen height
                                             side: 'height',
                                           ),
                                         ],
 
                                         if (issueTrackerController
-                                            .selectedValue13 ==
+                                                .selectedValue13 ==
                                             'DigiLab Room/Generic Issues') ...[
                                           LabelText(
                                             label:
-                                            '1.1) Select the related issue',
+                                                '1.1) Select the related issue',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               // Wrap each Row with Expanded to manage space better on smaller screens
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Problem in the furniture',
+                                                        'Problem in the furniture',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
-                                                            value ;
+                                                                .selectedValue26 =
+                                                            value;
                                                       });
                                                     },
                                                   ),
@@ -4055,12 +4049,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Carpet Issue',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
@@ -4075,19 +4069,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'TV stand Issue',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
+                                                                .selectedValue26 =
                                                             value;
                                                       });
                                                     },
                                                   ),
                                                   const Flexible(
                                                     child:
-                                                    Text('TV stand Issue'),
+                                                        Text('TV stand Issue'),
                                                   ),
                                                 ],
                                               ),
@@ -4095,15 +4089,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Time table not there',
+                                                        'Time table not there',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
-                                                        value as String?;
+                                                                .selectedValue26 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -4117,15 +4111,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'DOs and DONOTs chart not there',
+                                                        'DOs and DONOTs chart not there',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
-                                                        value as String?;
+                                                                .selectedValue26 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -4139,15 +4133,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Unkept DigiLab Room',
+                                                        'Unkept DigiLab Room',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue26,
+                                                        issueTrackerController
+                                                            .selectedValue26,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue26 =
-                                                        value as String?;
+                                                                .selectedValue26 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -4163,7 +4157,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError26)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -4175,8 +4169,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             ),
                                           CustomSizedBox(
                                             value: MediaQuery.of(context)
-                                                .size
-                                                .height *
+                                                    .size
+                                                    .height *
                                                 0.02, // Dynamic sizing based on screen height
                                             side: 'height',
                                           ),
@@ -4184,7 +4178,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                         LabelText(
                                           label:
-                                          '1.1.2) Click an image related to the selected issue',
+                                              '1.1.2) Click an image related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -4195,144 +4189,145 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           height: 60,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(10.0),
+                                                BorderRadius.circular(10.0),
                                             border: Border.all(
                                                 width: 2,
                                                 color: issueTrackerController
-                                                    .isImageUploaded3 ==
-                                                    false
+                                                            .isImageUploaded3 ==
+                                                        false
                                                     ? AppColors.primary
                                                     : AppColors.error),
                                           ),
                                           child: ListTile(
                                               title: issueTrackerController
-                                                  .isImageUploaded3 ==
-                                                  false
+                                                          .isImageUploaded3 ==
+                                                      false
                                                   ? const Text(
-                                                'Click or Upload Image',
-                                              )
+                                                      'Click or Upload Image',
+                                                    )
                                                   : const Text(
-                                                'Click or Upload Image',
-                                                style: TextStyle(
-                                                    color:
-                                                    AppColors.error),
-                                              ),
-                                              trailing: const Icon(Icons.camera_alt,
+                                                      'Click or Upload Image',
+                                                      style: TextStyle(
+                                                          color:
+                                                              AppColors.error),
+                                                    ),
+                                              trailing: const Icon(
+                                                  Icons.camera_alt,
                                                   color:
-                                                  AppColors.onBackground),
+                                                      AppColors.onBackground),
                                               onTap: () {
                                                 showModalBottomSheet(
                                                     backgroundColor:
-                                                    AppColors.primary,
+                                                        AppColors.primary,
                                                     context: context,
                                                     builder: ((builder) =>
                                                         issueTrackerController
                                                             .bottomSheet3(
-                                                            context)));
+                                                                context)));
                                               }),
                                         ),
                                         ErrorText(
                                           isVisible: issueTrackerController
                                               .validateRegister3,
                                           message:
-                                          'library Register Image Required',
+                                              'library Register Image Required',
                                         ),
                                         CustomSizedBox(
                                           value: 20,
                                           side: 'height',
                                         ),
                                         issueTrackerController
-                                            .multipleImage3.isNotEmpty
+                                                .multipleImage3.isNotEmpty
                                             ? Container(
-                                          width:
-                                          responsive.responsiveValue(
-                                              small: 600.0,
-                                              medium: 900.0,
-                                              large: 1400.0),
-                                          height:
-                                          responsive.responsiveValue(
-                                              small: 170.0,
-                                              medium: 170.0,
-                                              large: 170.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey),
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                          ),
-                                          child:
-                                          issueTrackerController
-                                              .multipleImage3
-                                              .isEmpty
-                                              ? const Center(
-                                            child: Text(
-                                                'No images selected.'),
-                                          )
-                                              : ListView.builder(
-                                            scrollDirection:
-                                            Axis.horizontal,
-                                            itemCount:
-                                            issueTrackerController
-                                                .multipleImage3
-                                                .length,
-                                            itemBuilder:
-                                                (context,
-                                                index) {
-                                              return SizedBox(
-                                                height: 200,
-                                                width: 200,
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(
-                                                          8.0),
-                                                      child:
-                                                      GestureDetector(
-                                                        onTap:
-                                                            () {
-                                                          CustomImagePreview3.showImagePreview3(
-                                                              issueTrackerController.multipleImage3[index].path,
-                                                              context);
-                                                        },
-                                                        child: Image
-                                                            .file(
-                                                          File(issueTrackerController
-                                                              .multipleImage3[index]
-                                                              .path),
-                                                          width:
-                                                          190,
-                                                          height:
-                                                          120,
-                                                          fit: BoxFit
-                                                              .fill,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap:
-                                                          () {
-                                                        setState(
-                                                                () {
-                                                              issueTrackerController
-                                                                  .multipleImage3
-                                                                  .removeAt(index);
-                                                            });
-                                                      },
-                                                      child:
-                                                      const Icon(
-                                                        Icons
-                                                            .delete,
-                                                        color: Colors
-                                                            .red,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                width:
+                                                    responsive.responsiveValue(
+                                                        small: 600.0,
+                                                        medium: 900.0,
+                                                        large: 1400.0),
+                                                height:
+                                                    responsive.responsiveValue(
+                                                        small: 170.0,
+                                                        medium: 170.0,
+                                                        large: 170.0),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        )
+                                                child:
+                                                    issueTrackerController
+                                                            .multipleImage3
+                                                            .isEmpty
+                                                        ? const Center(
+                                                            child: Text(
+                                                                'No images selected.'),
+                                                          )
+                                                        : ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount:
+                                                                issueTrackerController
+                                                                    .multipleImage3
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return SizedBox(
+                                                                height: 200,
+                                                                width: 200,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          CustomImagePreview3.showImagePreview3(
+                                                                              issueTrackerController.multipleImage3[index].path,
+                                                                              context);
+                                                                        },
+                                                                        child: Image
+                                                                            .file(
+                                                                          File(issueTrackerController
+                                                                              .multipleImage3[index]
+                                                                              .path),
+                                                                          width:
+                                                                              190,
+                                                                          height:
+                                                                              120,
+                                                                          fit: BoxFit
+                                                                              .fill,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          issueTrackerController
+                                                                              .multipleImage3
+                                                                              .removeAt(index);
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .delete,
+                                                                        color: Colors
+                                                                            .red,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                              )
                                             : const SizedBox(),
                                         CustomSizedBox(
                                           value: 40,
@@ -4341,7 +4336,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                         LabelText(
                                           label:
-                                          '1.1.3) Write brief description related to the selected issue',
+                                              '1.1.3) Write brief description related to the selected issue',
                                           astrick: true,
                                         ),
                                         CustomSizedBox(
@@ -4376,11 +4371,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           decoration: InputDecoration(
                                             labelText: 'Select Date',
                                             errorText: issueTrackerController
-                                                .dateFieldError5
+                                                    .dateFieldError5
                                                 ? 'Date is required'
                                                 : null,
                                             suffixIcon: IconButton(
-                                              icon: const Icon(Icons.calendar_today),
+                                              icon: const Icon(
+                                                  Icons.calendar_today),
                                               onPressed: () {
                                                 _selectDate(context,
                                                     5); // Pass index 5 for dateController5
@@ -4403,20 +4399,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Teacher',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue11,
+                                                      issueTrackerController
+                                                          .selectedValue11,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue11 =
-                                                      value as String?;
+                                                              .selectedValue11 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
@@ -4428,17 +4424,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'HeadMaster/Incharge',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue11,
+                                                      issueTrackerController
+                                                          .selectedValue11,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue11 =
-                                                      value as String?;
+                                                              .selectedValue11 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
-                                                const Text('HeadMaster/Incharge'),
+                                                const Text(
+                                                    'HeadMaster/Incharge'),
                                               ],
                                             ),
                                             Row(
@@ -4446,13 +4443,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'SMC/VEC',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue11,
+                                                      issueTrackerController
+                                                          .selectedValue11,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue11 =
-                                                      value as String?;
+                                                              .selectedValue11 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
@@ -4464,17 +4461,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: '17000ft Team Member',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue11,
+                                                      issueTrackerController
+                                                          .selectedValue11,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue11 =
-                                                      value as String?;
+                                                              .selectedValue11 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
-                                                const Text('17000ft Team Member'),
+                                                const Text(
+                                                    '17000ft Team Member'),
                                               ],
                                             ),
                                           ],
@@ -4484,7 +4482,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError11)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -4511,20 +4509,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Radio(
                                                   value: 'Open',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue12,
+                                                      issueTrackerController
+                                                          .selectedValue12,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue12 =
-                                                      value as String?;
+                                                              .selectedValue12 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
@@ -4536,13 +4534,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 Radio(
                                                   value: 'Closed',
                                                   groupValue:
-                                                  issueTrackerController
-                                                      .selectedValue12,
+                                                      issueTrackerController
+                                                          .selectedValue12,
                                                   onChanged: (value) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .selectedValue12 =
-                                                      value as String?;
+                                                              .selectedValue12 =
+                                                          value as String?;
                                                     });
                                                   },
                                                 ),
@@ -4556,7 +4554,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError12)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -4571,7 +4569,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           side: 'height',
                                         ),
                                         if (issueTrackerController
-                                            .selectedValue12 ==
+                                                .selectedValue12 ==
                                             'Closed') ...[
                                           LabelText(
                                             label: '7) Issue resolved On',
@@ -4588,12 +4586,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             decoration: InputDecoration(
                                               labelText: 'Select Date',
                                               errorText: issueTrackerController
-                                                  .dateFieldError6
+                                                      .dateFieldError6
                                                   ? 'Date is required'
                                                   : null,
                                               suffixIcon: IconButton(
-                                                icon:
-                                                const Icon(Icons.calendar_today),
+                                                icon: const Icon(
+                                                    Icons.calendar_today),
                                                 onPressed: () {
                                                   _selectDate(context,
                                                       6); // Pass index 6 for dateController6
@@ -4620,16 +4618,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           DropdownButton<String>(
                                             value: _selectedStaff3,
                                             hint: Container(
-                                              padding: const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets
+                                                  .symmetric(
                                                   vertical:
-                                                  12), // Add padding for better appearance
+                                                      12), // Add padding for better appearance
                                               child: const Text(
                                                 'Select a staff member',
                                                 style: TextStyle(
                                                   color: Colors
                                                       .grey, // Hint text color
                                                   fontSize:
-                                                  16, // Hint text size
+                                                      16, // Hint text size
                                                   fontWeight: FontWeight
                                                       .w500, // Hint text weight
                                                 ),
@@ -4641,14 +4640,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               return DropdownMenuItem<String>(
                                                 value: staff,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       vertical:
-                                                      12), // Add padding for each item
+                                                          12), // Add padding for each item
                                                   child: Text(
                                                     staff,
                                                     style: const TextStyle(
                                                       fontSize:
-                                                      16, // Item text size
+                                                          16, // Item text size
                                                       color: Colors
                                                           .black, // Item text color
                                                     ),
@@ -4663,11 +4663,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               });
                                             },
                                             isExpanded:
-                                            true, // Expand the dropdown to fill the available space
+                                                true, // Expand the dropdown to fill the available space
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize:
-                                                16), // Set the text style of the selected item
+                                                    16), // Set the text style of the selected item
                                             underline: Container(
                                               height: 1, // Underline thickness
                                               color: Colors
@@ -4690,7 +4690,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                       ], //for selectvalue10
 
                                       if (issueTrackerController
-                                          .selectedValue10 !=
+                                              .selectedValue10 !=
                                           'Yes') ...[
                                         Row(
                                           children: [
@@ -4710,17 +4710,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 onPressedButton: () {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .radioFieldError10 =
+                                                            .radioFieldError10 =
                                                         issueTrackerController
-                                                            .selectedValue10 ==
-                                                            null ||
+                                                                    .selectedValue10 ==
+                                                                null ||
                                                             issueTrackerController
                                                                 .selectedValue10!
                                                                 .isEmpty;
                                                   });
 
                                                   if (_formKey.currentState!
-                                                      .validate() &&
+                                                          .validate() &&
                                                       !issueTrackerController
                                                           .radioFieldError10) {
                                                     setState(() {
@@ -4753,7 +4753,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                       if (selectedTourId != null &&
                                           (selectedTourId.startsWith('GA')))
-                                        const  Padding(
+                                        const Padding(
                                           padding: EdgeInsets.all(16.0),
                                           child: Center(
                                             // Center the text in the middle of the available space
@@ -4778,7 +4778,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         LabelText(
                                           label:
-                                          'Did you find any issues in the Classroom?',
+                                              'Did you find any issues in the Classroom?',
                                           astrick: true,
                                         ),
 
@@ -4790,13 +4790,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               Radio(
                                                 value: 'Yes',
                                                 groupValue:
-                                                issueTrackerController
-                                                    .selectedValue14,
+                                                    issueTrackerController
+                                                        .selectedValue14,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .selectedValue14 =
-                                                    value as String?;
+                                                            .selectedValue14 =
+                                                        value as String?;
                                                   });
                                                 },
                                               ),
@@ -4817,13 +4817,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               Radio(
                                                 value: 'No',
                                                 groupValue:
-                                                issueTrackerController
-                                                    .selectedValue14,
+                                                    issueTrackerController
+                                                        .selectedValue14,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .selectedValue14 =
-                                                    value as String?;
+                                                            .selectedValue14 =
+                                                        value as String?;
                                                   });
                                                 },
                                               ),
@@ -4835,7 +4835,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError14)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -4851,29 +4851,29 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
 
                                         if (issueTrackerController
-                                            .selectedValue14 ==
+                                                .selectedValue14 ==
                                             'Yes') ...[
                                           LabelText(
                                             label:
-                                            '1) Which part of the classroom Furniture is the issue related to?',
+                                                '1) Which part of the classroom Furniture is the issue related to?',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Round bean for Pre primary',
+                                                        'Round bean for Pre primary',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -4885,38 +4885,40 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Small Plastic Chair',
+                                                        'Small Plastic Chair',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Small Plastic Chair'),
+                                                  const Text(
+                                                      'Small Plastic Chair'),
                                                 ],
                                               ),
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'Medium Plastic Chair',
+                                                        'Medium Plastic Chair',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Medium Plastic Chair'),
+                                                  const Text(
+                                                      'Medium Plastic Chair'),
                                                 ],
                                               ),
                                               Row(
@@ -4924,17 +4926,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Metal Desk-Small',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Metal Desk-Small'),
+                                                  const Text(
+                                                      'Metal Desk-Small'),
                                                 ],
                                               ),
                                               Row(
@@ -4942,17 +4945,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Metal Chair-Small',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Metal Chair-Small'),
+                                                  const Text(
+                                                      'Metal Chair-Small'),
                                                 ],
                                               ),
                                               Row(
@@ -4960,17 +4964,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Metal Desk-Large',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Metal Desk-Large'),
+                                                  const Text(
+                                                      'Metal Desk-Large'),
                                                 ],
                                               ),
                                               Row(
@@ -4978,17 +4983,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Metal Chair-Large',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Metal Chair-Large'),
+                                                  const Text(
+                                                      'Metal Chair-Large'),
                                                 ],
                                               ),
                                               Row(
@@ -4996,13 +5002,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Carpet',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5014,13 +5020,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Other',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue15,
+                                                        issueTrackerController
+                                                            .selectedValue15,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue15 =
-                                                        value as String?;
+                                                                .selectedValue15 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5033,7 +5039,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError15)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -5055,7 +5061,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                           LabelText(
                                             label:
-                                            '1.1.2) Click an image related to the selected issue',
+                                                '1.1.2) Click an image related to the selected issue',
                                             astrick: true,
                                           ),
                                           CustomSizedBox(
@@ -5066,139 +5072,141 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             height: 60,
                                             decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(10.0),
+                                                  BorderRadius.circular(10.0),
                                               border: Border.all(
                                                   width: 2,
                                                   color: issueTrackerController
-                                                      .isImageUploaded4 ==
-                                                      false
+                                                              .isImageUploaded4 ==
+                                                          false
                                                       ? AppColors.primary
                                                       : AppColors.error),
                                             ),
                                             child: ListTile(
                                                 title: issueTrackerController
-                                                    .isImageUploaded4 ==
-                                                    false
+                                                            .isImageUploaded4 ==
+                                                        false
                                                     ? const Text(
-                                                  'Click or Upload Image',
-                                                )
+                                                        'Click or Upload Image',
+                                                      )
                                                     : const Text(
-                                                  'Click or Upload Image',
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .error),
-                                                ),
-                                                trailing: const Icon(Icons.camera_alt,
+                                                        'Click or Upload Image',
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .error),
+                                                      ),
+                                                trailing: const Icon(
+                                                    Icons.camera_alt,
                                                     color:
-                                                    AppColors.onBackground),
+                                                        AppColors.onBackground),
                                                 onTap: () {
                                                   showModalBottomSheet(
                                                       backgroundColor:
-                                                      AppColors.primary,
+                                                          AppColors.primary,
                                                       context: context,
                                                       builder: ((builder) =>
                                                           issueTrackerController
                                                               .bottomSheet4(
-                                                              context)));
+                                                                  context)));
                                                 }),
                                           ),
                                           ErrorText(
                                             isVisible: issueTrackerController
                                                 .validateRegister4,
                                             message:
-                                            'library Register Image Required',
+                                                'library Register Image Required',
                                           ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
                                           issueTrackerController
-                                              .multipleImage4.isNotEmpty
+                                                  .multipleImage4.isNotEmpty
                                               ? Container(
-                                            width: responsive
-                                                .responsiveValue(
-                                                small: 600.0,
-                                                medium: 900.0,
-                                                large: 1400.0),
-                                            height: responsive
-                                                .responsiveValue(
-                                                small: 170.0,
-                                                medium: 170.0,
-                                                large: 170.0),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.grey),
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
-                                            ),
-                                            child:
-                                            issueTrackerController
-                                                .multipleImage4
-                                                .isEmpty
-                                                ? const Center(
-                                              child: Text(
-                                                  'No images selected.'),
-                                            )
-                                                : ListView.builder(
-                                              scrollDirection:
-                                              Axis.horizontal,
-                                              itemCount:
-                                              issueTrackerController
-                                                  .multipleImage4
-                                                  .length,
-                                              itemBuilder:
-                                                  (context,
-                                                  index) {
-                                                return SizedBox(
-                                                  height: 200,
-                                                  width: 200,
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.all(8.0),
-                                                        child:
-                                                        GestureDetector(
-                                                          onTap:
-                                                              () {
-                                                            CustomImagePreview4.showImagePreview4(issueTrackerController.multipleImage4[index].path,
-                                                                context);
-                                                          },
-                                                          child:
-                                                          Image.file(
-                                                            File(issueTrackerController.multipleImage4[index].path),
-                                                            width:
-                                                            190,
-                                                            height:
-                                                            120,
-                                                            fit:
-                                                            BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap:
-                                                            () {
-                                                          setState(
-                                                                  () {
-                                                                issueTrackerController.multipleImage4.removeAt(index);
-                                                              });
-                                                        },
-                                                        child:
-                                                        const Icon(
-                                                          Icons
-                                                              .delete,
-                                                          color:
-                                                          Colors.red,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  width: responsive
+                                                      .responsiveValue(
+                                                          small: 600.0,
+                                                          medium: 900.0,
+                                                          large: 1400.0),
+                                                  height: responsive
+                                                      .responsiveValue(
+                                                          small: 170.0,
+                                                          medium: 170.0,
+                                                          large: 170.0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
-                                                );
-                                              },
-                                            ),
-                                          )
+                                                  child:
+                                                      issueTrackerController
+                                                              .multipleImage4
+                                                              .isEmpty
+                                                          ? const Center(
+                                                              child: Text(
+                                                                  'No images selected.'),
+                                                            )
+                                                          : ListView.builder(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              itemCount:
+                                                                  issueTrackerController
+                                                                      .multipleImage4
+                                                                      .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return SizedBox(
+                                                                  height: 200,
+                                                                  width: 200,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            CustomImagePreview4.showImagePreview4(issueTrackerController.multipleImage4[index].path,
+                                                                                context);
+                                                                          },
+                                                                          child:
+                                                                              Image.file(
+                                                                            File(issueTrackerController.multipleImage4[index].path),
+                                                                            width:
+                                                                                190,
+                                                                            height:
+                                                                                120,
+                                                                            fit:
+                                                                                BoxFit.fill,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            issueTrackerController.multipleImage4.removeAt(index);
+                                                                          });
+                                                                        },
+                                                                        child:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .delete,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                )
                                               : const SizedBox(),
                                           CustomSizedBox(
                                             value: 40,
@@ -5207,7 +5215,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                           LabelText(
                                             label:
-                                            '1.1.3) Describe the issue in detail ? Also mention quantities of the damaged part?',
+                                                '1.1.3) Describe the issue in detail ? Also mention quantities of the damaged part?',
                                             astrick: true,
                                           ),
                                           CustomSizedBox(
@@ -5243,12 +5251,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             decoration: InputDecoration(
                                               labelText: 'Select Date',
                                               errorText: issueTrackerController
-                                                  .dateFieldError7
+                                                      .dateFieldError7
                                                   ? 'Date is required'
                                                   : null,
                                               suffixIcon: IconButton(
-                                                icon:
-                                                const Icon(Icons.calendar_today),
+                                                icon: const Icon(
+                                                    Icons.calendar_today),
                                                 onPressed: () {
                                                   _selectDate(context,
                                                       7); // Pass index 6 for dateController6
@@ -5272,20 +5280,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Teacher',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue16,
+                                                        issueTrackerController
+                                                            .selectedValue16,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue16 =
-                                                        value as String?;
+                                                                .selectedValue16 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5296,19 +5304,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'HeadMaster/Incharge',
+                                                        'HeadMaster/Incharge',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue16,
+                                                        issueTrackerController
+                                                            .selectedValue16,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue16 =
-                                                        value as String?;
+                                                                .selectedValue16 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('HeadMaster/Incharge'),
+                                                  const Text(
+                                                      'HeadMaster/Incharge'),
                                                 ],
                                               ),
                                               Row(
@@ -5316,13 +5325,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'SMC/VEC',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue16,
+                                                        issueTrackerController
+                                                            .selectedValue16,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue16 =
-                                                        value as String?;
+                                                                .selectedValue16 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5333,19 +5342,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    '17000ft Team Member',
+                                                        '17000ft Team Member',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue16,
+                                                        issueTrackerController
+                                                            .selectedValue16,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue16 =
-                                                        value as String?;
+                                                                .selectedValue16 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('17000ft Team Member'),
+                                                  const Text(
+                                                      '17000ft Team Member'),
                                                 ],
                                               ),
                                             ],
@@ -5355,7 +5365,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError16)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -5380,20 +5390,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Open',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue17,
+                                                        issueTrackerController
+                                                            .selectedValue17,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue17 =
-                                                        value as String?;
+                                                                .selectedValue17 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5405,13 +5415,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Closed',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue17,
+                                                        issueTrackerController
+                                                            .selectedValue17,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue17 =
-                                                        value as String?;
+                                                                .selectedValue17 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5425,7 +5435,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError17)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -5436,7 +5446,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               ),
                                             ),
                                           if (issueTrackerController
-                                              .selectedValue17 ==
+                                                  .selectedValue17 ==
                                               'Closed') ...[
                                             LabelText(
                                               label: '7) Issue resolved On',
@@ -5453,10 +5463,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               decoration: InputDecoration(
                                                 labelText: 'Select Date',
                                                 errorText:
-                                                issueTrackerController
-                                                    .dateFieldError8
-                                                    ? 'Date is required'
-                                                    : null,
+                                                    issueTrackerController
+                                                            .dateFieldError8
+                                                        ? 'Date is required'
+                                                        : null,
                                                 suffixIcon: IconButton(
                                                   icon: const Icon(
                                                       Icons.calendar_today),
@@ -5486,16 +5496,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             DropdownButton<String>(
                                               value: _selectedStaff4,
                                               hint: Container(
-                                                padding: const EdgeInsets.symmetric(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
                                                     vertical:
-                                                    12), // Add padding for better appearance
+                                                        12), // Add padding for better appearance
                                                 child: const Text(
                                                   'Select a staff member',
                                                   style: TextStyle(
                                                     color: Colors
                                                         .grey, // Hint text color
                                                     fontSize:
-                                                    16, // Hint text size
+                                                        16, // Hint text size
                                                     fontWeight: FontWeight
                                                         .w500, // Hint text weight
                                                   ),
@@ -5507,14 +5518,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 return DropdownMenuItem<String>(
                                                   value: staff,
                                                   child: Padding(
-                                                    padding: const EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         vertical:
-                                                        12), // Add padding for each item
+                                                            12), // Add padding for each item
                                                     child: Text(
                                                       staff,
                                                       style: const TextStyle(
                                                         fontSize:
-                                                        16, // Item text size
+                                                            16, // Item text size
                                                         color: Colors
                                                             .black, // Item text color
                                                       ),
@@ -5529,14 +5541,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 });
                                               },
                                               isExpanded:
-                                              true, // Expand the dropdown to fill the available space
+                                                  true, // Expand the dropdown to fill the available space
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize:
-                                                  16), // Set the text style of the selected item
+                                                      16), // Set the text style of the selected item
                                               underline: Container(
                                                 height:
-                                                1, // Underline thickness
+                                                    1, // Underline thickness
                                                 color: Colors
                                                     .grey, // Underline color
                                               ),
@@ -5556,7 +5568,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ]
                                       ],
                                       if (issueTrackerController
-                                          .selectedValue14 !=
+                                              .selectedValue14 !=
                                           'Yes') ...[
                                         Row(
                                           children: [
@@ -5576,32 +5588,38 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 onPressedButton: () {
                                                   setState(() {
                                                     // Only validate radioFieldError14 if the office is NOT 'Sikkim'
-                                                    if (selectedTourId != null &&
-                                                        (selectedTourId.startsWith('LE') || selectedTourId.startsWith('KA'))) {
+                                                    if (selectedTourId !=
+                                                            null &&
+                                                        (selectedTourId
+                                                                .startsWith(
+                                                                    'LE') ||
+                                                            selectedTourId
+                                                                .startsWith(
+                                                                    'KA'))) {
                                                       issueTrackerController
-                                                          .radioFieldError14 =
+                                                              .radioFieldError14 =
                                                           issueTrackerController
-                                                              .selectedValue14 ==
-                                                              null ||
+                                                                      .selectedValue14 ==
+                                                                  null ||
                                                               issueTrackerController
                                                                   .selectedValue14!
                                                                   .isEmpty;
                                                     } else {
                                                       issueTrackerController
-                                                          .radioFieldError14 =
-                                                      false; // No validation for Sikkim
+                                                              .radioFieldError14 =
+                                                          false; // No validation for Sikkim
                                                     }
                                                   });
 
                                                   // Validate the form only if the office is NOT 'Sikkim'
                                                   if (_formKey.currentState!
-                                                      .validate() &&
+                                                          .validate() &&
                                                       !issueTrackerController
                                                           .radioFieldError14) {
                                                     setState(() {
                                                       issueTrackerController
-                                                          .showClassroom =
-                                                      false;
+                                                              .showClassroom =
+                                                          false;
                                                       issueTrackerController
                                                           .showAlexa = true;
                                                     });
@@ -5653,7 +5671,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
                                         LabelText(
                                           label:
-                                          'Did you find any issues in the Alexa Project?',
+                                              'Did you find any issues in the Alexa Project?',
                                           astrick: true,
                                         ),
 
@@ -5665,13 +5683,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               Radio(
                                                 value: 'Yes',
                                                 groupValue:
-                                                issueTrackerController
-                                                    .selectedValue18,
+                                                    issueTrackerController
+                                                        .selectedValue18,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .selectedValue18 =
-                                                    value as String?;
+                                                            .selectedValue18 =
+                                                        value as String?;
                                                   });
                                                 },
                                               ),
@@ -5692,13 +5710,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               Radio(
                                                 value: 'No',
                                                 groupValue:
-                                                issueTrackerController
-                                                    .selectedValue18,
+                                                    issueTrackerController
+                                                        .selectedValue18,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     issueTrackerController
-                                                        .selectedValue18 =
-                                                    value as String?;
+                                                            .selectedValue18 =
+                                                        value as String?;
                                                   });
                                                 },
                                               ),
@@ -5710,7 +5728,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             .radioFieldError18)
                                           const Padding(
                                             padding:
-                                            EdgeInsets.only(left: 16.0),
+                                                EdgeInsets.only(left: 16.0),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
@@ -5726,28 +5744,28 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ),
 
                                         if (issueTrackerController
-                                            .selectedValue18 ==
+                                                .selectedValue18 ==
                                             'Yes') ...[
                                           LabelText(
                                             label:
-                                            '1) Which part of the Alexa Project is the issue related to?',
+                                                '1) Which part of the Alexa Project is the issue related to?',
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Solar Panel',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue19,
+                                                        issueTrackerController
+                                                            .selectedValue19,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue19 =
-                                                        value as String?;
+                                                                .selectedValue19 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5759,17 +5777,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Charging Station',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue19,
+                                                        issueTrackerController
+                                                            .selectedValue19,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue19 =
-                                                        value as String?;
+                                                                .selectedValue19 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('Charging Station'),
+                                                  const Text(
+                                                      'Charging Station'),
                                                 ],
                                               ),
                                               Row(
@@ -5777,13 +5796,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Router',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue19,
+                                                        issueTrackerController
+                                                            .selectedValue19,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue19 =
-                                                        value as String?;
+                                                                .selectedValue19 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5795,13 +5814,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Dot Device',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue19,
+                                                        issueTrackerController
+                                                            .selectedValue19,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue19 =
-                                                        value as String?;
+                                                                .selectedValue19 =
+                                                            value as String?;
                                                       });
                                                     },
                                                   ),
@@ -5814,7 +5833,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError19)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -5830,29 +5849,29 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
 
                                           if (issueTrackerController
-                                              .selectedValue19 ==
+                                                  .selectedValue19 ==
                                               'Solar Panel') ...[
                                             LabelText(
                                               label:
-                                              '1.1) Select the related issue',
+                                                  '1.1) Select the related issue',
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Panel damaged/missing',
+                                                          'Panel damaged/missing',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -5864,15 +5883,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Panel not connecting',
+                                                          'Panel not connecting',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -5885,13 +5904,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                     Radio(
                                                       value: 'other',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -5904,10 +5923,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 .radioFieldError22)
                                               const Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 16.0),
+                                                    EdgeInsets.only(left: 16.0),
                                                 child: Align(
                                                   alignment:
-                                                  Alignment.centerLeft,
+                                                      Alignment.centerLeft,
                                                   child: Text(
                                                     'Please select an option',
                                                     style: TextStyle(
@@ -5920,11 +5939,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               side: 'height',
                                             ),
                                             if (issueTrackerController
-                                                .selectedValue22 ==
+                                                    .selectedValue22 ==
                                                 'other') ...[
                                               LabelText(
                                                 label:
-                                                'Please specify the other issue',
+                                                    'Please specify the other issue',
                                               ),
                                               CustomSizedBox(
                                                 value: 20,
@@ -5932,8 +5951,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               ),
                                               CustomTextFormField(
                                                 textController:
-                                                issueTrackerController
-                                                    .otherSolarDescriptionController,
+                                                    issueTrackerController
+                                                        .otherSolarDescriptionController,
                                                 showCharacterCount: true,
                                               ),
                                               CustomSizedBox(
@@ -5944,29 +5963,29 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue19 ==
+                                                  .selectedValue19 ==
                                               'Charging Station') ...[
                                             LabelText(
                                               label:
-                                              '1.1) Select the related issue',
+                                                  '1.1) Select the related issue',
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Charging Station damaged/missing',
+                                                          'Charging Station damaged/missing',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -5978,15 +5997,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Battery not Charging',
+                                                          'Battery not Charging',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -5999,13 +6018,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                     Radio(
                                                       value: 'other',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -6018,10 +6037,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 .radioFieldError23)
                                               const Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 16.0),
+                                                    EdgeInsets.only(left: 16.0),
                                                 child: Align(
                                                   alignment:
-                                                  Alignment.centerLeft,
+                                                      Alignment.centerLeft,
                                                   child: Text(
                                                     'Please select an option',
                                                     style: TextStyle(
@@ -6036,29 +6055,29 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue19 ==
+                                                  .selectedValue19 ==
                                               'Router') ...[
                                             LabelText(
                                               label:
-                                              '1.1) Select the related issue',
+                                                  '1.1) Select the related issue',
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Router damaged/missing',
+                                                          'Router damaged/missing',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -6070,15 +6089,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Sim card damaged/missing',
+                                                          'Sim card damaged/missing',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -6090,15 +6109,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Router not Configured',
+                                                          'Router not Configured',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -6111,13 +6130,13 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                     Radio(
                                                       value: 'other',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
@@ -6130,10 +6149,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 .radioFieldError24)
                                               const Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 16.0),
+                                                    EdgeInsets.only(left: 16.0),
                                                 child: Align(
                                                   alignment:
-                                                  Alignment.centerLeft,
+                                                      Alignment.centerLeft,
                                                   child: Text(
                                                     'Please select an option',
                                                     style: TextStyle(
@@ -6148,71 +6167,74 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue19 ==
+                                                  .selectedValue19 ==
                                               'Dot Device') ...[
                                             LabelText(
                                               label:
-                                              '1.1) Select the related issue',
+                                                  '1.1) Select the related issue',
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Dot damaged/missing',
+                                                          'Dot damaged/missing',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
-                                                    const Text('Dot damaged/missing'),
+                                                    const Text(
+                                                        'Dot damaged/missing'),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Dot not configured',
+                                                          'Dot not configured',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
-                                                          value as String?;
+                                                                  .selectedValue22 =
+                                                              value as String?;
                                                         });
                                                       },
                                                     ),
-                                                    const Text('Dot not configured'),
+                                                    const Text(
+                                                        'Dot not configured'),
                                                   ],
                                                 ),
                                                 Row(
                                                   children: [
                                                     Radio(
                                                       value:
-                                                      'Dot not connecting',
+                                                          'Dot not connecting',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
+                                                                  .selectedValue22 =
                                                               value;
                                                         });
                                                       },
                                                     ),
-                                                    const Text('Dot not connecting'),
+                                                    const Text(
+                                                        'Dot not connecting'),
                                                   ],
                                                 ),
                                                 Row(
@@ -6220,17 +6242,18 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                     Radio(
                                                       value: 'Dot not charging',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
+                                                                  .selectedValue22 =
                                                               value;
                                                         });
                                                       },
                                                     ),
-                                                    const Text('Dot not charging'),
+                                                    const Text(
+                                                        'Dot not charging'),
                                                   ],
                                                 ),
                                                 Row(
@@ -6238,12 +6261,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                     Radio(
                                                       value: 'other',
                                                       groupValue:
-                                                      issueTrackerController
-                                                          .selectedValue22,
+                                                          issueTrackerController
+                                                              .selectedValue22,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           issueTrackerController
-                                                              .selectedValue22 =
+                                                                  .selectedValue22 =
                                                               value;
                                                         });
                                                       },
@@ -6257,10 +6280,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 .radioFieldError24)
                                               const Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 16.0),
+                                                    EdgeInsets.only(left: 16.0),
                                                 child: Align(
                                                   alignment:
-                                                  Alignment.centerLeft,
+                                                      Alignment.centerLeft,
                                                   child: Text(
                                                     'Please select an option',
                                                     style: TextStyle(
@@ -6275,11 +6298,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue22 ==
+                                                  .selectedValue22 ==
                                               'Dot damaged/missing') ...[
                                             LabelText(
                                               label:
-                                              'Enter number of missing/damaged Dot devices',
+                                                  'Enter number of missing/damaged Dot devices',
                                             ),
                                             CustomSizedBox(
                                               value: 20,
@@ -6287,8 +6310,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             ),
                                             CustomTextFormField(
                                               textController:
-                                              issueTrackerController
-                                                  .dotDeviceMissingController,
+                                                  issueTrackerController
+                                                      .dotDeviceMissingController,
                                               showCharacterCount: true,
                                             ),
                                             CustomSizedBox(
@@ -6298,11 +6321,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue22 ==
+                                                  .selectedValue22 ==
                                               'Dot not configured') ...[
                                             LabelText(
                                               label:
-                                              'Enter number of not Configured Dot devices',
+                                                  'Enter number of not Configured Dot devices',
                                             ),
                                             CustomSizedBox(
                                               value: 20,
@@ -6320,11 +6343,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue22 ==
+                                                  .selectedValue22 ==
                                               'Dot not connecting') ...[
                                             LabelText(
                                               label:
-                                              'Enter number of not Connecting Dot devices',
+                                                  'Enter number of not Connecting Dot devices',
                                             ),
                                             CustomSizedBox(
                                               value: 20,
@@ -6342,11 +6365,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue22 ==
+                                                  .selectedValue22 ==
                                               'Dot not charging') ...[
                                             LabelText(
                                               label:
-                                              'Enter number of not Charging Dot devices',
+                                                  'Enter number of not Charging Dot devices',
                                             ),
                                             CustomSizedBox(
                                               value: 20,
@@ -6364,11 +6387,11 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ],
 
                                           if (issueTrackerController
-                                              .selectedValue22 ==
+                                                  .selectedValue22 ==
                                               'other') ...[
                                             LabelText(
                                               label:
-                                              'Please Specify the other issues',
+                                                  'Please Specify the other issues',
                                             ),
                                             CustomSizedBox(
                                               value: 20,
@@ -6387,7 +6410,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                           LabelText(
                                             label:
-                                            '1.1.2) Click an image related to the selected issue',
+                                                '1.1.2) Click an image related to the selected issue',
                                             astrick: true,
                                           ),
                                           CustomSizedBox(
@@ -6398,139 +6421,141 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             height: 60,
                                             decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(10.0),
+                                                  BorderRadius.circular(10.0),
                                               border: Border.all(
                                                   width: 2,
                                                   color: issueTrackerController
-                                                      .isImageUploaded5 ==
-                                                      false
+                                                              .isImageUploaded5 ==
+                                                          false
                                                       ? AppColors.primary
                                                       : AppColors.error),
                                             ),
                                             child: ListTile(
                                                 title: issueTrackerController
-                                                    .isImageUploaded5 ==
-                                                    false
+                                                            .isImageUploaded5 ==
+                                                        false
                                                     ? const Text(
-                                                  'Click or Upload Image',
-                                                )
+                                                        'Click or Upload Image',
+                                                      )
                                                     : const Text(
-                                                  'Click or Upload Image',
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .error),
-                                                ),
-                                                trailing: const Icon(Icons.camera_alt,
+                                                        'Click or Upload Image',
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .error),
+                                                      ),
+                                                trailing: const Icon(
+                                                    Icons.camera_alt,
                                                     color:
-                                                    AppColors.onBackground),
+                                                        AppColors.onBackground),
                                                 onTap: () {
                                                   showModalBottomSheet(
                                                       backgroundColor:
-                                                      AppColors.primary,
+                                                          AppColors.primary,
                                                       context: context,
                                                       builder: ((builder) =>
                                                           issueTrackerController
                                                               .bottomSheet5(
-                                                              context)));
+                                                                  context)));
                                                 }),
                                           ),
                                           ErrorText(
                                             isVisible: issueTrackerController
                                                 .validateRegister5,
                                             message:
-                                            'library Register Image Required',
+                                                'library Register Image Required',
                                           ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
                                           issueTrackerController
-                                              .multipleImage5.isNotEmpty
+                                                  .multipleImage5.isNotEmpty
                                               ? Container(
-                                            width: responsive
-                                                .responsiveValue(
-                                                small: 600.0,
-                                                medium: 900.0,
-                                                large: 1400.0),
-                                            height: responsive
-                                                .responsiveValue(
-                                                small: 170.0,
-                                                medium: 170.0,
-                                                large: 170.0),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.grey),
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
-                                            ),
-                                            child:
-                                            issueTrackerController
-                                                .multipleImage5
-                                                .isEmpty
-                                                ? const Center(
-                                              child: Text(
-                                                  'No images selected.'),
-                                            )
-                                                : ListView.builder(
-                                              scrollDirection:
-                                              Axis.horizontal,
-                                              itemCount:
-                                              issueTrackerController
-                                                  .multipleImage5
-                                                  .length,
-                                              itemBuilder:
-                                                  (context,
-                                                  index) {
-                                                return SizedBox(
-                                                  height: 200,
-                                                  width: 200,
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                        const EdgeInsets.all(8.0),
-                                                        child:
-                                                        GestureDetector(
-                                                          onTap:
-                                                              () {
-                                                            CustomImagePreview5.showImagePreview5(issueTrackerController.multipleImage5[index].path,
-                                                                context);
-                                                          },
-                                                          child:
-                                                          Image.file(
-                                                            File(issueTrackerController.multipleImage5[index].path),
-                                                            width:
-                                                            190,
-                                                            height:
-                                                            120,
-                                                            fit:
-                                                            BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap:
-                                                            () {
-                                                          setState(
-                                                                  () {
-                                                                issueTrackerController.multipleImage5.removeAt(index);
-                                                              });
-                                                        },
-                                                        child:
-                                                        const Icon(
-                                                          Icons
-                                                              .delete,
-                                                          color:
-                                                          Colors.red,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  width: responsive
+                                                      .responsiveValue(
+                                                          small: 600.0,
+                                                          medium: 900.0,
+                                                          large: 1400.0),
+                                                  height: responsive
+                                                      .responsiveValue(
+                                                          small: 170.0,
+                                                          medium: 170.0,
+                                                          large: 170.0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
-                                                );
-                                              },
-                                            ),
-                                          )
+                                                  child:
+                                                      issueTrackerController
+                                                              .multipleImage5
+                                                              .isEmpty
+                                                          ? const Center(
+                                                              child: Text(
+                                                                  'No images selected.'),
+                                                            )
+                                                          : ListView.builder(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              itemCount:
+                                                                  issueTrackerController
+                                                                      .multipleImage5
+                                                                      .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return SizedBox(
+                                                                  height: 200,
+                                                                  width: 200,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            CustomImagePreview5.showImagePreview5(issueTrackerController.multipleImage5[index].path,
+                                                                                context);
+                                                                          },
+                                                                          child:
+                                                                              Image.file(
+                                                                            File(issueTrackerController.multipleImage5[index].path),
+                                                                            width:
+                                                                                190,
+                                                                            height:
+                                                                                120,
+                                                                            fit:
+                                                                                BoxFit.fill,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            issueTrackerController.multipleImage5.removeAt(index);
+                                                                          });
+                                                                        },
+                                                                        child:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .delete,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                )
                                               : const SizedBox(),
                                           CustomSizedBox(
                                             value: 40,
@@ -6539,7 +6564,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
 
                                           LabelText(
                                             label:
-                                            '1.1.3) Write brief description related to the selected issue',
+                                                '1.1.3) Write brief description related to the selected issue',
                                             astrick: true,
                                           ),
                                           CustomSizedBox(
@@ -6548,8 +6573,8 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           CustomTextFormField(
                                             textController:
-                                            issueTrackerController
-                                                .alexaDescriptionController,
+                                                issueTrackerController
+                                                    .alexaDescriptionController,
                                             maxlines: 3,
                                             labelText: 'Write Description',
                                             showCharacterCount: true,
@@ -6576,12 +6601,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             decoration: InputDecoration(
                                               labelText: 'Select Date',
                                               errorText: issueTrackerController
-                                                  .dateFieldError9
+                                                      .dateFieldError9
                                                   ? 'Date is required'
                                                   : null,
                                               suffixIcon: IconButton(
-                                                icon:
-                                                const Icon(Icons.calendar_today),
+                                                icon: const Icon(
+                                                    Icons.calendar_today),
                                                 onPressed: () {
                                                   _selectDate(context,
                                                       9); // Pass index 6 for dateController6
@@ -6605,19 +6630,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Teacher',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue20,
+                                                        issueTrackerController
+                                                            .selectedValue20,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue20 =
+                                                                .selectedValue20 =
                                                             value;
                                                       });
                                                     },
@@ -6629,19 +6654,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    'HeadMaster/Incharge',
+                                                        'HeadMaster/Incharge',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue20,
+                                                        issueTrackerController
+                                                            .selectedValue20,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue20 =
+                                                                .selectedValue20 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('HeadMaster/Incharge'),
+                                                  const Text(
+                                                      'HeadMaster/Incharge'),
                                                 ],
                                               ),
                                               Row(
@@ -6649,12 +6675,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'SMC/VEC',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue20,
+                                                        issueTrackerController
+                                                            .selectedValue20,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue20 =
+                                                                .selectedValue20 =
                                                             value;
                                                       });
                                                     },
@@ -6666,19 +6692,20 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 children: [
                                                   Radio(
                                                     value:
-                                                    '17000ft Team Member',
+                                                        '17000ft Team Member',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue20,
+                                                        issueTrackerController
+                                                            .selectedValue20,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue20 =
+                                                                .selectedValue20 =
                                                             value;
                                                       });
                                                     },
                                                   ),
-                                                  const Text('17000ft Team Member'),
+                                                  const Text(
+                                                      '17000ft Team Member'),
                                                 ],
                                               ),
                                             ],
@@ -6688,7 +6715,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError20)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -6713,19 +6740,19 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Row(
                                                 children: [
                                                   Radio(
                                                     value: 'Open',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue21,
+                                                        issueTrackerController
+                                                            .selectedValue21,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue21 =
+                                                                .selectedValue21 =
                                                             value;
                                                       });
                                                     },
@@ -6738,12 +6765,12 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                   Radio(
                                                     value: 'Closed',
                                                     groupValue:
-                                                    issueTrackerController
-                                                        .selectedValue21,
+                                                        issueTrackerController
+                                                            .selectedValue21,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         issueTrackerController
-                                                            .selectedValue21 =
+                                                                .selectedValue21 =
                                                             value;
                                                       });
                                                     },
@@ -6758,7 +6785,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               .radioFieldError21)
                                             const Padding(
                                               padding:
-                                              EdgeInsets.only(left: 16.0),
+                                                  EdgeInsets.only(left: 16.0),
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
@@ -6769,7 +6796,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               ),
                                             ),
                                           if (issueTrackerController
-                                              .selectedValue21 ==
+                                                  .selectedValue21 ==
                                               'Closed') ...[
                                             LabelText(
                                               label: '7) Issue resolved On',
@@ -6786,10 +6813,10 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                               decoration: InputDecoration(
                                                 labelText: 'Select Date',
                                                 errorText:
-                                                issueTrackerController
-                                                    .dateFieldError10
-                                                    ? 'Date is required'
-                                                    : null,
+                                                    issueTrackerController
+                                                            .dateFieldError10
+                                                        ? 'Date is required'
+                                                        : null,
                                                 suffixIcon: IconButton(
                                                   icon: const Icon(
                                                       Icons.calendar_today),
@@ -6819,16 +6846,17 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                             DropdownButton<String>(
                                               value: _selectedStaff5,
                                               hint: Container(
-                                                padding: const EdgeInsets.symmetric(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
                                                     vertical:
-                                                    12), // Add padding for better appearance
+                                                        12), // Add padding for better appearance
                                                 child: const Text(
                                                   'Select a staff member',
                                                   style: TextStyle(
                                                     color: Colors
                                                         .grey, // Hint text color
                                                     fontSize:
-                                                    16, // Hint text size
+                                                        16, // Hint text size
                                                     fontWeight: FontWeight
                                                         .w500, // Hint text weight
                                                   ),
@@ -6840,14 +6868,15 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 return DropdownMenuItem<String>(
                                                   value: staff,
                                                   child: Padding(
-                                                    padding: const EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         vertical:
-                                                        12), // Add padding for each item
+                                                            12), // Add padding for each item
                                                     child: Text(
                                                       staff,
                                                       style: const TextStyle(
                                                         fontSize:
-                                                        16, // Item text size
+                                                            16, // Item text size
                                                         color: Colors
                                                             .black, // Item text color
                                                       ),
@@ -6862,14 +6891,14 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 });
                                               },
                                               isExpanded:
-                                              true, // Expand the dropdown to fill the available space
+                                                  true, // Expand the dropdown to fill the available space
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize:
-                                                  16), // Set the text style of the selected item
+                                                      16), // Set the text style of the selected item
                                               underline: Container(
                                                 height:
-                                                1, // Underline thickness
+                                                    1, // Underline thickness
                                                 color: Colors
                                                     .grey, // Underline color
                                               ),
@@ -6889,7 +6918,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                         ]
                                       ],
                                       if (issueTrackerController
-                                          .selectedValue18 !=
+                                              .selectedValue18 !=
                                           'Yes') ...[
                                         Row(
                                           children: [
@@ -6909,30 +6938,36 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                 onPressedButton: () async {
                                                   setState(() {
                                                     // Only validate radioFieldError18 if the office is NOT 'Sikkim'
-                                                    if (selectedTourId != null &&
-                                                        (selectedTourId.startsWith('LE') || selectedTourId.startsWith('KA'))) {
+                                                    if (selectedTourId !=
+                                                            null &&
+                                                        (selectedTourId
+                                                                .startsWith(
+                                                                    'LE') ||
+                                                            selectedTourId
+                                                                .startsWith(
+                                                                    'KA'))) {
                                                       issueTrackerController
-                                                          .radioFieldError18 =
+                                                              .radioFieldError18 =
                                                           issueTrackerController
-                                                              .selectedValue18 ==
-                                                              null ||
+                                                                      .selectedValue18 ==
+                                                                  null ||
                                                               issueTrackerController
                                                                   .selectedValue18!
                                                                   .isEmpty;
                                                     } else {
                                                       issueTrackerController
-                                                          .radioFieldError18 =
-                                                      false; // No validation for Sikkim
+                                                              .radioFieldError18 =
+                                                          false; // No validation for Sikkim
                                                     }
                                                   });
 
                                                   if (_formKey.currentState!
-                                                      .validate() &&
+                                                          .validate() &&
                                                       !issueTrackerController
                                                           .radioFieldError18) {
                                                     final selectController =
-                                                    Get.put(
-                                                        SelectController());
+                                                        Get.put(
+                                                            SelectController());
                                                     String? lockedTourId =
                                                         selectController
                                                             .lockedTourId;
@@ -6944,37 +6979,37 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                                 .tourValue ??
                                                             '';
                                                     DateTime now =
-                                                    DateTime.now();
+                                                        DateTime.now();
                                                     String formattedDate =
-                                                    DateFormat('yyyy-MM-dd')
-                                                        .format(now);
+                                                        DateFormat('yyyy-MM-dd')
+                                                            .format(now);
 
                                                     // Call the _addIssue method to validate and get issue data
                                                     _addIssue();
 
                                                     // Check if all necessary fields are populated before creating the objects
                                                     if (issueTrackerController
-                                                        .selectedValue2 !=
-                                                        null &&
+                                                                .selectedValue2 !=
+                                                            null &&
                                                         issueTrackerController
-                                                            .selectedValue3 !=
+                                                                .selectedValue3 !=
                                                             null) {
                                                       // Create IssueTrackerRecords object
                                                       IssueTrackerRecords
-                                                      basicIssueObj =
-                                                      IssueTrackerRecords(
+                                                          basicIssueObj =
+                                                          IssueTrackerRecords(
                                                         tourId: tourIdToInsert,
                                                         school:
-                                                        issueTrackerController
-                                                            .schoolValue ??
-                                                            '',
+                                                            issueTrackerController
+                                                                    .schoolValue ??
+                                                                '',
                                                         udiseCode:
-                                                        issueTrackerController
-                                                            .selectedValue!,
+                                                            issueTrackerController
+                                                                .selectedValue!,
                                                         correctUdise:
-                                                        issueTrackerController
-                                                            .correctUdiseCodeController
-                                                            .text,
+                                                            issueTrackerController
+                                                                .correctUdiseCodeController
+                                                                .text,
                                                         createdAt: formattedDate
                                                             .toString(),
                                                         created_by: widget
@@ -6983,214 +7018,214 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                         office: widget.office
                                                             .toString(), // Add null check and default value
                                                         uniqueId:
-                                                        uniqueId, // Add unique ID here
+                                                            uniqueId, // Add unique ID here
                                                       );
 
 // For the Library
                                                       // Create LibIssue object(s) from lib_issuesList
                                                       List<LibIssue> libIssues =
-                                                      lib_issuesList
-                                                          .map((issueData) {
+                                                          lib_issuesList
+                                                              .map((issueData) {
                                                         return LibIssue(
                                                           issueExist: issueData[
-                                                          'lib_issue'],
+                                                              'lib_issue'],
                                                           issueName: issueData[
-                                                          'lib_issue_value'],
+                                                              'lib_issue_value'],
                                                           issueDescription:
-                                                          issueData[
-                                                          'lib_desc'],
+                                                              issueData[
+                                                                  'lib_desc'],
                                                           issueReportOn:
-                                                          issueData[
-                                                          'reported_on'],
+                                                              issueData[
+                                                                  'reported_on'],
                                                           issueResolvedOn:
-                                                          issueData[
-                                                          'resolved_on'],
+                                                              issueData[
+                                                                  'resolved_on'],
                                                           issueReportBy:
-                                                          issueData[
-                                                          'reported_by'],
+                                                              issueData[
+                                                                  'reported_by'],
                                                           issueResolvedBy:
-                                                          issueData[
-                                                          'resolved_by'],
+                                                              issueData[
+                                                                  'resolved_by'],
                                                           issueStatus: issueData[
-                                                          'issue_status'],
+                                                              'issue_status'],
                                                           lib_issue_img: issueData[
-                                                          'lib_issue_img'],
+                                                              'lib_issue_img'],
                                                           uniqueId: issueData[
-                                                          'unique_id'],
+                                                              'unique_id'],
                                                         );
                                                       }).toList();
 
                                                       //for the Playground issue
                                                       List<PlaygroundIssue>
-                                                      playgroundIssueObj =
-                                                      issuesList2
-                                                          .map((issueData) {
+                                                          playgroundIssueObj =
+                                                          issuesList2
+                                                              .map((issueData) {
                                                         return PlaygroundIssue(
                                                           issueExist: issueData[
-                                                          'play_issue'],
+                                                              'play_issue'],
                                                           issueName: issueData[
-                                                          'play_issue_value'],
+                                                              'play_issue_value'],
                                                           issueDescription:
-                                                          issueData[
-                                                          'play_desc'],
+                                                              issueData[
+                                                                  'play_desc'],
                                                           issueReportOn:
-                                                          issueData[
-                                                          'reported_on'],
+                                                              issueData[
+                                                                  'reported_on'],
                                                           issueResolvedOn:
-                                                          issueData[
-                                                          'resolved_on'],
+                                                              issueData[
+                                                                  'resolved_on'],
                                                           issueReportBy:
-                                                          issueData[
-                                                          'reported_by'],
+                                                              issueData[
+                                                                  'reported_by'],
                                                           issueResolvedBy:
-                                                          issueData[
-                                                          'resolved_by'],
+                                                              issueData[
+                                                                  'resolved_by'],
                                                           issueStatus: issueData[
-                                                          'issue_status'],
+                                                              'issue_status'],
                                                           play_issue_img: issueData[
-                                                          'play_issue_img'],
+                                                              'play_issue_img'],
                                                           uniqueId: issueData[
-                                                          'unique_id'],
+                                                              'unique_id'],
                                                         );
                                                       }).toList();
 
                                                       // for the digiLab
                                                       List<DigiLabIssue>
-                                                      digiLabIssueObj =
-                                                      issuesList3
-                                                          .map((issueData) {
+                                                          digiLabIssueObj =
+                                                          issuesList3
+                                                              .map((issueData) {
                                                         return DigiLabIssue(
                                                           issueExist: issueData[
-                                                          'issue'],
+                                                              'issue'],
                                                           issueName:
-                                                          issueData['part'],
+                                                              issueData['part'],
                                                           issueDescription:
-                                                          issueData[
-                                                          'description'],
+                                                              issueData[
+                                                                  'description'],
                                                           issueReportOn:
-                                                          issueData[
-                                                          'reportedOn'],
+                                                              issueData[
+                                                                  'reportedOn'],
                                                           issueResolvedOn:
-                                                          issueData[
-                                                          'resolvedOn'],
+                                                              issueData[
+                                                                  'resolvedOn'],
                                                           issueReportBy:
-                                                          issueData[
-                                                          'reportedBy'],
+                                                              issueData[
+                                                                  'reportedBy'],
                                                           issueResolvedBy:
-                                                          issueData[
-                                                          'resolvedBy'],
+                                                              issueData[
+                                                                  'resolvedBy'],
                                                           issueStatus:
-                                                          issueData[
-                                                          'status'],
+                                                              issueData[
+                                                                  'status'],
                                                           tabletNumber: issueData[
-                                                          'tabletNumber'],
+                                                              'tabletNumber'],
                                                           dig_issue_img:
-                                                          issueData[
-                                                          'images'],
+                                                              issueData[
+                                                                  'images'],
                                                           uniqueId: issueData[
-                                                          'unique_id'],
+                                                              'unique_id'],
                                                         );
                                                       }).toList();
 
 // for the Furniture
                                                       List<FurnitureIssue>
-                                                      furnitureIssueObj =
-                                                      issuesList4
-                                                          .map((issueData) {
+                                                          furnitureIssueObj =
+                                                          issuesList4
+                                                              .map((issueData) {
                                                         return FurnitureIssue(
                                                           issueExist: issueData[
-                                                          'issue'],
+                                                              'issue'],
                                                           issueName:
-                                                          issueData['part'],
+                                                              issueData['part'],
                                                           issueDescription:
-                                                          issueData[
-                                                          'description'],
+                                                              issueData[
+                                                                  'description'],
                                                           issueReportOn:
-                                                          issueData[
-                                                          'reportedOn'],
+                                                              issueData[
+                                                                  'reportedOn'],
                                                           issueResolvedOn:
-                                                          issueData[
-                                                          'resolvedOn'],
+                                                              issueData[
+                                                                  'resolvedOn'],
                                                           issueReportBy:
-                                                          issueData[
-                                                          'reportedBy'],
+                                                              issueData[
+                                                                  'reportedBy'],
                                                           issueResolvedBy:
-                                                          issueData[
-                                                          'resolvedBy'],
+                                                              issueData[
+                                                                  'resolvedBy'],
                                                           issueStatus:
-                                                          issueData[
-                                                          'status'],
+                                                              issueData[
+                                                                  'status'],
                                                           furn_issue_img:
-                                                          issueData[
-                                                          'images'],
+                                                              issueData[
+                                                                  'images'],
                                                           uniqueId: issueData[
-                                                          'unique_id'],
+                                                              'unique_id'],
                                                         );
                                                       }).toList();
 
                                                       // for alexa
                                                       List<AlexaIssue>
-                                                      alexaIssueObj =
-                                                      issuesList5
-                                                          .map((issueData) {
+                                                          alexaIssueObj =
+                                                          issuesList5
+                                                              .map((issueData) {
                                                         return AlexaIssue(
                                                           issueExist: issueData[
-                                                          'issue'],
+                                                              'issue'],
                                                           issueName:
-                                                          issueData['part'],
+                                                              issueData['part'],
                                                           issueDescription:
-                                                          issueData[
-                                                          'description'],
+                                                              issueData[
+                                                                  'description'],
                                                           issueReportOn:
-                                                          issueData[
-                                                          'reportedOn'],
+                                                              issueData[
+                                                                  'reportedOn'],
                                                           issueResolvedOn:
-                                                          issueData[
-                                                          'resolvedOn'],
+                                                              issueData[
+                                                                  'resolvedOn'],
                                                           issueReportBy:
-                                                          issueData[
-                                                          'reportedBy'],
+                                                              issueData[
+                                                                  'reportedBy'],
                                                           issueResolvedBy:
-                                                          issueData[
-                                                          'resolvedBy'],
+                                                              issueData[
+                                                                  'resolvedBy'],
                                                           issueStatus:
-                                                          issueData[
-                                                          'status'],
+                                                              issueData[
+                                                                  'status'],
                                                           other: issueData[
-                                                          'other'],
+                                                              'other'],
                                                           missingDot: issueData[
-                                                          'missingDot'],
+                                                              'missingDot'],
                                                           notConfiguredDot:
-                                                          issueData[
-                                                          'notConfiguredDot'],
+                                                              issueData[
+                                                                  'notConfiguredDot'],
                                                           notConnectingDot:
-                                                          issueData[
-                                                          'notConnectingDot'],
+                                                              issueData[
+                                                                  'notConnectingDot'],
                                                           notChargingDot: issueData[
-                                                          'notChargingDot'],
+                                                              'notChargingDot'],
                                                           alexa_issue_img:
-                                                          issueData[
-                                                          'images'],
+                                                              issueData[
+                                                                  'images'],
                                                           uniqueId: issueData[
-                                                          'unique_id'],
+                                                              'unique_id'],
                                                         );
                                                       }).toList();
 
                                                       // Save data to local database
                                                       int result =
-                                                      await LocalDbController()
-                                                          .addData(
+                                                          await LocalDbController()
+                                                              .addData(
                                                         issueTrackerRecords:
-                                                        basicIssueObj,
+                                                            basicIssueObj,
                                                         libIssues: libIssues,
                                                         playgroundIssues:
-                                                        playgroundIssueObj,
+                                                            playgroundIssueObj,
                                                         digiLabIssues:
-                                                        digiLabIssueObj,
+                                                            digiLabIssueObj,
                                                         furnitureIssues:
-                                                        furnitureIssueObj,
+                                                            furnitureIssueObj,
                                                         alexaIssues:
-                                                        alexaIssueObj,
+                                                            alexaIssueObj,
                                                       );
 
                                                       if (result > 0) {
@@ -7241,7 +7276,7 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                            const HomeScreen()),
+                                                                const HomeScreen()),
                                                       );
                                                     } else {
                                                       customSnackbar(
@@ -7276,50 +7311,50 @@ class _IssueTrackerFormState extends State<IssueTrackerForm> {
                 ]))),
         floatingActionButton: issueTrackerController.showLibrary
             ? IssuesFloatingButton(
-          issuesList: lib_issuesList,
-          onDelete: (index) {
-            setState(() {
-              lib_issuesList.removeAt(index);
-            });
-          },
-        )
+                issuesList: lib_issuesList,
+                onDelete: (index) {
+                  setState(() {
+                    lib_issuesList.removeAt(index);
+                  });
+                },
+              )
             : issueTrackerController.showPlayground
-            ? IssuesFloatingButton2(
-          issuesList2: issuesList2,
-          onDelete: (index) {
-            setState(() {
-              issuesList2.removeAt(index);
-            });
-          },
-        )
-            : issueTrackerController.showDigiLab
-            ? IssuesFloatingButton3(
-          issuesList3: issuesList3,
-          onDelete: (index) {
-            setState(() {
-              issuesList3.removeAt(index);
-            });
-          },
-        )
-            : issueTrackerController.showClassroom
-            ? IssuesFloatingButton4(
-          issuesList4: issuesList4,
-          onDelete: (index) {
-            setState(() {
-              issuesList4.removeAt(index);
-            });
-          },
-        )
-            : issueTrackerController.showAlexa
-            ? IssuesFloatingButton5(
-          issuesList5: issuesList5,
-          onDelete: (index) {
-            setState(() {
-              issuesList5.removeAt(index);
-            });
-          },
-        )
-            : null,
+                ? IssuesFloatingButton2(
+                    issuesList2: issuesList2,
+                    onDelete: (index) {
+                      setState(() {
+                        issuesList2.removeAt(index);
+                      });
+                    },
+                  )
+                : issueTrackerController.showDigiLab
+                    ? IssuesFloatingButton3(
+                        issuesList3: issuesList3,
+                        onDelete: (index) {
+                          setState(() {
+                            issuesList3.removeAt(index);
+                          });
+                        },
+                      )
+                    : issueTrackerController.showClassroom
+                        ? IssuesFloatingButton4(
+                            issuesList4: issuesList4,
+                            onDelete: (index) {
+                              setState(() {
+                                issuesList4.removeAt(index);
+                              });
+                            },
+                          )
+                        : issueTrackerController.showAlexa
+                            ? IssuesFloatingButton5(
+                                issuesList5: issuesList5,
+                                onDelete: (index) {
+                                  setState(() {
+                                    issuesList5.removeAt(index);
+                                  });
+                                },
+                              )
+                            : null,
       ),
     );
   }
@@ -7366,7 +7401,7 @@ class IssuesFloatingButton extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 0, // Optional: remove shadow
                   automaticallyImplyLeading:
-                  false, // Prevent the default back button
+                      false, // Prevent the default back button
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -7376,7 +7411,7 @@ class IssuesFloatingButton extends StatelessWidget {
                       return ListTile(
                         title: Text(
                             '1) Issue: ${issue['lib_issue_value'] ?? "N/A"}\n'
-                                '2) Description: ${issue['lib_desc'] ?? "N/A"}\n'),
+                            '2) Description: ${issue['lib_desc'] ?? "N/A"}\n'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
@@ -7443,7 +7478,7 @@ class IssuesFloatingButton2 extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 0, // Optional: remove shadow
                   automaticallyImplyLeading:
-                  false, // Prevent the default back button
+                      false, // Prevent the default back button
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -7519,7 +7554,7 @@ class IssuesFloatingButton3 extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 0, // Optional: remove shadow
                   automaticallyImplyLeading:
-                  false, // Prevent the default back button
+                      false, // Prevent the default back button
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -7595,7 +7630,7 @@ class IssuesFloatingButton4 extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 0, // Optional: remove shadow
                   automaticallyImplyLeading:
-                  false, // Prevent the default back button
+                      false, // Prevent the default back button
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -7671,7 +7706,7 @@ class IssuesFloatingButton5 extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   elevation: 0, // Optional: remove shadow
                   automaticallyImplyLeading:
-                  false, // Prevent the default back button
+                      false, // Prevent the default back button
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -7716,13 +7751,13 @@ class UniqueIdGenerator {
 }
 
 Future<void> saveIssuesToFile(
-    IssueTrackerRecords issueRecord,
-    List<LibIssue> libIssues,
-    List<PlaygroundIssue> playgroundIssues,
-    List<DigiLabIssue> digiLabIssues,
-    List<FurnitureIssue> furnitureIssues,
-    List<AlexaIssue> alexaIssues,
-    ) async {
+  IssueTrackerRecords issueRecord,
+  List<LibIssue> libIssues,
+  List<PlaygroundIssue> playgroundIssues,
+  List<DigiLabIssue> digiLabIssues,
+  List<FurnitureIssue> furnitureIssues,
+  List<AlexaIssue> alexaIssues,
+) async {
   try {
     // Request storage permissions
     var permissionGranted = await _requestStoragePermission();
@@ -7769,9 +7804,9 @@ Future<void> saveIssuesToFile(
           };
         })),
         'playgroundIssues':
-        await Future.wait(playgroundIssues.map((issue) async {
+            await Future.wait(playgroundIssues.map((issue) async {
           String? base64Image =
-          await convertImageToBase64(issue.play_issue_img);
+              await convertImageToBase64(issue.play_issue_img);
           return {
             ...issue.toJson(),
             'play_issue_img': base64Image,
@@ -7786,7 +7821,7 @@ Future<void> saveIssuesToFile(
         })),
         'furnitureIssues': await Future.wait(furnitureIssues.map((issue) async {
           String? base64Image =
-          await convertImageToBase64(issue.furn_issue_img);
+              await convertImageToBase64(issue.furn_issue_img);
           return {
             ...issue.toJson(),
             'furn_issue_img': base64Image,
@@ -7794,7 +7829,7 @@ Future<void> saveIssuesToFile(
         })),
         'alexaIssues': await Future.wait(alexaIssues.map((issue) async {
           String? base64Image =
-          await convertImageToBase64(issue.alexa_issue_img);
+              await convertImageToBase64(issue.alexa_issue_img);
           return {
             ...issue.toJson(),
             'alexa_issue_img': base64Image,
@@ -7813,7 +7848,8 @@ Future<void> saveIssuesToFile(
 
       // Notify media scanner to make the file visible to the user (Android only)
       if (Platform.isAndroid) {
-        MethodChannel channel = const MethodChannel('com.example.app/media_scanner');
+        MethodChannel channel =
+            const MethodChannel('com.example.app/media_scanner');
         await channel.invokeMethod('scanMedia', {'path': path});
       }
     } else {
@@ -7832,10 +7868,10 @@ Future<bool> _requestStoragePermission() async {
     // For Android 11+ (API level 30 and above)
     if (androidInfo.version.sdkInt >= 30) {
       var manageStoragePermission =
-      await Permission.manageExternalStorage.status;
+          await Permission.manageExternalStorage.status;
       if (manageStoragePermission.isDenied) {
         manageStoragePermission =
-        await Permission.manageExternalStorage.request();
+            await Permission.manageExternalStorage.request();
         return manageStoragePermission.isGranted;
       }
       return true; // Permission already granted

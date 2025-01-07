@@ -224,6 +224,7 @@ Future<Map<String, dynamic>> insertCabMeterTracing(
     ) async {
   if (kDebugMode) {
     print('Starting Cab Meter Data Insertion');
+    print('Status $status');
   }
   if (kDebugMode) {
     print('Version $version');

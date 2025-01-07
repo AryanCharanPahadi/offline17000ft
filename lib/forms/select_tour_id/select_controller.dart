@@ -46,6 +46,7 @@ class SelectController extends GetxController with BaseController {
   // Clear fields
   void clearFields() {
     _tourValue = null;
+
     _schoolValue = null;
     selectedRadioTourId = null;
     splitSchoolLists.clear();

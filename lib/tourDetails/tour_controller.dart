@@ -22,10 +22,5 @@ class TourController extends GetxController {
     update(); // Notify listeners that the list has been updated
   }
 
-  // Clear tour details on user logout
-  Future<void> clearTourDetailsOnLogout() async {
-    await SqfliteDatabaseHelper().delete('tour_details'); // Clear from local DB
-    localTourList.clear(); // Clear in-memory list
-    update(); // Update UI or state
-  }
+
 }

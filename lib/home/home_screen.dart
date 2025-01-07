@@ -6,7 +6,6 @@ import 'package:offline17000ft/forms/inPerson_qualitative_form/in_person_qualita
 import 'package:offline17000ft/forms/in_person_quantitative/in_person_quantitative.dart';
 import 'package:offline17000ft/forms/school_enrolment/school_enrolment.dart';
 import 'package:offline17000ft/forms/school_recce_form/school_recce_form.dart';
-import 'package:offline17000ft/helper/api_services.dart';
 import 'package:offline17000ft/helper/responsive_helper.dart';
 import 'package:offline17000ft/home/home_controller.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -23,6 +22,7 @@ import '../forms/issue_tracker/issue_tracker_form.dart';
 import '../forms/school_facilities_&_mapping_form/school_facilities_form.dart';
 import '../forms/school_staff_vec_form/school_vec_from.dart';
 import '../forms/user_controller/user_controller.dart';
+import '../helper/database_helper.dart';
 import '../helper/shared_prefernce.dart';
 import '../login/login_screen.dart';
 
@@ -42,8 +42,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final VersionController versionController = Get.put(VersionController());
 
-  bool _isOnline = false;
-  bool _isPermissionGranted = false;
+  bool _isOnline = false; // Default to false
+  bool _isPermissionGranted = false; // Default to false
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _checkPermissionStatus() async {
-    if (await requestPermission()) {
+    if (await requestPermission() == true) {
       setState(() {
         _isPermissionGranted = true;
       });
@@ -80,15 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
         return permissionStatus.isGranted;
       }
     } else if (Platform.isIOS) {
-      // For iOS, assuming permission is granted as it's not usually needed
-      return true;
+      return true; // For iOS, permission is not usually needed
     }
-    return true;
+    return false; // Default to false if conditions are not met
   }
 
   Future<void> _initializeConnectivity() async {
-    // Check initial connectivity status and update the state
-    _isOnline = await _checkConnectivity();
+    _isOnline = await _checkConnectivity() ?? false;
     setState(() {});
 
     // Listen for connectivity changes
@@ -100,15 +99,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _refreshStatus() async {
-    _isOnline = await _checkConnectivity();
+    _isOnline = await _checkConnectivity() ?? false;
     setState(() {});
   }
 
-  Future<bool> _checkConnectivity() async {
+  Future<bool?> _checkConnectivity() async {
     ConnectivityResult result = await Connectivity().checkConnectivity();
     bool isConnected = result != ConnectivityResult.none;
 
-    // Optional: log the result for debugging
     if (kDebugMode) {
       print('Connectivity check result: $result, is connected: $isConnected');
     }
@@ -142,17 +140,15 @@ class _HomeScreenState extends State<HomeScreen> {
             style: AppStyles.appBarTitle(context, AppColors.onPrimary),
           ),
           backgroundColor: AppColors.primary,
-          iconTheme: const IconThemeData(
-              color: Colors.white), // Set drawer icon color to white
+          iconTheme: const IconThemeData(color: Colors.white),
           actions: [
             Row(
               children: [
-                // Grant Permission Button (Visible only if permission is not granted)
                 if (!_isPermissionGranted)
                   IconButton(
                     icon: const Icon(Icons.lock_open, color: Colors.white),
                     onPressed: () async {
-                      if (await requestPermission()) {
+                      if (await requestPermission() == true) {
                         setState(() {
                           _isPermissionGranted = true;
                         });
@@ -160,7 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 const SizedBox(width: 20),
-
                 Icon(
                   _isOnline ? Icons.wifi : Icons.wifi_off,
                   color: _isOnline ? Colors.white : Colors.red,
@@ -187,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: GetBuilder<HomeController>(
             init: HomeController(),
             builder: (homeController) {
-              if (homeController.isLoading) {
+              if (homeController.isLoading == true) {
                 return const Center(
                   child: TextWithCircularProgress(
                     text: 'Loading...',
@@ -197,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }
-              return homeController.offlineTaskList.isNotEmpty
+              return (homeController.offlineTaskList?.isNotEmpty ?? false)
                   ? _buildOfflineTaskGrid(homeController, responsive)
                   : _buildNoDataMessage();
             },
@@ -226,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
             shrinkWrap: true,
             padding: EdgeInsets.all(responsive.responsiveValue(
                 small: 8.0, medium: 10.0, large: 12.0)),
-            itemCount: homeController.offlineTaskList.length,
+            itemCount: homeController.offlineTaskList?.length ?? 0,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount:
                   responsive.responsiveValue(small: 2, medium: 3, large: 4),
@@ -237,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
               childAspectRatio: 1.3,
             ),
             itemBuilder: (context, index) {
-              return _buildTaskCard(homeController.offlineTaskList[index],
+              return _buildTaskCard(homeController.offlineTaskList![index],
                   homeController, responsive);
             },
           ),
@@ -247,9 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTaskCard(
-      String task, HomeController homeController, Responsive responsive) {
+      String? task, HomeController homeController, Responsive responsive) {
     return InkWell(
-      onTap: () => _navigateToForm(task, homeController),
+      onTap: () => _navigateToForm(task ?? '', homeController),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -268,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.all(responsive.responsiveValue(
                 small: 8.0, medium: 10.0, large: 12.0)),
             child: Text(
-              task,
+              task ?? 'Unknown Task',
               textAlign: TextAlign.center,
               style: AppStyles.captionText(
                 context,
@@ -294,56 +289,61 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Center(child: Text('No Data Found')),
     );
   }
+}
 
-  Future<void> _handleLogout() async {
-    final UserController userController = Get.put(UserController());
-
-    // Clear user data and tour details
-    await ApiService()
-        .clearTourDetailsOnLogout(); // Clear tour details before logout
-
-    userController.clearUserData();
-    await SharedPreferencesHelper.logout();
-
-    Get.offAll(() => const LoginScreen());
-
-    customSnackbar(
-      'Success',
-      'You have been logged out successfully.',
-      AppColors.secondary,
-      AppColors.onSecondary,
-      Icons.verified,
-    );
+// Handle user logout and clear data
+Future<void> _handleLogout() async {
+  final UserController userController = Get.put(UserController());
+// Clear user data and tour details
+  final dbHelper = SqfliteDatabaseHelper();
+  await dbHelper.delete(SqfliteDatabaseHelper.tourDetails);
+  if (kDebugMode) {
+    print('Tour table cleared');
   }
+  await dbHelper.delete(SqfliteDatabaseHelper.tableStaffNames);
+  if (kDebugMode) {
+    print('Staff table cleared');
+  }
+  userController.clearUserData();
+  await SharedPreferencesHelper.logout();
 
-  void _navigateToForm(String task, HomeController homeController) {
-    final navigationMap = {
-      'ALfA Observation Form': () => AlfaObservationForm(
-          userid: homeController.empId, office: homeController.office),
-      'Cab Meter Tracing Form': () => CabMeterTracingForm(
-          userid: homeController.empId,
-          office: homeController.office,
-          version: homeController.version),
-      'FLN Observation Form': () => FlnObservationForm(
-          userid: homeController.empId, office: homeController.office),
-      'In Person Monitoring Quantitative': () => InPersonQuantitative(
-          userid: homeController.empId, office: homeController.office),
-      'In Person Monitoring Qualitative': () => InPersonQualitativeForm(
-          userid: homeController.empId, office: homeController.office),
-      'Issue Tracker (New)': () => IssueTrackerForm(
-          userid: homeController.empId, office: homeController.office),
-      'School Enrollment Form': () => SchoolEnrollmentForm(
-          userid: homeController.empId, office: homeController.office),
-      'School Facilities Mapping Form': () => SchoolFacilitiesForm(
-          userid: homeController.empId, office: homeController.office),
-      'School Staff & SMC/VEC Details': () => SchoolStaffVecForm(
-          userid: homeController.empId, office: homeController.office),
-      'School Recce Form': () => SchoolRecceForm(
-          userid: homeController.empId, office: homeController.office),
-    };
+  Get.offAll(() => const LoginScreen());
 
-    if (navigationMap.containsKey(task)) {
-      Get.to(() => navigationMap[task]!());
-    }
+  customSnackbar(
+    'Success',
+    'You have been logged out successfully.',
+    AppColors.secondary,
+    AppColors.onSecondary,
+    Icons.verified,
+  );
+}
+void _navigateToForm(String task, HomeController homeController) {
+  final navigationMap = {
+    'ALfA Observation Form': () => AlfaObservationForm(
+        userid: homeController.empId, office: homeController.office),
+    'Cab Meter Tracing Form': () => CabMeterTracingForm(
+        userid: homeController.empId,
+        office: homeController.office,
+        version: homeController.version),
+    'FLN Observation Form': () => FlnObservationForm(
+        userid: homeController.empId, office: homeController.office),
+    'In Person Monitoring Quantitative': () => InPersonQuantitative(
+        userid: homeController.empId, office: homeController.office),
+    'In Person Monitoring Qualitative': () => InPersonQualitativeForm(
+        userid: homeController.empId, office: homeController.office),
+    'Issue Tracker (New)': () => IssueTrackerForm(
+        userid: homeController.empId, office: homeController.office),
+    'School Enrollment Form': () => SchoolEnrollmentForm(
+        userid: homeController.empId, office: homeController.office),
+    'School Facilities Mapping Form': () => SchoolFacilitiesForm(
+        userid: homeController.empId, office: homeController.office),
+    'School Staff & SMC/VEC Details': () => SchoolStaffVecForm(
+        userid: homeController.empId, office: homeController.office),
+    'School Recce Form': () => SchoolRecceForm(
+        userid: homeController.empId, office: homeController.office),
+  };
+
+  if (navigationMap.containsKey(task)) {
+    Get.to(() => navigationMap[task]!());
   }
 }

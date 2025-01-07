@@ -34,9 +34,9 @@ class SelectFormState extends State<SelectForm> {
   final schoolEnrolmentController = Get.put(SchoolEnrolmentController());
   final cabMeterTracingController = Get.put(CabMeterTracingController());
   final inPersonQuantitativeController =
-  Get.put(InPersonQuantitativeController());
+      Get.put(InPersonQuantitativeController());
   final inpersonQualitativeController =
-  Get.put(InpersonQualitativeController());
+      Get.put(InpersonQualitativeController());
   final issueTrackerController = Get.put(IssueTrackerController());
   final flnObservationController = Get.put(FlnObservationController());
   final schoolStaffVecController = Get.put(SchoolStaffVecController());
@@ -177,7 +177,7 @@ class SelectFormState extends State<SelectForm> {
                                 title: Text(tourId ?? ''),
                                 value: tourId,
                                 groupValue:
-                                selectController.selectedRadioTourId,
+                                    selectController.selectedRadioTourId,
                                 onChanged: (value) {
                                   selectController.selectedRadioTourId = value;
                                   selectController.setTour(value);
@@ -202,9 +202,9 @@ class SelectFormState extends State<SelectForm> {
 
                                   // Check if there is data in the `schoolEnrolment` table
                                   bool hasDataInEnrolmentTable =
-                                  await checkDataInTable(
-                                      SqfliteDatabaseHelper
-                                          .schoolEnrolment);
+                                      await checkDataInTable(
+                                          SqfliteDatabaseHelper
+                                              .schoolEnrolment);
                                   if (hasDataInEnrolmentTable) {
                                     tablesWithData.add('schoolEnrolment');
                                   }
@@ -213,8 +213,8 @@ class SelectFormState extends State<SelectForm> {
 
                                   // Check if there is data in the `schoolStaffVec` table
                                   bool hasDataInStaffVecTable =
-                                  await checkDataInTable(
-                                      SqfliteDatabaseHelper.schoolStaffVec);
+                                      await checkDataInTable(
+                                          SqfliteDatabaseHelper.schoolStaffVec);
                                   if (hasDataInStaffVecTable) {
                                     tablesWithData.add('schoolStaffVec');
                                   }
@@ -223,9 +223,9 @@ class SelectFormState extends State<SelectForm> {
 
                                   // Check if there is data in the `schoolFacilities` table
                                   bool hasDataInFacilitiesTable =
-                                  await checkDataInTable(
-                                      SqfliteDatabaseHelper
-                                          .schoolFacilities);
+                                      await checkDataInTable(
+                                          SqfliteDatabaseHelper
+                                              .schoolFacilities);
                                   if (hasDataInFacilitiesTable) {
                                     tablesWithData.add('schoolFacilities');
                                   }
@@ -254,7 +254,7 @@ class SelectFormState extends State<SelectForm> {
 
                                         return Confirmation(
                                           desc:
-                                          'Please sync all data from the following forms before proceeding:\n\n${tablesWithData.join(', ')}',
+                                              'Please sync all data from the following forms before proceeding:\n\n${tablesWithData.join(', ')}',
                                           title: 'Data Exists',
                                           yes: 'OK',
                                           no: null, // No "Cancel" button needed
@@ -301,9 +301,9 @@ class SelectFormState extends State<SelectForm> {
                                         'Selected tour ID: ${selectController.selectedRadioTourId}'); // Debug: Selected tour ID
 
                                     List<String> schoolsToLock =
-                                    selectController.schoolValue != null
-                                        ? [selectController.schoolValue!]
-                                        : selectController.splitSchoolLists;
+                                        selectController.schoolValue != null
+                                            ? [selectController.schoolValue!]
+                                            : selectController.splitSchoolLists;
                                     print(
                                         'Schools to lock: $schoolsToLock'); // Debug: Schools to lock
 
@@ -332,7 +332,7 @@ class SelectFormState extends State<SelectForm> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                          const HomeScreen(),
+                                              const HomeScreen(),
                                         ),
                                       );
                                     });
@@ -349,8 +349,6 @@ class SelectFormState extends State<SelectForm> {
                                 onPressedButton: () async {
                                   selectController.unlockTourAndSchools();
                                   selectController.unlockTourId();
-
-
                                 },
                               ),
                             ],

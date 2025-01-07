@@ -32,12 +32,13 @@ import 'package:offline17000ft/components/custom_sizedBox.dart';
 
 import '../../components/custom_confirmation.dart';
 
+import '../../components/radio_component.dart';
 import '../select_tour_id/select_controller.dart';
 import 'fln_observation_controller.dart';
 
 class FlnObservationForm extends StatefulWidget {
- final String? userid;
- final String? office;
+  final String? userid;
+  final String? office;
   const FlnObservationForm({
     super.key,
     this.userid,
@@ -422,7 +423,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
       children: [
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-
           child: Center(
               child: Text(roleName,
                   style: const TextStyle(
@@ -430,7 +430,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
         ),
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-
           child: TextFormField(
             controller: teachingController,
             keyboardType: TextInputType.number, // Set keyboard type to number
@@ -444,7 +443,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
         ),
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-
           child: TextFormField(
             controller: nonTeachingController,
             keyboardType: TextInputType.number, // Set keyboard type to number
@@ -458,7 +456,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
         ),
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
-
           child: ValueListenableBuilder<int>(
             valueListenable: totalNotifier,
             builder: (context, total, child) {
@@ -678,7 +675,7 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
 
                                       // Get locked tour ID from SelectController
                                       final selectController =
-                                      Get.put(SelectController());
+                                          Get.put(SelectController());
                                       String? lockedTourId =
                                           selectController.lockedTourId;
 
@@ -688,119 +685,127 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
 
                                       // Fetch the corresponding schools if lockedTourId or selectedTourId is present
                                       if (selectedTourId != null) {
-                                   splitSchoolLists = tourController
+                                        splitSchoolLists = tourController
                                             .getLocalTourList
-                                            .where((e) => e.tourId == selectedTourId)
+                                            .where((e) =>
+                                                e.tourId == selectedTourId)
                                             .map((e) => e.allSchool!
-                                            .split(',')
-                                            .map((s) => s.trim())
-                                            .toList())
+                                                .split(',')
+                                                .map((s) => s.trim())
+                                                .toList())
                                             .expand((x) => x)
                                             .toList();
                                       }
 
-                                      return Column(
-                                          children: [
-                                            if (showBasicDetails) ...[
-                                              LabelText(
-                                                label: 'Basic Details',
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              LabelText(
-                                                label: 'Tour ID',
-                                                astrick: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              CustomDropdownFormField(
-                                                focusNode: flnObservationController
-                                                    .tourIdFocusNode,
-                                                // Show the locked tour ID directly, and disable dropdown interaction if locked
-                                                options: lockedTourId != null
-                                                    ? [
-                                                  lockedTourId
-                                                ] // Show only the locked tour ID
-                                                    : tourController.getLocalTourList
+                                      return Column(children: [
+                                        if (showBasicDetails) ...[
+                                          LabelText(
+                                            label: 'Basic Details',
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          LabelText(
+                                            label: 'Tour ID',
+                                            astrick: true,
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          CustomDropdownFormField(
+                                            focusNode: flnObservationController
+                                                .tourIdFocusNode,
+                                            // Show the locked tour ID directly, and disable dropdown interaction if locked
+                                            options: lockedTourId != null
+                                                ? [
+                                                    lockedTourId
+                                                  ] // Show only the locked tour ID
+                                                : tourController
+                                                    .getLocalTourList
                                                     .map((e) => e
-                                                    .tourId!) // Ensure tourId is non-nullable
+                                                        .tourId!) // Ensure tourId is non-nullable
                                                     .toList(),
-                                                selectedOption: selectedTourId,
-                                                onChanged: lockedTourId ==
+                                            selectedOption: selectedTourId,
+                                            onChanged: lockedTourId ==
                                                     null // Disable changing when tour ID is locked
-                                                    ? (value) {
-                                                  // Fetch and set the schools for the selected tour
-                                                  splitSchoolLists = tourController
-                                                      .getLocalTourList
-                                                      .where(
-                                                          (e) => e.tourId == value)
-                                                      .map((e) => e.allSchool!
-                                                      .split(',')
-                                                      .map((s) => s.trim())
-                                                      .toList())
-                                                      .expand((x) => x)
-                                                      .toList();
+                                                ? (value) {
+                                                    // Fetch and set the schools for the selected tour
+                                                    splitSchoolLists =
+                                                        tourController
+                                                            .getLocalTourList
+                                                            .where((e) =>
+                                                                e.tourId ==
+                                                                value)
+                                                            .map((e) => e
+                                                                .allSchool!
+                                                                .split(',')
+                                                                .map((s) =>
+                                                                    s.trim())
+                                                                .toList())
+                                                            .expand((x) => x)
+                                                            .toList();
 
-                                                  // Single setState call for efficiency
-                                                  setState(() {
-                                                    flnObservationController
-                                                        .setSchool(null);
-                                                    flnObservationController
-                                                        .setTour(value);
-                                                  });
-                                                }
-                                                    : null, // Disable dropdown if lockedTourId is present
-                                                labelText: "Select Tour ID",
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              LabelText(
-                                                label: 'School',
-                                                astrick: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              DropdownSearch<String>(
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return "Please Select School";
+                                                    // Single setState call for efficiency
+                                                    setState(() {
+                                                      flnObservationController
+                                                          .setSchool(null);
+                                                      flnObservationController
+                                                          .setTour(value);
+                                                    });
                                                   }
-                                                  return null;
-                                                },
-                                                popupProps: PopupProps.menu(
-                                                  showSelectedItems: true,
-                                                  showSearchBox: true,
-                                                  disabledItemFn: (String s) => s.startsWith(
+                                                : null, // Disable dropdown if lockedTourId is present
+                                            labelText: "Select Tour ID",
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          LabelText(
+                                            label: 'School',
+                                            astrick: true,
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          DropdownSearch<String>(
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "Please Select School";
+                                              }
+                                              return null;
+                                            },
+                                            popupProps: PopupProps.menu(
+                                              showSelectedItems: true,
+                                              showSearchBox: true,
+                                              disabledItemFn: (String s) =>
+                                                  s.startsWith(
                                                       'I'), // Disable based on condition
-                                                ),
-                                                items:
-                                              splitSchoolLists, // Show schools based on selected or locked tour ID
-                                                dropdownDecoratorProps:
+                                            ),
+                                            items:
+                                                splitSchoolLists, // Show schools based on selected or locked tour ID
+                                            dropdownDecoratorProps:
                                                 const DropDownDecoratorProps(
-                                                  dropdownSearchDecoration:
+                                              dropdownSearchDecoration:
                                                   InputDecoration(
-                                                    labelText: "Select School",
-                                                    hintText: "Select School",
-                                                  ),
-                                                ),
-                                                onChanged: (value) {
-                                                  // Set the selected school
-                                                  setState(() {
-                                                    flnObservationController
-                                                        .setSchool(value);
-                                                  });
-                                                },
-                                                selectedItem:
-                                                flnObservationController.schoolValue,
+                                                labelText: "Select School",
+                                                hintText: "Select School",
                                               ),
+                                            ),
+                                            onChanged: (value) {
+                                              // Set the selected school
+                                              setState(() {
+                                                flnObservationController
+                                                    .setSchool(value);
+                                              });
+                                            },
+                                            selectedItem:
+                                                flnObservationController
+                                                    .schoolValue,
+                                          ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -810,72 +815,38 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                 'Is this UDISE code is correct?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'udiCode'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'udiCode', value);
-                                                    if (value == 'Yes') {
-                                                      flnObservationController
-                                                          .correctUdiseCodeController
-                                                          .clear();
-                                                    }
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue('udiCode'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'udiCode', value);
+                                              if (value == 'Yes') {
+                                                flnObservationController
+                                                    .correctUdiseCodeController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue('udiCode'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'udiCode', value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError('udiCode'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'udiCode'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'udiCode', value);
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (flnObservationController
-                                              .getRadioFieldError('udiCode'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -965,7 +936,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           Container(
                                             height: 60,
                                             decoration: BoxDecoration(
@@ -1015,7 +985,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           flnObservationController
                                                   .multipleImage.isNotEmpty
                                               ? Container(
@@ -1411,147 +1380,77 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             label: 'Lesson Plan available?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'lessonPlan'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'lessonPlan',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue('lessonPlan'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'lessonPlan', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue('lessonPlan'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'lessonPlan', value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                    'lessonPlan'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'lessonPlan'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'lessonPlan',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (flnObservationController
-                                              .getRadioFieldError('lessonPlan'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           LabelText(
                                             label: 'Activity Corner available?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'activityCorner'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'activityCorner',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'activityCorner'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'activityCorner', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'activityCorner'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'activityCorner', value);
+                                              if (value == 'No') {
+                                                flnObservationController
+                                                    .multipleImage4
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                    'activityCorner'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'activityCorner'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'activityCorner',
-                                                            value);
-                                                    if (value == 'No') {
-                                                      flnObservationController
-                                                          .multipleImage4
-                                                          .clear();
-                                                    }
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (flnObservationController
-                                              .getRadioFieldError(
-                                                  'activityCorner'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -1569,8 +1468,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                               value: 20,
                                               side: 'height',
                                             ),
-
-
                                             Container(
                                               height: 60,
                                               decoration: BoxDecoration(
@@ -1932,7 +1829,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                               }
                                             },
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -1951,69 +1847,38 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             label: 'Baseline Assessment Done?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'baselineAssessment'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'baselineAssessment',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'baselineAssessment'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'baselineAssessment',
+                                                      value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'baselineAssessment'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'baselineAssessment',
+                                                      value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                    'baselineAssessment'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(                                padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'baselineAssessment'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'baselineAssessment',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (flnObservationController
-                                              .getRadioFieldError(
-                                                  'baselineAssessment'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -2194,7 +2059,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             CustomSizedBox(
                                                 side: 'height', value: 10),
                                           ],
-
                                           Row(
                                             children: [
                                               CustomButton(
@@ -2265,75 +2129,44 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                             label: 'FLN Activities conducted?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'flnActivities'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'flnActivities',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'flnActivities'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'flnActivities', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'flnActivities'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'flnActivities', value);
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'flnActivities'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'flnActivities',
-                                                            value);
-                                                    if (value == 'No') {
-                                                      flnObservationController
-                                                          .multipleImage6
-                                                          .clear();
-                                                    }
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
+                                              if (value == 'No') {
+                                                flnObservationController
+                                                    .multipleImage6
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                    'flnActivities'),
                                           ),
-                                          if (flnObservationController
-                                              .getRadioFieldError(
-                                                  'flnActivities'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
+
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -2733,95 +2566,60 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                           LabelText(
                                             label: 'Refresher Training',
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           LabelText(
                                             label:
                                                 'Refresher Training conducted?',
                                             astrick: true,
                                           ),
-
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
-
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'refresherTraining'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'refresherTraining',
-                                                            value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'refresherTraining'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'refresherTraining',
+                                                      value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                    'refresherTraining'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                      'refresherTraining',
+                                                      value);
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'refresherTraining'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'refresherTraining',
-                                                            value);
-                                                    if (value == 'No') {
-                                                      flnObservationController
-                                                          .multipleImage7
-                                                          .clear();
-                                                      flnObservationController
-                                                          .noOfTeacherTrainedController
-                                                          .clear();
-                                                    }
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
+                                              if (value == 'No') {
+                                                flnObservationController
+                                                    .multipleImage7
+                                                    .clear();
+                                                flnObservationController
+                                                    .noOfTeacherTrainedController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                    'refresherTraining'),
                                           ),
-                                          if (flnObservationController
-                                              .getRadioFieldError(
-                                                  'refresherTraining'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           if (flnObservationController
                                                   .getSelectedValue(
                                                       'refresherTraining') ==
@@ -3014,7 +2812,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                               side: 'height',
                                             ),
                                           ],
-
                                           Row(
                                             children: [
                                               CustomButton(
@@ -3081,72 +2878,47 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                 'Reading Activities conducted?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'reading'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'reading', value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
-                                          ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'reading'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'reading', value);
-                                                    if (value == 'No') {
-                                                      flnObservationController
-                                                          .multipleImage8
-                                                          .clear();
-                                                    }
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                'reading'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                  'reading', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          if (flnObservationController
-                                              .getRadioFieldError('reading'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                'reading'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                  'reading', value);
+
+                                              if (value == 'No') {
+                                                flnObservationController
+                                                    .multipleImage8
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                'reading'),
+                                          ),
+
+
+
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -3532,67 +3304,44 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                 'Is the teacher using Active Learning methodology?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'classroom'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'classroom', value);
-                                                  },
-                                                ),
-                                                const Text('Yes'),
-                                              ],
-                                            ),
-                                          ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding: EdgeInsets.only(right: screenWidth * 0.1), // Responsive padding
 
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      flnObservationController
-                                                          .getSelectedValue(
-                                                              'classroom'),
-                                                  onChanged: (value) {
-                                                    flnObservationController
-                                                        .setRadioValue(
-                                                            'classroom', value);
-                                                  },
-                                                ),
-                                                const Text('No'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                'classroom'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                  'classroom', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          if (flnObservationController
-                                              .getRadioFieldError('classroom'))
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue: flnObservationController
+                                                .getSelectedValue(
+                                                'classroom'),
+                                            onChanged: (value) {
+                                              flnObservationController
+                                                  .setRadioValue(
+                                                  'classroom', value);
+
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError: flnObservationController
+                                                .getRadioFieldError(
+                                                'classroom'),
+                                          ),
+
+
+
+
+
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -3816,9 +3565,11 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                         DateFormat('yyyy-MM-dd')
                                                             .format(now);
                                                     final selectController =
-                                                    Get.put(SelectController());
+                                                        Get.put(
+                                                            SelectController());
                                                     String? lockedTourId =
-                                                        selectController.lockedTourId;
+                                                        selectController
+                                                            .lockedTourId;
 
                                                     // Use lockedTourId if it is available, otherwise use the selected tour ID from schoolEnrolmentController
                                                     String tourIdToInsert =
@@ -3834,11 +3585,9 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                       return String.fromCharCodes(
                                                           Iterable.generate(
                                                               length,
-                                                              (_) => chars
-                                                                  .codeUnitAt(rnd
-                                                                      .nextInt(
-                                                                          chars
-                                                                              .length))));
+                                                              (_) => chars.codeUnitAt(
+                                                                  rnd.nextInt(chars
+                                                                      .length))));
                                                     }
 
                                                     String uniqueId =
@@ -3974,13 +3723,13 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
 
                                                     // Create the enrolment collection object
                                                     FlnObservationModel flnObservationModel = FlnObservationModel(
-                                                        tourId:tourIdToInsert,
-                                                        school: flnObservationController
-                                                                .schoolValue ??
+                                                        tourId: tourIdToInsert,
+                                                        school: flnObservationController.schoolValue ??
                                                             '',
-                                                        udiseValue:
-                                                            flnObservationController.getSelectedValue('udiCode') ??
-                                                                '',
+                                                        udiseValue: flnObservationController
+                                                                .getSelectedValue(
+                                                                    'udiCode') ??
+                                                            '',
                                                         correctUdise:
                                                             flnObservationController
                                                                 .correctUdiseCodeController
@@ -4022,7 +3771,6 @@ class _FlnObservationFormState extends State<FlnObservationForm> {
                                                         observation: flnObservationController.remarksController.text,
                                                         createdAt: formattedDate.toString(),
                                                         office: widget.office ?? '',
-
                                                         created_by: widget.userid.toString());
 
                                                     int result =

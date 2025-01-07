@@ -23,6 +23,7 @@ import 'package:offline17000ft/components/custom_dropdown.dart';
 import 'package:offline17000ft/components/custom_labeltext.dart';
 import 'package:offline17000ft/components/custom_sizedBox.dart';
 import '../../components/custom_snackbar.dart';
+import '../../components/radio_component.dart';
 import '../../helper/database_helper.dart';
 import '../select_tour_id/select_controller.dart';
 import 'cab_meter_tracing_modal.dart';
@@ -393,58 +394,28 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                             value: 20,
                             side: 'height',
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                right: screenWidth * 0.1), // Responsive padding
-                            child: Row(
-                              children: [
-                                Radio(
-                                  value: 'Start',
-                                  groupValue: cabMeterController
-                                      .getSelectedValue('meter'),
-                                  onChanged: (value) {
-                                    cabMeterController.setRadioValue(
-                                        'meter', value);
-                                  },
-                                ),
-                                const Text('Start'),
-                              ],
-                            ),
+                          CustomRadioButton(
+                            value: 'Start',
+                            groupValue: cabMeterController.getSelectedValue('meter'),
+                            onChanged: (value) {
+                              cabMeterController.setRadioValue('meter', value);
+                            },
+                            label: 'Start',
+                            screenWidth: screenWidth,
                           ),
-                          SizedBox(
-                            width: screenWidth *
-                                0.4, // Adjust width of CustomSizedBox
+                          SizedBox(width: screenWidth * 0.4),
+                          CustomRadioButton(
+                            value: 'End',
+                            groupValue: cabMeterController.getSelectedValue('meter'),
+                            onChanged: (value) {
+                              cabMeterController.setRadioValue('meter', value);
+                            },
+                            label: 'End',
+                            screenWidth: screenWidth,
+                            showError: cabMeterController.getRadioFieldError('meter'),
+
                           ),
-                          // Make it so the user can also edit the tourId and school
-                          Padding(
-                            padding: EdgeInsets.only(
-                                right: screenWidth * 0.1), // Responsive padding
-                            child: Row(
-                              children: [
-                                Radio(
-                                  value: 'End',
-                                  groupValue: cabMeterController
-                                      .getSelectedValue('meter'),
-                                  onChanged: (value) {
-                                    cabMeterController.setRadioValue(
-                                        'meter', value);
-                                  },
-                                ),
-                                const Text('End'),
-                              ],
-                            ),
-                          ),
-                          if (cabMeterController.getRadioFieldError('meter'))
-                            const Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Please select an option',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ),
+
                           CustomSizedBox(
                             value: 20,
                             side: 'height',

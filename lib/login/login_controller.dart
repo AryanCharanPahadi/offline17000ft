@@ -11,14 +11,13 @@ class LoginController extends GetxController with BaseController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-
   authUser(String? username, String? password) async {
     var request = {'username': username ?? '', 'password': password ?? ''};
     showLoading('Please wait...');
 
     try {
-      var response = await BaseClient()
-          .post('https://mis.17000ft.org/apis/fast_apis/', 'login.php', request);
+      var response = await BaseClient().post(
+          'https://mis.17000ft.org/apis/fast_apis/', 'login.php', request);
 
       var myresp = json.decode(response);
       hideLoading();
@@ -34,7 +33,6 @@ class LoginController extends GetxController with BaseController {
       }
     }
   }
-
 
   clearFields() {
     usernameController.clear();

@@ -15,9 +15,6 @@ import '../home/home_controller.dart';
 class ChangePassword extends StatefulWidget {
   final String? userid;
 
-
-
-
   const ChangePassword({
     super.key,
     this.userid,
@@ -81,12 +78,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         final responseData = jsonDecode(response.body);
 
         if (responseData['status'] == 1) {
-          customSnackbar(
-              'Password Changed Successfully',
-              'Changed',
-              AppColors.primary,
-              AppColors.onPrimary,
-              Icons.verified);
+          customSnackbar('Password Changed Successfully', 'Changed',
+              AppColors.primary, AppColors.onPrimary, Icons.verified);
           _newPasswordController.clear();
           _confirmPasswordController.clear();
         } else {

@@ -18,7 +18,6 @@ import 'package:offline17000ft/helper/responsive_helper.dart';
 import 'package:offline17000ft/tourDetails/tour_controller.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -29,14 +28,15 @@ import 'package:offline17000ft/components/custom_sizedBox.dart';
 import 'package:offline17000ft/home/home_screen.dart';
 
 import '../../components/custom_confirmation.dart';
+import '../../components/radio_component.dart';
 import '../../helper/database_helper.dart';
 import '../select_tour_id/select_controller.dart';
 import 'in_person_qualitative_controller.dart';
 import 'inPerson_qualitative_modal.dart';
 
 class InPersonQualitativeForm extends StatefulWidget {
- final String? userid;
- final String? office;
+  final String? userid;
+  final String? office;
   const InPersonQualitativeForm({
     super.key,
     this.userid,
@@ -52,8 +52,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> splitSchoolLists = [];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,17 +72,16 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
               desc: 'Are you sure you want to leave?',
               onPressed: () {
                 Navigator.of(context).pop(true);
-
               },
             ),
           );
         },
         child: Scaffold(
-            appBar:  const CustomAppbar(
+            appBar: const CustomAppbar(
               title: 'In-Person Qualitative',
             ),
             body: Padding(
-                padding:  const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Column(children: [
@@ -101,129 +98,140 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                       // Get locked tour ID from SelectController
                                       final selectController =
-                                      Get.put(SelectController());
+                                          Get.put(SelectController());
                                       String? lockedTourId =
                                           selectController.lockedTourId;
 
                                       // Consider the lockedTourId as the selected tour ID if it's not null
                                       String? selectedTourId = lockedTourId ??
-                                          inpersonQualitativeController.tourValue;
+                                          inpersonQualitativeController
+                                              .tourValue;
 
                                       // Fetch the corresponding schools if lockedTourId or selectedTourId is present
                                       if (selectedTourId != null) {
-                                splitSchoolLists = tourController
+                                        splitSchoolLists = tourController
                                             .getLocalTourList
-                                            .where((e) => e.tourId == selectedTourId)
+                                            .where((e) =>
+                                                e.tourId == selectedTourId)
                                             .map((e) => e.allSchool!
-                                            .split(',')
-                                            .map((s) => s.trim())
-                                            .toList())
+                                                .split(',')
+                                                .map((s) => s.trim())
+                                                .toList())
                                             .expand((x) => x)
                                             .toList();
                                       }
 
-                                      return Column(
-                                          children: [
-                                            if (inpersonQualitativeController.showBasicDetails) ...[
-                                              LabelText(
-                                                label: 'Basic Details',
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              LabelText(
-                                                label: 'Tour ID',
-                                                astrick: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              CustomDropdownFormField(
-                                                focusNode: inpersonQualitativeController
+                                      return Column(children: [
+                                        if (inpersonQualitativeController
+                                            .showBasicDetails) ...[
+                                          LabelText(
+                                            label: 'Basic Details',
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          LabelText(
+                                            label: 'Tour ID',
+                                            astrick: true,
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          CustomDropdownFormField(
+                                            focusNode:
+                                                inpersonQualitativeController
                                                     .tourIdFocusNode,
-                                                // Show the locked tour ID directly, and disable dropdown interaction if locked
-                                                options: lockedTourId != null
-                                                    ? [
-                                                  lockedTourId
-                                                ] // Show only the locked tour ID
-                                                    : tourController.getLocalTourList
+                                            // Show the locked tour ID directly, and disable dropdown interaction if locked
+                                            options: lockedTourId != null
+                                                ? [
+                                                    lockedTourId
+                                                  ] // Show only the locked tour ID
+                                                : tourController
+                                                    .getLocalTourList
                                                     .map((e) => e
-                                                    .tourId!) // Ensure tourId is non-nullable
+                                                        .tourId!) // Ensure tourId is non-nullable
                                                     .toList(),
-                                                selectedOption: selectedTourId,
-                                                onChanged: lockedTourId ==
+                                            selectedOption: selectedTourId,
+                                            onChanged: lockedTourId ==
                                                     null // Disable changing when tour ID is locked
-                                                    ? (value) {
-                                                  // Fetch and set the schools for the selected tour
-                                       splitSchoolLists = tourController
-                                                      .getLocalTourList
-                                                      .where(
-                                                          (e) => e.tourId == value)
-                                                      .map((e) => e.allSchool!
-                                                      .split(',')
-                                                      .map((s) => s.trim())
-                                                      .toList())
-                                                      .expand((x) => x)
-                                                      .toList();
+                                                ? (value) {
+                                                    // Fetch and set the schools for the selected tour
+                                                    splitSchoolLists =
+                                                        tourController
+                                                            .getLocalTourList
+                                                            .where((e) =>
+                                                                e.tourId ==
+                                                                value)
+                                                            .map((e) => e
+                                                                .allSchool!
+                                                                .split(',')
+                                                                .map((s) =>
+                                                                    s.trim())
+                                                                .toList())
+                                                            .expand((x) => x)
+                                                            .toList();
 
-                                                  // Single setState call for efficiency
-                                                  setState(() {
-                                                    inpersonQualitativeController
-                                                        .setSchool(null);
-                                                    inpersonQualitativeController
-                                                        .setTour(value);
-                                                  });
-                                                }
-                                                    : null, // Disable dropdown if lockedTourId is present
-                                                labelText: "Select Tour ID",
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              LabelText(
-                                                label: 'School',
-                                                astrick: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              DropdownSearch<String>(
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return "Please Select School";
+                                                    // Single setState call for efficiency
+                                                    setState(() {
+                                                      inpersonQualitativeController
+                                                          .setSchool(null);
+                                                      inpersonQualitativeController
+                                                          .setTour(value);
+                                                    });
                                                   }
-                                                  return null;
-                                                },
-                                                popupProps: PopupProps.menu(
-                                                  showSelectedItems: true,
-                                                  showSearchBox: true,
-                                                  disabledItemFn: (String s) => s.startsWith(
+                                                : null, // Disable dropdown if lockedTourId is present
+                                            labelText: "Select Tour ID",
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          LabelText(
+                                            label: 'School',
+                                            astrick: true,
+                                          ),
+                                          CustomSizedBox(
+                                            value: 20,
+                                            side: 'height',
+                                          ),
+                                          DropdownSearch<String>(
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "Please Select School";
+                                              }
+                                              return null;
+                                            },
+                                            popupProps: PopupProps.menu(
+                                              showSelectedItems: true,
+                                              showSearchBox: true,
+                                              disabledItemFn: (String s) =>
+                                                  s.startsWith(
                                                       'I'), // Disable based on condition
-                                                ),
-                                                items:
-                                       splitSchoolLists, // Show schools based on selected or locked tour ID
-                                                dropdownDecoratorProps:
-                                                 const DropDownDecoratorProps(
-                                                  dropdownSearchDecoration:
+                                            ),
+                                            items:
+                                                splitSchoolLists, // Show schools based on selected or locked tour ID
+                                            dropdownDecoratorProps:
+                                                const DropDownDecoratorProps(
+                                              dropdownSearchDecoration:
                                                   InputDecoration(
-                                                    labelText: "Select School",
-                                                    hintText: "Select School",
-                                                  ),
-                                                ),
-                                                onChanged: (value) {
-                                                  // Set the selected school
-                                                  setState(() {
-                                                    inpersonQualitativeController
-                                                        .setSchool(value);
-                                                  });
-                                                },
-                                                selectedItem:
-                                                inpersonQualitativeController.schoolValue,
+                                                labelText: "Select School",
+                                                hintText: "Select School",
                                               ),
+                                            ),
+                                            onChanged: (value) {
+                                              // Set the selected school
+                                              setState(() {
+                                                inpersonQualitativeController
+                                                    .setSchool(value);
+                                              });
+                                            },
+                                            selectedItem:
+                                                inpersonQualitativeController
+                                                    .schoolValue,
+                                          ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -233,73 +241,44 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Is this UDISE code is correct?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'udiCode'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'udiCode', value);
-                                                    if (value == 'Yes') {
-
-                                                      inpersonQualitativeController.correctUdiseCodeController.clear();
-
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'udiCode'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'udiCode', value);
+                                              if (value == 'Yes') {
+                                                inpersonQualitativeController
+                                                    .correctUdiseCodeController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'udiCode'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'udiCode', value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'udiCode'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'udiCode'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'udiCode', value);
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError('udiCode'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -365,26 +344,26 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   BorderRadius.circular(10.0),
                                               border: Border.all(
                                                   width: 2,
-                                                  color:
-                                                  inpersonQualitativeController.isImageUploadedSchoolBoard ==
-                                                              false
-                                                          ? AppColors.primary
-                                                          : AppColors.error),
+                                                  color: inpersonQualitativeController
+                                                              .isImageUploadedSchoolBoard ==
+                                                          false
+                                                      ? AppColors.primary
+                                                      : AppColors.error),
                                             ),
                                             child: ListTile(
-                                                title:
-                                                inpersonQualitativeController.isImageUploadedSchoolBoard ==
-                                                            false
-                                                        ?  const Text(
-                                                            'Click or Upload Image',
-                                                          )
-                                                        :  const Text(
-                                                            'Click or Upload Image',
-                                                            style: TextStyle(
-                                                                color: AppColors
-                                                                    .error),
-                                                          ),
-                                                trailing:  const Icon(
+                                                title: inpersonQualitativeController
+                                                            .isImageUploadedSchoolBoard ==
+                                                        false
+                                                    ? const Text(
+                                                        'Click or Upload Image',
+                                                      )
+                                                    : const Text(
+                                                        'Click or Upload Image',
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .error),
+                                                      ),
+                                                trailing: const Icon(
                                                     Icons.camera_alt,
                                                     color:
                                                         AppColors.onBackground),
@@ -400,14 +379,15 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 }),
                                           ),
                                           ErrorText(
-                                            isVisible: inpersonQualitativeController.validateSchoolBoard,
+                                            isVisible:
+                                                inpersonQualitativeController
+                                                    .validateSchoolBoard,
                                             message: 'Register Image Required',
                                           ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           inpersonQualitativeController
                                                   .multipleImage.isNotEmpty
                                               ? Container(
@@ -432,7 +412,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       inpersonQualitativeController
                                                               .multipleImage
                                                               .isEmpty
-                                                          ?  const Center(
+                                                          ? const Center(
                                                               child: Text(
                                                                   'No images selected.'),
                                                             )
@@ -452,7 +432,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                                   child: Column(
                                                                     children: [
                                                                       Padding(
-                                                                        padding:  const EdgeInsets
+                                                                        padding: const EdgeInsets
                                                                             .all(
                                                                             8.0),
                                                                         child:
@@ -483,7 +463,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                                           });
                                                                         },
                                                                         child:
-                                                                             const Icon(
+                                                                            const Icon(
                                                                           Icons
                                                                               .delete,
                                                                           color:
@@ -496,7 +476,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                               },
                                                             ),
                                                 )
-                                              :  const SizedBox(),
+                                              : const SizedBox(),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -506,70 +486,39 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Does this school have DigiLab?',
                                             astrick: true,
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolDigiLab'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolDigiLab',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolDigiLab', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolDigiLab', value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'schoolDigiLab'),
                                           ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolDigiLab'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolDigiLab',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'schoolDigiLab'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -579,74 +528,39 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Does this school have Library?',
                                             astrick: true,
                                           ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolLibrary'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolLibrary', value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolLibrary'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolLibrary',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolLibrary'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolLibrary', value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'schoolLibrary'),
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolLibrary'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolLibrary',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'schoolLibrary'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -656,79 +570,45 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Does this school have Playground?',
                                             astrick: true,
                                           ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolPlayground'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolPlayground',
+                                                      value);
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
+                                          ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolPlayground'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolPlayground',
+                                                      value);
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'schoolPlayground'),
+                                          ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolPlayground'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolPlayground',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
-                                          ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolPlayground'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolPlayground',
-                                                            value);
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'schoolPlayground'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
-                                          ),
-
                                           CustomButton(
                                             title: 'Next',
                                             onPressedButton: () {
@@ -752,26 +632,33 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                               // Update the state for validateSchoolBoard based on _isImageUploadedSchoolBoard
                                               setState(() {
-                                                inpersonQualitativeController.validateSchoolBoard =
+                                                inpersonQualitativeController
+                                                        .validateSchoolBoard =
                                                     inpersonQualitativeController
                                                         .multipleImage.isEmpty;
                                               });
 
                                               if (_formKey.currentState!
                                                       .validate() &&
-                                                  !inpersonQualitativeController.validateSchoolBoard && // Ensure that at least one image is uploaded
+                                                  !inpersonQualitativeController
+                                                      .validateSchoolBoard && // Ensure that at least one image is uploaded
                                                   isRadioValid1 &&
                                                   isRadioValid2 &&
                                                   isRadioValid3 &&
                                                   isRadioValid4) {
                                                 setState(() {
                                                   // Proceed with the next step
-                                                  inpersonQualitativeController.showBasicDetails = false;
-                                                  inpersonQualitativeController.showInputs = true;
-                                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                                  inpersonQualitativeController
+                                                      .showBasicDetails = false;
+                                                  inpersonQualitativeController
+                                                      .showInputs = true;
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback(
+                                                          (_) {
                                                     _scrollController.animateTo(
                                                       0.0, // Scroll to the top
-                                                      duration: const Duration(milliseconds: 300),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
                                                       curve: Curves.easeInOut,
                                                     );
                                                   });
@@ -779,7 +666,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               }
                                             },
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -788,7 +674,8 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                         // Show Inputs HM/In charge
 
-                                        if (inpersonQualitativeController.showInputs) ...[
+                                        if (inpersonQualitativeController
+                                            .showInputs) ...[
                                           LabelText(
                                             label:
                                                 'Qualitative Inputs HM/ In Charge',
@@ -802,141 +689,122 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Were you able to Interview HM/In charge?',
                                             astrick: true,
                                           ),
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'HmIncharge'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'HmIncharge', value);
+                                              if (value == 'Yes') {
+                                                inpersonQualitativeController
+                                                    .notAbleController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
+                                          ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'HmIncharge'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'HmIncharge', value);
+                                              if (value == 'No') {
+                                                inpersonQualitativeController
+                                                    .schoolRoutineController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .componentsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .programInitiatedController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .digiLabSessionController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .alexaEchoController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .servicesController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .suggestionsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .allowingTabletsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .alexaSessionsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .playgroundAllowedController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .improveProgramController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'HmIncharge'),
+                                          ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'HmIncharge'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'HmIncharge',
-                                                            value);
-                                                    if (value == 'Yes') {
-
-                                                      inpersonQualitativeController.notAbleController.clear();
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
-                                          ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'HmIncharge'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'HmIncharge',
-                                                            value);
-                                                    if (value == 'No') {
-
-                                                      inpersonQualitativeController.schoolRoutineController.clear();
-                                                      inpersonQualitativeController.componentsController.clear();
-                                                      inpersonQualitativeController.programInitiatedController.clear();
-                                                      inpersonQualitativeController.digiLabSessionController.clear();
-                                                      inpersonQualitativeController.alexaEchoController.clear();
-                                                      inpersonQualitativeController.servicesController.clear();
-                                                      inpersonQualitativeController.suggestionsController.clear();
-                                                      inpersonQualitativeController.allowingTabletsController.clear();
-                                                      inpersonQualitativeController.alexaSessionsController.clear();
-                                                      inpersonQualitativeController.playgroundAllowedController.clear();
-                                                      inpersonQualitativeController.improveProgramController.clear();
-
-
-                                                    }
-
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError('HmIncharge'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
-                                          ),
-
                                           if (inpersonQualitativeController
                                                   .getSelectedValue(
                                                       'HmIncharge') ==
                                               'Yes') ...[
-
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolDigiLab') ==
-                                      'Yes') ...[
-
-                                            LabelText(
-                                              label:
-                                                  '1. What challenges does the school face in integrating the DigiLab sessions with the normal school routine?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .schoolRoutineController,
-                                              labelText: 'Write here...',
-                                              maxlines: 2,
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
+                                            if (inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '1. What challenges does the school face in integrating the DigiLab sessions with the normal school routine?',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .schoolRoutineController,
+                                                labelText: 'Write here...',
+                                                maxlines: 2,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
                                             ],
                                             LabelText(
                                               label:
@@ -1000,41 +868,41 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               value: 20,
                                               side: 'height',
                                             ),
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolDigiLab') ==
-                                      'Yes') ...[
-                                            LabelText(
-                                              label:
-                                                  '4. Have any steps been taken to encourage DigiLab sessions and its activities? ',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .digiLabSessionController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
+                                            if (inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '4. Have any steps been taken to encourage DigiLab sessions and its activities? ',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .digiLabSessionController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
                                             ],
                                             LabelText(
                                               label:
@@ -1129,41 +997,41 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               value: 20,
                                               side: 'height',
                                             ),
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolDigiLab') ==
-                                      'Yes') ...[
-                                            LabelText(
-                                              label:
-                                                  '7. Are you open to allowing students to take DigiLab tablets home with them for "at home learning"? If no,why not?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .allowingTabletsController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
+                                            if (inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '7. Are you open to allowing students to take DigiLab tablets home with them for "at home learning"? If no,why not?',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .allowingTabletsController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
                                             ],
                                             LabelText(
                                               label:
@@ -1300,11 +1168,14 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   title: 'Back',
                                                   onPressedButton: () {
                                                     setState(() {
-                                                      inpersonQualitativeController.showBasicDetails = true;
-                                                      inpersonQualitativeController.showInputs = false;
+                                                      inpersonQualitativeController
+                                                              .showBasicDetails =
+                                                          true;
+                                                      inpersonQualitativeController
+                                                          .showInputs = false;
                                                     });
                                                   }),
-                                               const Spacer(),
+                                              const Spacer(),
                                               CustomButton(
                                                 title: 'Next',
                                                 onPressedButton: () {
@@ -1318,13 +1189,23 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       isRadioValid5) {
                                                     // Include image validation here
                                                     setState(() {
-                                                      inpersonQualitativeController.showInputs = false;
-                                                      inpersonQualitativeController.showSchoolTeacher = true;
-                                                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                                                        _scrollController.animateTo(
+                                                      inpersonQualitativeController
+                                                          .showInputs = false;
+                                                      inpersonQualitativeController
+                                                              .showSchoolTeacher =
+                                                          true;
+                                                      WidgetsBinding.instance
+                                                          .addPostFrameCallback(
+                                                              (_) {
+                                                        _scrollController
+                                                            .animateTo(
                                                           0.0, // Scroll to the top
-                                                          duration: const Duration(milliseconds: 300),
-                                                          curve: Curves.easeInOut,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          curve:
+                                                              Curves.easeInOut,
                                                         );
                                                       });
                                                     });
@@ -1333,7 +1214,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               ),
                                             ],
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -1342,7 +1222,8 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                         // Start of showSchoolTeacher
 
-                                        if (inpersonQualitativeController.showSchoolTeacher) ...[
+                                        if (inpersonQualitativeController
+                                            .showSchoolTeacher) ...[
                                           LabelText(
                                             label:
                                                 'Qualitative Inputs School Teachers',
@@ -1356,94 +1237,84 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Were you able to interview School Teachers?',
                                             astrick: true,
                                           ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolTeacherInterview'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolTeacherInterview',
+                                                      value);
+                                              if (value == 'Yes') {
+                                                inpersonQualitativeController
+                                                    .notAbleTeacherInterviewController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolTeacherInterview'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolTeacherInterview',
-                                                            value);
-                                                    if (value == 'Yes') {
-
-                                                      inpersonQualitativeController.notAbleTeacherInterviewController.clear();
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolTeacherInterview'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'schoolTeacherInterview',
+                                                      value);
+                                              if (value == 'No') {
+                                                inpersonQualitativeController
+                                                    .operatingDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .difficultiesController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .improvementController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .studentLearningController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .negativeImpactController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'digiLabTeachers');
+                                                inpersonQualitativeController
+                                                    .teacherFeelsLessController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'logsDifficulties');
+                                                inpersonQualitativeController
+                                                    .factorsPreventingController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'additionalSubjects');
+                                                inpersonQualitativeController
+                                                    .additionalSubjectsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .feedbackController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'schoolTeacherInterview'),
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'schoolTeacherInterview'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'schoolTeacherInterview',
-                                                            value);
-                                                    if (value == 'No') {
-
-                                                      inpersonQualitativeController.operatingDigiLabController.clear();
-                                                      inpersonQualitativeController.difficultiesController.clear();
-                                                      inpersonQualitativeController.improvementController.clear();
-                                                      inpersonQualitativeController.studentLearningController.clear();
-                                                      inpersonQualitativeController.negativeImpactController.clear();
-                                                      inpersonQualitativeController.clearRadioValue('digiLabTeachers');
-                                                      inpersonQualitativeController.teacherFeelsLessController.clear();
-                                                      inpersonQualitativeController.clearRadioValue('logsDifficulties');
-                                                      inpersonQualitativeController.factorsPreventingController.clear();
-                                                      inpersonQualitativeController.clearRadioValue('additionalSubjects');
-                                                      inpersonQualitativeController.additionalSubjectsController.clear();
-                                                      inpersonQualitativeController.feedbackController.clear();
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'schoolTeacherInterview'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -1612,81 +1483,46 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   '6. Has DigiLab made teachers feel less important in the school?',
                                               astrick: true,
                                             ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
+                                            CustomRadioButton(
+                                              value: 'Yes',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'digiLabTeachers'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'digiLabTeachers',
+                                                        value);
+                                              },
+                                              label: 'Yes',
+                                              screenWidth: screenWidth,
                                             ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'digiLabTeachers'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'digiLabTeachers',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
+                                            SizedBox(width: screenWidth * 0.4),
+                                            CustomRadioButton(
+                                              value: 'No',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'digiLabTeachers'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'digiLabTeachers',
+                                                        value);
+                                                if (value == 'No') {
+                                                  inpersonQualitativeController
+                                                      .teacherFeelsLessController
+                                                      .clear();
+                                                }
+                                              },
+                                              label: 'No',
+                                              screenWidth: screenWidth,
+                                              showError:
+                                                  inpersonQualitativeController
+                                                      .getRadioFieldError(
+                                                          'digiLabTeachers'),
                                             ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'digiLabTeachers'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'digiLabTeachers',
-                                                              value);
-                                                      if (value == 'No') {
-
-                                                        inpersonQualitativeController.teacherFeelsLessController.clear();
-
-                                                      }
-                                                    },
-
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'digiLabTeachers'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ),
                                             CustomSizedBox(
                                               value: 20,
                                               side: 'height',
@@ -1732,80 +1568,46 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   '7. Do you face any difficulties in filling the DigiLab logs and calculating average learning improvement levels?',
                                               astrick: true,
                                             ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
+                                            CustomRadioButton(
+                                              value: 'Yes',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'logsDifficulties'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'logsDifficulties',
+                                                        value);
+                                              },
+                                              label: 'Yes',
+                                              screenWidth: screenWidth,
                                             ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'logsDifficulties'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'logsDifficulties',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
+                                            SizedBox(width: screenWidth * 0.4),
+                                            CustomRadioButton(
+                                              value: 'No',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'logsDifficulties'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'logsDifficulties',
+                                                        value);
+                                                if (value == 'No') {
+                                                  inpersonQualitativeController
+                                                      .factorsPreventingController
+                                                      .clear();
+                                                }
+                                              },
+                                              label: 'No',
+                                              screenWidth: screenWidth,
+                                              showError:
+                                                  inpersonQualitativeController
+                                                      .getRadioFieldError(
+                                                          'logsDifficulties'),
                                             ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'logsDifficulties'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'logsDifficulties',
-                                                              value);
-                                                      if (value == 'No') {
-
-                                                        inpersonQualitativeController.factorsPreventingController.clear();
-
-                                                      }
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'logsDifficulties'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ),
                                             CustomSizedBox(
                                               value: 20,
                                               side: 'height',
@@ -1851,80 +1653,46 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   '8. Is there any additional type of content or subjects that you would like to be included in the DigiLab curriculum?',
                                               astrick: true,
                                             ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
+                                            CustomRadioButton(
+                                              value: 'Yes',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'additionalSubjects'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'additionalSubjects',
+                                                        value);
+                                              },
+                                              label: 'Yes',
+                                              screenWidth: screenWidth,
                                             ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'additionalSubjects'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'additionalSubjects',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
+                                            SizedBox(width: screenWidth * 0.4),
+                                            CustomRadioButton(
+                                              value: 'No',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'additionalSubjects'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'additionalSubjects',
+                                                        value);
+                                                if (value == 'No') {
+                                                  inpersonQualitativeController
+                                                      .additionalSubjectsController
+                                                      .clear();
+                                                }
+                                              },
+                                              label: 'No',
+                                              screenWidth: screenWidth,
+                                              showError:
+                                                  inpersonQualitativeController
+                                                      .getRadioFieldError(
+                                                          'additionalSubjects'),
                                             ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'additionalSubjects'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'additionalSubjects',
-                                                              value);
-                                                      if (value == 'No') {
-
-                                                        inpersonQualitativeController.additionalSubjectsController.clear();
-
-                                                      }
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'additionalSubjects'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ),
                                             CustomSizedBox(
                                               value: 20,
                                               side: 'height',
@@ -2039,11 +1807,14 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   title: 'Back',
                                                   onPressedButton: () {
                                                     setState(() {
-                                                      inpersonQualitativeController.showInputs = true;
-                                                      inpersonQualitativeController.showSchoolTeacher = false;
+                                                      inpersonQualitativeController
+                                                          .showInputs = true;
+                                                      inpersonQualitativeController
+                                                              .showSchoolTeacher =
+                                                          false;
                                                     });
                                                   }),
-                                               const Spacer(),
+                                              const Spacer(),
                                               CustomButton(
                                                 title: 'Next',
                                                 onPressedButton: () {
@@ -2083,9 +1854,11 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                           isAdditionalSubjectsValid) {
                                                         // All validations passed, move to the next step
                                                         setState(() {
-                                                          inpersonQualitativeController.showSchoolTeacher =
+                                                          inpersonQualitativeController
+                                                                  .showSchoolTeacher =
                                                               false;
-                                                          inpersonQualitativeController.showInputStudents =
+                                                          inpersonQualitativeController
+                                                                  .showInputStudents =
                                                               true;
                                                         });
                                                       } else {
@@ -2095,15 +1868,24 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                     } else {
                                                       // 'No' was selected for 'schoolTeacherInterview', no need for further validation
                                                       setState(() {
-                                                        inpersonQualitativeController.showSchoolTeacher =
+                                                        inpersonQualitativeController
+                                                                .showSchoolTeacher =
                                                             false;
-                                                        inpersonQualitativeController.showInputStudents =
+                                                        inpersonQualitativeController
+                                                                .showInputStudents =
                                                             true;
-                                                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                                                          _scrollController.animateTo(
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          _scrollController
+                                                              .animateTo(
                                                             0.0, // Scroll to the top
-                                                            duration: const Duration(milliseconds: 300),
-                                                            curve: Curves.easeInOut,
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                            curve: Curves
+                                                                .easeInOut,
                                                           );
                                                         });
                                                       });
@@ -2113,7 +1895,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               ),
                                             ],
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -2121,7 +1902,8 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                         ], // End of showSchoolTeacher
 
                                         // Start of showInputStudents
-                                        if (inpersonQualitativeController.showInputStudents) ...[
+                                        if (inpersonQualitativeController
+                                            .showInputStudents) ...[
                                           LabelText(
                                             label:
                                                 'Qualitative Inputs Students',
@@ -2130,107 +1912,99 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                             value: 20,
                                             side: 'height',
                                           ),
-
                                           LabelText(
                                             label:
                                                 'Were you able to interview Students',
                                             astrick: true,
                                           ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'studentInterview'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'studentInterview',
+                                                      value);
+
+                                              if (value == 'Yes') {
+                                                inpersonQualitativeController
+                                                    .interviewStudentsNotController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'studentInterview'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'studentInterview',
-                                                            value);
-
-                                                    if (value == 'Yes') {
-
-                                                      inpersonQualitativeController.interviewStudentsNotController.clear();
-
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'studentInterview'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'studentInterview',
+                                                      value);
+                                              if (value == 'No') {
+                                                inpersonQualitativeController
+                                                    .navigatingDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .componentsDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .timeDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .booksReadingController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .libraryController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .questionsAlexaController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .additionalTypeController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .questionsAlexaNotAbleController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .playingplaygroundController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'continuousAssistance');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'enoughtime');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'favoriteRead');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'regularlyMotivate');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'answersQuestions');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'AlexaEcho');
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'studentInterview'),
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'studentInterview'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'studentInterview',
-                                                            value);
-                                                    if (value == 'No') {
-
-                                                      inpersonQualitativeController.navigatingDigiLabController.clear();
-                                                      inpersonQualitativeController.componentsDigiLabController.clear();
-                                                      inpersonQualitativeController.timeDigiLabController.clear();
-                                                      inpersonQualitativeController.booksReadingController.clear();
-                                                      inpersonQualitativeController.libraryController.clear();
-                                                      inpersonQualitativeController.questionsAlexaController.clear();
-                                                      inpersonQualitativeController.additionalTypeController.clear();
-                                                      inpersonQualitativeController.questionsAlexaNotAbleController.clear();
-                                                      inpersonQualitativeController.playingplaygroundController.clear();
-                                                      inpersonQualitativeController.clearRadioValue('continuousAssistance');
-                                                      inpersonQualitativeController.clearRadioValue('enoughtime');
-                                                      inpersonQualitativeController.clearRadioValue('favoriteRead');
-                                                      inpersonQualitativeController.clearRadioValue('regularlyMotivate');
-                                                      inpersonQualitativeController.clearRadioValue('answersQuestions');
-                                                      inpersonQualitativeController.clearRadioValue('AlexaEcho');
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'studentInterview'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -2239,597 +2013,423 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   .getSelectedValue(
                                                       'studentInterview') ==
                                               'Yes') ...[
-
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolDigiLab') ==
-                                      'Yes') ...[
-
-                                            LabelText(
-                                              label:
-                                                  '1. What challenges do you face in navigating through the DigiLab content?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .navigatingDigiLabController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '2. Do you require continuous assistance from your teachers?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'continuousAssistance'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'continuousAssistance',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'continuousAssistance'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'continuousAssistance',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
                                             if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'continuousAssistance'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
+                                                    .getSelectedValue(
+                                                        'schoolDigiLab') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '1. What challenges do you face in navigating through the DigiLab content?',
+                                                astrick: true,
                                               ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '3. What components of the DigiLab do you find not be useful and why is this so?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .navigatingDigiLabController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '2. Do you require continuous assistance from your teachers?',
+                                                astrick: true,
+                                              ),
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'continuousAssistance'),
+                                                onChanged: (value) {
                                                   inpersonQualitativeController
-                                                      .componentsDigiLabController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '4. How much time are able to spend in the DigiLab?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
+                                                      .setRadioValue(
+                                                          'continuousAssistance',
+                                                          value);
+                                                },
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
+                                              ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'continuousAssistance'),
+                                                onChanged: (value) {
                                                   inpersonQualitativeController
-                                                      .timeDigiLabController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '5. Is this time enough to complete your assigned work?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'enoughtime'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'enoughtime',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
+                                                      .setRadioValue(
+                                                          'continuousAssistance',
+                                                          value);
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
+                                                showError:
+                                                    inpersonQualitativeController
+                                                        .getRadioFieldError(
+                                                            'continuousAssistance'),
                                               ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'enoughtime'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'enoughtime',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
                                               ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'enoughtime'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
+                                              LabelText(
+                                                label:
+                                                    '3. What components of the DigiLab do you find not be useful and why is this so?',
+                                                astrick: true,
                                               ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .componentsDigiLabController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '4. How much time are able to spend in the DigiLab?',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .timeDigiLabController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '5. Is this time enough to complete your assigned work?',
+                                                astrick: true,
+                                              ),
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'enoughtime'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'enoughtime', value);
+                                                },
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
+                                              ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'enoughtime'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'enoughtime', value);
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
+                                                showError:
+                                                    inpersonQualitativeController
+                                                        .getRadioFieldError(
+                                                            'enoughtime'),
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
                                             ],
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolLibrary') ==
-                                      'Yes') ...[
-                                            LabelText(
-                                              label:
-                                                  '6. Which type of books do you enjoy reading the most in the Library?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .booksReadingController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '7. How much time do you usually spend in the Library every week?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
-                                                  inpersonQualitativeController
-                                                      .libraryController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '8. Is this time enough to read your favorite books?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'favoriteRead'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'favoriteRead',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'favoriteRead'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'favoriteRead',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
                                             if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'favoriteRead'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
+                                                    .getSelectedValue(
+                                                        'schoolLibrary') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '6. Which type of books do you enjoy reading the most in the Library?',
+                                                astrick: true,
                                               ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            ],
-
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolPlayground') ==
-                                      'Yes') ...[
-                                            LabelText(
-                                              label:
-                                                  '9. How much time do you spend daily playing in the playground?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            CustomTextFormField(
-                                              textController:
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .booksReadingController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '7. How much time do you usually spend in the Library every week?',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .libraryController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '8. Is this time enough to read your favorite books?',
+                                                astrick: true,
+                                              ),
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'favoriteRead'),
+                                                onChanged: (value) {
                                                   inpersonQualitativeController
-                                                      .playingplaygroundController,
-                                              maxlines: 2,
-                                              labelText: 'Write here...',
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty) {
-                                                  return 'Please fill this field';
-                                                }
-                                                if (value.length < 50) {
-                                                  return 'Must be at least 50 characters long';
-                                                }
-                                                return null;
-                                              },
-                                              showCharacterCount: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            LabelText(
-                                              label:
-                                                  '10. Does this motivate you to come more regularly to school',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'regularlyMotivate'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'regularlyMotivate',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
+                                                      .setRadioValue(
+                                                          'favoriteRead',
+                                                          value);
+                                                },
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
                                               ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'regularlyMotivate'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'regularlyMotivate',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'favoriteRead'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'favoriteRead',
+                                                          value);
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
+                                                showError:
+                                                    inpersonQualitativeController
+                                                        .getRadioFieldError(
+                                                            'favoriteRead'),
                                               ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'regularlyMotivate'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
                                               ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
                                             ],
-
+                                            if (inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'schoolPlayground') ==
+                                                'Yes') ...[
+                                              LabelText(
+                                                label:
+                                                    '9. How much time do you spend daily playing in the playground?',
+                                                astrick: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              CustomTextFormField(
+                                                textController:
+                                                    inpersonQualitativeController
+                                                        .playingplaygroundController,
+                                                maxlines: 2,
+                                                labelText: 'Write here...',
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please fill this field';
+                                                  }
+                                                  if (value.length < 50) {
+                                                    return 'Must be at least 50 characters long';
+                                                  }
+                                                  return null;
+                                                },
+                                                showCharacterCount: true,
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                              LabelText(
+                                                label:
+                                                    '10. Does this motivate you to come more regularly to school',
+                                                astrick: true,
+                                              ),
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'regularlyMotivate'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'regularlyMotivate',
+                                                          value);
+                                                },
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
+                                              ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'regularlyMotivate'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'regularlyMotivate',
+                                                          value);
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
+                                                showError:
+                                                    inpersonQualitativeController
+                                                        .getRadioFieldError(
+                                                            'regularlyMotivate'),
+                                              ),
+                                              CustomSizedBox(
+                                                value: 20,
+                                                side: 'height',
+                                              ),
+                                            ],
                                             LabelText(
                                               label:
                                                   '11. Has this school been provided with Alexa Echo Dot device?',
                                               astrick: true,
                                             ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
+                                            CustomRadioButton(
+                                              value: 'Yes',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'AlexaEcho'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'AlexaEcho', value);
+                                              },
+                                              label: 'Yes',
+                                              screenWidth: screenWidth,
                                             ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'AlexaEcho'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'AlexaEcho',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
+                                            SizedBox(width: screenWidth * 0.4),
+                                            CustomRadioButton(
+                                              value: 'No',
+                                              groupValue:
+                                                  inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'AlexaEcho'),
+                                              onChanged: (value) {
+                                                inpersonQualitativeController
+                                                    .setRadioValue(
+                                                        'AlexaEcho', value);
+                                              },
+                                              label: 'No',
+                                              screenWidth: screenWidth,
+                                              showError:
+                                                  inpersonQualitativeController
+                                                      .getRadioFieldError(
+                                                          'AlexaEcho'),
                                             ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'AlexaEcho'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'AlexaEcho',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'AlexaEcho'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ),
                                             CustomSizedBox(
                                               value: 20,
                                               side: 'height',
@@ -2874,75 +2474,38 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                     '11.2. Are you able to get answers to all of your questions?',
                                                 astrick: true,
                                               ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'answersQuestions'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'answersQuestions',
+                                                          value);
+                                                },
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
                                               ),
-                                              Padding(
-                                                padding:  EdgeInsets.only(
-                                                      right: screenWidth * 0.1),
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      value: 'Yes',
-                                                      groupValue:
-                                                          inpersonQualitativeController
-                                                              .getSelectedValue(
-                                                                  'answersQuestions'),
-                                                      onChanged: (value) {
-                                                        inpersonQualitativeController
-                                                            .setRadioValue(
-                                                                'answersQuestions',
-                                                                value);
-                                                      },
-                                                    ),
-                                                     const Text('Yes'),
-                                                  ],
-                                                ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'answersQuestions'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'answersQuestions',
+                                                          value);
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
                                               ),
-                                              CustomSizedBox(
-                                                value: 150,
-                                                side: 'width',
-                                              ),
-                                              // make it that user can also edit the tourId and school
-                                              Padding(
-                                                padding:  EdgeInsets.only(
-                                                      right: screenWidth * 0.1),
-                                                child: Row(
-                                                  children: [
-                                                    Radio(
-                                                      value: 'No',
-                                                      groupValue:
-                                                          inpersonQualitativeController
-                                                              .getSelectedValue(
-                                                                  'answersQuestions'),
-                                                      onChanged: (value) {
-                                                        inpersonQualitativeController
-                                                            .setRadioValue(
-                                                                'answersQuestions',
-                                                                value);
-                                                      },
-                                                    ),
-                                                     const Text('No'),
-                                                  ],
-                                                ),
-                                              ),
-                                              if (inpersonQualitativeController
-                                                  .getRadioFieldError(
-                                                      'answersQuestions'))
-                                                 const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 16.0),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'Please select an option',
-                                                      style: TextStyle(
-                                                          color: Colors.red),
-                                                    ),
-                                                  ),
-                                                ),
                                               CustomSizedBox(
                                                 value: 20,
                                                 side: 'height',
@@ -3058,11 +2621,15 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                   title: 'Back',
                                                   onPressedButton: () {
                                                     setState(() {
-                                                      inpersonQualitativeController.showSchoolTeacher = true;
-                                                      inpersonQualitativeController.showInputStudents = false;
+                                                      inpersonQualitativeController
+                                                              .showSchoolTeacher =
+                                                          true;
+                                                      inpersonQualitativeController
+                                                              .showInputStudents =
+                                                          false;
                                                     });
                                                   }),
-                                               const Spacer(),
+                                              const Spacer(),
                                               CustomButton(
                                                 title: 'Next',
                                                 onPressedButton: () {
@@ -3074,7 +2641,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       isSchoolTeacherInterviewValid =
                                                       inpersonQualitativeController
                                                           .validateRadioSelection(
-                                                              'schoolTeacherInterview');
+                                                              'studentInterview');
 
                                                   // Check if all validations pass
                                                   if (isFormValid &&
@@ -3082,7 +2649,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                     // If 'Yes' is selected for 'schoolTeacherInterview', validate additional questions
                                                     if (inpersonQualitativeController
                                                             .getSelectedValue(
-                                                                'schoolTeacherInterview') ==
+                                                                'studentInterview') ==
                                                         'Yes') {
                                                       bool
                                                           isContinuousAssistanceValid =
@@ -3106,23 +2673,20 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                           inpersonQualitativeController
                                                               .validateRadioSelection(
                                                                   'AlexaEcho');
-                                                      bool
-                                                          isAnswersQuestionsValid =
-                                                          inpersonQualitativeController
-                                                              .validateRadioSelection(
-                                                                  'answersQuestions');
 
                                                       // If all additional radio selections are valid, move to the next step
                                                       if (isContinuousAssistanceValid &&
                                                           isEnoughTimeValid &&
                                                           isFavoriteReadValid &&
                                                           isRegularlyMotivateValid &&
-                                                          isAlexaEchoValid &&
-                                                          isAnswersQuestionsValid) {
+                                                          isAlexaEchoValid) {
                                                         setState(() {
-                                                          inpersonQualitativeController.showInputStudents =
+                                                          inpersonQualitativeController
+                                                                  .showInputStudents =
                                                               false;
-                                                          inpersonQualitativeController.showSmcMember = true;
+                                                          inpersonQualitativeController
+                                                                  .showSmcMember =
+                                                              true;
                                                         });
                                                       } else {
                                                         // Handle error for unselected radio options
@@ -3131,14 +2695,24 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                     } else {
                                                       // If 'No' was selected for 'schoolTeacherInterview', proceed to the next step
                                                       setState(() {
-                                                        inpersonQualitativeController.showInputStudents =
+                                                        inpersonQualitativeController
+                                                                .showInputStudents =
                                                             false;
-                                                        inpersonQualitativeController.showSmcMember = true;
-                                                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                                                          _scrollController.animateTo(
+                                                        inpersonQualitativeController
+                                                                .showSmcMember =
+                                                            true;
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          _scrollController
+                                                              .animateTo(
                                                             0.0, // Scroll to the top
-                                                            duration: const Duration(milliseconds: 300),
-                                                            curve: Curves.easeInOut,
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                            curve: Curves
+                                                                .easeInOut,
                                                           );
                                                         });
                                                       });
@@ -3148,7 +2722,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               ),
                                             ],
                                           ),
-
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -3157,7 +2730,8 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                         // Start of showSmcMember
 
-                                        if (inpersonQualitativeController.showSmcMember) ...[
+                                        if (inpersonQualitativeController
+                                            .showSmcMember) ...[
                                           LabelText(
                                             label:
                                                 'Qualitative Inputs SMC Member/VEC',
@@ -3171,95 +2745,77 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                 'Were you able to interview SMC/VEC Charge?',
                                             astrick: true,
                                           ),
-                                          CustomSizedBox(
-                                            value: 20,
-                                            side: 'height',
+                                          CustomRadioButton(
+                                            value: 'Yes',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'interviewSmc'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'interviewSmc', value);
+                                              if (value == 'Yes') {
+                                                inpersonQualitativeController
+                                                    .suggestionsProgramController
+                                                    .clear();
+                                              }
+                                            },
+                                            label: 'Yes',
+                                            screenWidth: screenWidth,
                                           ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'Yes',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'interviewSmc'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'interviewSmc',
-                                                            value);
-                                                    if (value == 'Yes') {
+                                          SizedBox(width: screenWidth * 0.4),
+                                          CustomRadioButton(
+                                            value: 'No',
+                                            groupValue:
+                                                inpersonQualitativeController
+                                                    .getSelectedValue(
+                                                        'interviewSmc'),
+                                            onChanged: (value) {
+                                              inpersonQualitativeController
+                                                  .setRadioValue(
+                                                      'interviewSmc', value);
+                                              if (value == 'No') {
+                                                inpersonQualitativeController
+                                                    .administrationSchoolController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .issuesResolveController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .fearsController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .easeController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .guidanceController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .feedbackDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .effectiveDigiLabController
+                                                    .clear();
+                                                inpersonQualitativeController
+                                                    .smcQues7
+                                                    .clear();
 
-                                                      inpersonQualitativeController.suggestionsProgramController.clear();
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('Yes'),
-                                              ],
-                                            ),
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'communityResistance');
+                                                inpersonQualitativeController
+                                                    .clearRadioValue(
+                                                        'digiLabSessions');
+                                              }
+                                            },
+                                            label: 'No',
+                                            screenWidth: screenWidth,
+                                            showError:
+                                                inpersonQualitativeController
+                                                    .getRadioFieldError(
+                                                        'interviewSmc'),
                                           ),
-                                          CustomSizedBox(
-                                            value: 150,
-                                            side: 'width',
-                                          ),
-                                          // make it that user can also edit the tourId and school
-                                          Padding(
-                                            padding:  EdgeInsets.only(
-                                                  right: screenWidth * 0.1),
-                                            child: Row(
-                                              children: [
-                                                Radio(
-                                                  value: 'No',
-                                                  groupValue:
-                                                      inpersonQualitativeController
-                                                          .getSelectedValue(
-                                                              'interviewSmc'),
-                                                  onChanged: (value) {
-                                                    inpersonQualitativeController
-                                                        .setRadioValue(
-                                                            'interviewSmc',
-                                                            value);
-                                                    if (value == 'No') {
-
-                                                      inpersonQualitativeController.administrationSchoolController.clear();
-                                                      inpersonQualitativeController.issuesResolveController.clear();
-                                                      inpersonQualitativeController.fearsController.clear();
-                                                      inpersonQualitativeController.easeController.clear();
-                                                      inpersonQualitativeController.guidanceController.clear();
-                                                      inpersonQualitativeController.feedbackDigiLabController.clear();
-                                                      inpersonQualitativeController.effectiveDigiLabController.clear();
-                                                      inpersonQualitativeController.smcQues7.clear();
-
-                                                      inpersonQualitativeController.clearRadioValue('communityResistance');
-                                                      inpersonQualitativeController.clearRadioValue('digiLabSessions');
-
-
-                                                    }
-                                                  },
-                                                ),
-                                                 const Text('No'),
-                                              ],
-                                            ),
-                                          ),
-                                          if (inpersonQualitativeController
-                                              .getRadioFieldError(
-                                                  'interviewSmc'))
-                                             const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  'Please select an option',
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
                                           CustomSizedBox(
                                             value: 20,
                                             side: 'height',
@@ -3283,8 +2839,6 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       .administrationSchoolController,
                                               maxlines: 2,
                                               labelText: 'Write here...',
-
-
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -3332,281 +2886,251 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               value: 20,
                                               side: 'height',
                                             ),
-                                      if (inpersonQualitativeController
-                                          .getSelectedValue(
-                                      'schoolDigiLab') ==
-                                      'Yes') ...[
-                                            LabelText(
-                                              label:
-                                                  '3. Has there been any resistance from the community or school management or teachers about use of technology for student learning?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'communityResistance'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'communityResistance',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'communityResistance'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'communityResistance',
-                                                              value);
-                                                      if (value == 'No') {
-
-                                                        inpersonQualitativeController.fearsController.clear();
-                                                        inpersonQualitativeController.easeController.clear();
-
-                                                      }
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'communityResistance'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
-                                                ),
-                                              ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
                                             if (inpersonQualitativeController
                                                     .getSelectedValue(
-                                                        'communityResistance') ==
+                                                        'schoolDigiLab') ==
                                                 'Yes') ...[
                                               LabelText(
                                                 label:
-                                                    '3.1. What are their fears?',
+                                                    '3. Has there been any resistance from the community or school management or teachers about use of technology for student learning?',
                                                 astrick: true,
                                               ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                              CustomTextFormField(
-                                                textController:
+
+                                              CustomRadioButton(
+                                                value: 'Yes',
+                                                groupValue:
                                                     inpersonQualitativeController
-                                                        .fearsController,
-                                                maxlines: 2,
-                                                labelText: 'Write here...',
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
-                                                    return 'Please fill this field';
-                                                  }
-                                                  if (value.length < 50) {
-                                                    return 'Must be at least 50 characters long';
-                                                  }
-                                                  return null;
+                                                        .getSelectedValue(
+                                                            'communityResistance'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'communityResistance',
+                                                          value);
                                                 },
-                                                showCharacterCount: true,
+                                                label: 'Yes',
+                                                screenWidth: screenWidth,
                                               ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.4),
+                                              CustomRadioButton(
+                                                value: 'No',
+                                                groupValue:
+                                                    inpersonQualitativeController
+                                                        .getSelectedValue(
+                                                            'communityResistance'),
+                                                onChanged: (value) {
+                                                  inpersonQualitativeController
+                                                      .setRadioValue(
+                                                          'communityResistance',
+                                                          value);
+                                                  if (value == 'No') {
+                                                    inpersonQualitativeController
+                                                        .fearsController
+                                                        .clear();
+                                                    inpersonQualitativeController
+                                                        .easeController
+                                                        .clear();
+                                                  }
+                                                },
+                                                label: 'No',
+                                                screenWidth: screenWidth,
+                                                showError:
+                                                    inpersonQualitativeController
+                                                        .getRadioFieldError(
+                                                            'communityResistance'),
+                                              ),
+
                                               CustomSizedBox(
                                                 value: 20,
                                                 side: 'height',
                                               ),
+                                              if (inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'communityResistance') ==
+                                                  'Yes') ...[
+                                                LabelText(
+                                                  label:
+                                                      '3.1. What are their fears?',
+                                                  astrick: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                                CustomTextFormField(
+                                                  textController:
+                                                      inpersonQualitativeController
+                                                          .fearsController,
+                                                  maxlines: 2,
+                                                  labelText: 'Write here...',
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'Please fill this field';
+                                                    }
+                                                    if (value.length < 50) {
+                                                      return 'Must be at least 50 characters long';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  showCharacterCount: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                                LabelText(
+                                                  label:
+                                                      '3.2. How have you tried to put them at ease?',
+                                                  astrick: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                                CustomTextFormField(
+                                                  textController:
+                                                      inpersonQualitativeController
+                                                          .easeController,
+                                                  maxlines: 2,
+                                                  labelText: 'Write here...',
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'Please fill this field';
+                                                    }
+                                                    if (value.length < 50) {
+                                                      return 'Must be at least 50 characters long';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  showCharacterCount: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                              ],
                                               LabelText(
                                                 label:
-                                                    '3.2. How have you tried to put them at ease?',
+                                                    '4. Have you observed any DigiLab sessions?',
                                                 astrick: true,
                                               ),
                                               CustomSizedBox(
                                                 value: 20,
                                                 side: 'height',
                                               ),
-                                              CustomTextFormField(
-                                                textController:
-                                                    inpersonQualitativeController
-                                                        .easeController,
-                                                maxlines: 2,
-                                                labelText: 'Write here...',
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
-                                                    return 'Please fill this field';
-                                                  }
-                                                  if (value.length < 50) {
-                                                    return 'Must be at least 50 characters long';
-                                                  }
-                                                  return null;
-                                                },
-                                                showCharacterCount: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                            ],
-                                            LabelText(
-                                              label:
-                                                  '4. Have you observed any DigiLab sessions?',
-                                              astrick: true,
-                                            ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(
+                                              Padding(
+                                                padding: EdgeInsets.only(
                                                     right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'Yes',
-                                                    groupValue:
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      value: 'Yes',
+                                                      groupValue:
+                                                          inpersonQualitativeController
+                                                              .getSelectedValue(
+                                                                  'digiLabSessions'),
+                                                      onChanged: (value) {
                                                         inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'digiLabSessions'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'digiLabSessions',
-                                                              value);
-                                                    },
-                                                  ),
-                                                   const Text('Yes'),
-                                                ],
-                                              ),
-                                            ),
-                                            CustomSizedBox(
-                                              value: 150,
-                                              side: 'width',
-                                            ),
-                                            // make it that user can also edit the tourId and school
-                                            Padding(
-                                              padding:  EdgeInsets.only(
-                                                    right: screenWidth * 0.1),
-                                              child: Row(
-                                                children: [
-                                                  Radio(
-                                                    value: 'No',
-                                                    groupValue:
-                                                        inpersonQualitativeController
-                                                            .getSelectedValue(
-                                                                'digiLabSessions'),
-                                                    onChanged: (value) {
-                                                      inpersonQualitativeController
-                                                          .setRadioValue(
-                                                              'digiLabSessions',
-                                                              value);
-                                                      if (value == 'No') {
-
-                                                        inpersonQualitativeController.guidanceController.clear();
-
-
-                                                      }
-                                                    },
-                                                  ),
-                                                   const Text('No'),
-                                                ],
-                                              ),
-                                            ),
-                                            if (inpersonQualitativeController
-                                                .getRadioFieldError(
-                                                    'digiLabSessions'))
-                                               const Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Please select an option',
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
+                                                            .setRadioValue(
+                                                                'digiLabSessions',
+                                                                value);
+                                                      },
+                                                    ),
+                                                    const Text('Yes'),
+                                                  ],
                                                 ),
                                               ),
-                                            CustomSizedBox(
-                                              value: 20,
-                                              side: 'height',
-                                            ),
-                                            if (inpersonQualitativeController
-                                                    .getSelectedValue(
-                                                        'digiLabSessions') ==
-                                                'Yes') ...[
-                                              LabelText(
-                                                label:
-                                                    '4.1. What support or guidance do the teachers/students need to make these sessions more effective?',
-                                                astrick: true,
+                                              CustomSizedBox(
+                                                value: 150,
+                                                side: 'width',
                                               ),
+                                              // make it that user can also edit the tourId and school
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: screenWidth * 0.1),
+                                                child: Row(
+                                                  children: [
+                                                    Radio(
+                                                      value: 'No',
+                                                      groupValue:
+                                                          inpersonQualitativeController
+                                                              .getSelectedValue(
+                                                                  'digiLabSessions'),
+                                                      onChanged: (value) {
+                                                        inpersonQualitativeController
+                                                            .setRadioValue(
+                                                                'digiLabSessions',
+                                                                value);
+                                                        if (value == 'No') {
+                                                          inpersonQualitativeController
+                                                              .guidanceController
+                                                              .clear();
+                                                        }
+                                                      },
+                                                    ),
+                                                    const Text('No'),
+                                                  ],
+                                                ),
+                                              ),
+                                              if (inpersonQualitativeController
+                                                  .getRadioFieldError(
+                                                      'digiLabSessions'))
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16.0),
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      'Please select an option',
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                  ),
+                                                ),
                                               CustomSizedBox(
                                                 value: 20,
                                                 side: 'height',
                                               ),
-                                              CustomTextFormField(
-                                                textController:
-                                                    inpersonQualitativeController
-                                                        .guidanceController,
-                                                maxlines: 2,
-                                                labelText: 'Write here...',
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
-                                                    return 'Please fill this field';
-                                                  }
-                                                  if (value.length < 50) {
-                                                    return 'Must be at least 50 characters long';
-                                                  }
-                                                  return null;
-                                                },
-                                                showCharacterCount: true,
-                                              ),
-                                              CustomSizedBox(
-                                                value: 20,
-                                                side: 'height',
-                                              ),
-                                            ],
+                                              if (inpersonQualitativeController
+                                                      .getSelectedValue(
+                                                          'digiLabSessions') ==
+                                                  'Yes') ...[
+                                                LabelText(
+                                                  label:
+                                                      '4.1. What support or guidance do the teachers/students need to make these sessions more effective?',
+                                                  astrick: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                                CustomTextFormField(
+                                                  textController:
+                                                      inpersonQualitativeController
+                                                          .guidanceController,
+                                                  maxlines: 2,
+                                                  labelText: 'Write here...',
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'Please fill this field';
+                                                    }
+                                                    if (value.length < 50) {
+                                                      return 'Must be at least 50 characters long';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  showCharacterCount: true,
+                                                ),
+                                                CustomSizedBox(
+                                                  value: 20,
+                                                  side: 'height',
+                                                ),
+                                              ],
                                             ],
                                             LabelText(
                                               label:
@@ -3738,18 +3262,21 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                               side: 'height',
                                             ),
                                           ],
-
                                           Row(
                                             children: [
                                               CustomButton(
                                                   title: 'Back',
                                                   onPressedButton: () {
                                                     setState(() {
-                                                      inpersonQualitativeController.showInputStudents = true;
-                                                      inpersonQualitativeController.showSmcMember = false;
+                                                      inpersonQualitativeController
+                                                              .showInputStudents =
+                                                          true;
+                                                      inpersonQualitativeController
+                                                              .showSmcMember =
+                                                          false;
                                                     });
                                                   }),
-                                               const Spacer(),
+                                              const Spacer(),
                                               CustomButton(
                                                   title: 'Submit',
                                                   onPressedButton: () async {
@@ -3759,7 +3286,9 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                             .validateRadioSelection(
                                                                 'interviewSmc');
 
-                                                    bool isRadioValid17 = interviewSmcValue == 'Yes';
+                                                    bool isRadioValid17 =
+                                                        interviewSmcValue ==
+                                                            'Yes';
 
                                                     bool isRadioValid18 =
                                                         true; // Default to true
@@ -3770,22 +3299,22 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                     if (isRadioValid17) {
                                                       isRadioValid18 =
                                                           inpersonQualitativeController
-                                                                  .validateRadioSelection(
-                                                                      'communityResistance') ;
+                                                              .validateRadioSelection(
+                                                                  'communityResistance');
                                                       isRadioValid19 =
                                                           inpersonQualitativeController
-                                                                  .validateRadioSelection(
-                                                                      'digiLabSessions');
+                                                              .validateRadioSelection(
+                                                                  'digiLabSessions');
                                                     }
 
                                                     if (_formKey.currentState!
                                                             .validate() &&
-                                                        (interviewSmcValue != 'Yes' ||
-                                                            (isRadioValid18 &&
-                                                                isRadioValid19))) {
+                                                        interviewSmcValue &&
+                                                        ((isRadioValid18 &&
+                                                            isRadioValid19))) {
                                                       String generateUniqueId(
                                                           int length) {
-                                                          const chars =
+                                                        const chars =
                                                             'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
                                                         Random rnd = Random();
                                                         return String.fromCharCodes(
@@ -3796,10 +3325,13 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                                         chars
                                                                             .length))));
                                                       }
+
                                                       final selectController =
-                                                      Get.put(SelectController());
+                                                          Get.put(
+                                                              SelectController());
                                                       String? lockedTourId =
-                                                          selectController.lockedTourId;
+                                                          selectController
+                                                              .lockedTourId;
 
                                                       // Use lockedTourId if it is available, otherwise use the selected tour ID from schoolEnrolmentController
                                                       String tourIdToInsert =
@@ -3818,7 +3350,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
 
                                                       if (kDebugMode) {
                                                         print(
-                                                          'Image Paths: ${imagePathFiles.map((file) => file.path).toList()}');
+                                                            'Image Paths: ${imagePathFiles.map((file) => file.path).toList()}');
                                                       }
 
                                                       String uniqueId =
@@ -3840,8 +3372,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                       InPersonQualitativeRecords
                                                           inPersonQualitativeRecords =
                                                           InPersonQualitativeRecords(
-                                                        tourId:
-                                                        tourIdToInsert,
+                                                        tourId: tourIdToInsert,
                                                         school:
                                                             inpersonQualitativeController
                                                                     .schoolValue ??
@@ -4098,8 +3629,7 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                                 .text,
                                                         smcques_7:
                                                             inpersonQualitativeController
-                                                                .smcQues7
-                                                                .text,
+                                                                .smcQues7.text,
                                                         created_at:
                                                             formattedDate
                                                                 .toString(),
@@ -4108,9 +3638,9 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                             .userid
                                                             .toString(),
                                                         unique_id: uniqueId,
-                                                            office: widget.office ?? '',
-
-                                                          );
+                                                        office:
+                                                            widget.office ?? '',
+                                                      );
 
                                                       int result =
                                                           await LocalDbController()
@@ -4124,21 +3654,20 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                         setState(() {});
 
                                                         String jsonData1 =
-                                                        jsonEncode(
-                                                            inPersonQualitativeRecords
-                                                                .toJson());
+                                                            jsonEncode(
+                                                                inPersonQualitativeRecords
+                                                                    .toJson());
 
                                                         try {
                                                           JsonFileDownloader
-                                                          downloader =
-                                                          JsonFileDownloader();
-                                                          String? filePath = await downloader
-                                                              .downloadJsonFile(
-                                                              jsonData1,
-                                                              uniqueId,
+                                                              downloader =
+                                                              JsonFileDownloader();
+                                                          String? filePath =
+                                                              await downloader
+                                                                  .downloadJsonFile(
+                                                            jsonData1,
+                                                            uniqueId,
                                                             imagePathFiles,
-
-
                                                           );
                                                           // Notify user of success
                                                           customSnackbar(
@@ -4164,10 +3693,14 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
                                                             AppColors.onPrimary,
                                                             Icons.verified);
                                                         // Navigate to HomeScreen
-                                                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                                                          Navigator.of(context).pushReplacement(
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) {
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
                                                             MaterialPageRoute(
-                                                              builder: (context) => const HomeScreen(),
+                                                              builder: (context) =>
+                                                                  const HomeScreen(),
                                                             ),
                                                           );
                                                         });
@@ -4195,13 +3728,10 @@ class _InPersonQualitativeFormState extends State<InPersonQualitativeForm> {
   }
 }
 
-
-
 class JsonFileDownloader {
   // Method to download JSON data to the Downloads directory
   Future<String?> downloadJsonFile(
       String jsonData, String uniqueId, List<File> imagePathFiles) async {
-
     Directory? downloadsDirectory;
 
     if (Platform.isAndroid) {
@@ -4221,7 +3751,7 @@ class JsonFileDownloader {
       // Convert images to Base64 for each image list
       Map<String, dynamic> jsonObject = jsonDecode(jsonData);
       jsonObject['base64_imagePathFiles'] =
-      await _convertImagesToBase64(imagePathFiles);
+          await _convertImagesToBase64(imagePathFiles);
 
       // Write the updated JSON data to the file
       await file.writeAsString(jsonEncode(jsonObject));
@@ -4248,8 +3778,6 @@ class JsonFileDownloader {
     // Return Base64-encoded images as a comma-separated string
     return base64Images.join(',');
   }
-
-
 
   // Method to get the correct directory for Android based on version
   Future<Directory?> _getAndroidDirectory() async {

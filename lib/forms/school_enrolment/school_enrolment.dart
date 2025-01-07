@@ -11,7 +11,6 @@ import 'package:offline17000ft/components/custom_appBar.dart';
 import 'package:offline17000ft/components/custom_button.dart';
 import 'package:offline17000ft/components/custom_imagepreview.dart';
 import 'package:offline17000ft/components/custom_snackbar.dart';
-import 'package:offline17000ft/components/custom_textField.dart';
 import 'package:offline17000ft/components/error_text.dart';
 import 'package:offline17000ft/constants/color_const.dart';
 import 'package:offline17000ft/forms/school_enrolment/school_enrolment_model.dart';
@@ -124,23 +123,17 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
   }
 
   void _setupControllers() {
-    // Initialize controllers for all grades if not yet initialized
+    // Initialize controllers and notifiers if not already done
     for (int i = boysControllers.length; i < grades.length; i++) {
       boysControllers.add(TextEditingController(text: '0'));
       girlsControllers.add(TextEditingController(text: '0'));
       totalNotifiers.add(ValueNotifier<int>(0));
     }
 
-    // Add listeners for data collection and total updates
+    // Optimize listeners with a debounced approach
     for (int i = 0; i < grades.length; i++) {
-      boysControllers[i].addListener(() {
-        updateTotal(i);
-        collectData();
-      });
-      girlsControllers[i].addListener(() {
-        updateTotal(i);
-        collectData();
-      });
+      boysControllers[i].addListener(() => _debounceUpdate(i));
+      girlsControllers[i].addListener(() => _debounceUpdate(i));
     }
   }
 
@@ -204,11 +197,21 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
     }
   }
 
+  void _debounceUpdate(int index) {
+    Timer? _debounce;
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      updateTotal(index);
+      collectData();
+    });
+  }
+
   void updateTotal(int index) {
     final boysCount = int.tryParse(boysControllers[index].text) ?? 0;
     final girlsCount = int.tryParse(girlsControllers[index].text) ?? 0;
     totalNotifiers[index].value = boysCount + girlsCount;
 
+    // Update grand totals
     updateGrandTotal();
   }
 
@@ -640,101 +643,76 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                             (index) {
                                           return TableRow(
                                             children: [
+                                              // Grade Name
                                               TableCell(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Center(
-                                                      child: Text(grades[index],
-                                                          textAlign: TextAlign
-                                                              .center)),
-                                                ),
-                                              ),
-                                              TableCell(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Center(
-                                                    child: TextField(
-                                                      controller:
-                                                          boysControllers[
-                                                              index],
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      maxLength: 3,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      onChanged: (value) =>
-                                                          updateTotal(index),
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        counterText: '',
-                                                        border:
-                                                            InputBorder.none,
-                                                        isDense: true,
-                                                      ),
-                                                    ),
+                                                child: Center(
+                                                  child: Text(
+                                                    grades[index],
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ),
                                               ),
+                                              // Boys Input Field
                                               TableCell(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Center(
-                                                    child: TextField(
-                                                      controller:
-                                                          girlsControllers[
-                                                              index],
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      maxLength: 3,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      onChanged: (value) {
-                                                        Future.delayed(
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    300), () {
-                                                          if (boysControllers[
-                                                                          index]
-                                                                      .text ==
-                                                                  value ||
-                                                              girlsControllers[
-                                                                          index]
-                                                                      .text ==
-                                                                  value) {
-                                                            updateTotal(index);
-                                                          }
-                                                        });
-                                                      },
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        counterText: '',
-                                                        border:
-                                                            InputBorder.none,
-                                                        isDense: true,
-                                                      ),
+                                                child: Center(
+                                                  child: TextField(
+                                                    controller:
+                                                        boysControllers[index],
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    textAlign: TextAlign.center,
+                                                    maxLength: 3,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      counterText: '',
+                                                      border: InputBorder.none,
+                                                      isDense: true,
                                                     ),
+                                                    onSubmitted: (_) =>
+                                                        FocusScope.of(context)
+                                                            .nextFocus(),
                                                   ),
                                                 ),
                                               ),
+                                              // Girls Input Field
                                               TableCell(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Center(
-                                                    child:
-                                                        ValueListenableBuilder<
-                                                            int>(
-                                                      valueListenable:
-                                                          totalNotifiers[index],
-                                                      builder: (context, value,
-                                                              _) =>
-                                                          Text(value.toString(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center),
+                                                child: Center(
+                                                  child: TextField(
+                                                    controller:
+                                                        girlsControllers[index],
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    textAlign: TextAlign.center,
+                                                    maxLength: 3,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      counterText: '',
+                                                      border: InputBorder.none,
+                                                      isDense: true,
+                                                    ),
+                                                    onSubmitted: (_) =>
+                                                        FocusScope.of(context)
+                                                            .nextFocus(),
+                                                  ),
+                                                ),
+                                              ),
+                                              // Total Value
+                                              TableCell(
+                                                child: Center(
+                                                  child: ValueListenableBuilder<
+                                                      int>(
+                                                    valueListenable:
+                                                        totalNotifiers[index],
+                                                    builder:
+                                                        (context, value, _) =>
+                                                            Text(
+                                                      value.toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                 ),
@@ -742,6 +720,7 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                             ],
                                           );
                                         }),
+
                                         // Grand Total Row
                                         TableRow(
                                           decoration: const BoxDecoration(
@@ -759,54 +738,45 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                               ),
                                             ),
                                             TableCell(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: ValueListenableBuilder<
-                                                      int>(
-                                                    valueListenable:
-                                                        grandTotalBoys,
-                                                    builder: (context, value,
-                                                            _) =>
-                                                        Text(value.toString(),
-                                                            textAlign: TextAlign
-                                                                .center),
+                                              child: Center(
+                                                child:
+                                                    ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      grandTotalBoys,
+                                                  builder:
+                                                      (context, value, _) =>
+                                                          Text(
+                                                    value.toString(),
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             TableCell(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: ValueListenableBuilder<
-                                                      int>(
-                                                    valueListenable:
-                                                        grandTotalGirls,
-                                                    builder: (context, value,
-                                                            _) =>
-                                                        Text(value.toString(),
-                                                            textAlign: TextAlign
-                                                                .center),
+                                              child: Center(
+                                                child:
+                                                    ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      grandTotalGirls,
+                                                  builder:
+                                                      (context, value, _) =>
+                                                          Text(
+                                                    value.toString(),
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             TableCell(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: ValueListenableBuilder<
-                                                      int>(
-                                                    valueListenable: grandTotal,
-                                                    builder: (context, value,
-                                                            _) =>
-                                                        Text(value.toString(),
-                                                            textAlign: TextAlign
-                                                                .center),
+                                              child: Center(
+                                                child:
+                                                    ValueListenableBuilder<int>(
+                                                  valueListenable: grandTotal,
+                                                  builder:
+                                                      (context, value, _) =>
+                                                          Text(
+                                                    value.toString(),
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ),
                                               ),
@@ -821,12 +791,21 @@ class _SchoolEnrollmentFormState extends State<SchoolEnrollmentForm> {
                                       label: 'Remarks',
                                     ),
                                     CustomSizedBox(side: 'height', value: 20),
-                                    CustomTextFormField(
-                                      textController: schoolEnrolmentController
+                                    TextFormField(
+                                      controller: schoolEnrolmentController
                                           .remarksController,
-                                      labelText: 'Write your comments..',
-                                      maxlines: 2,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Write your comments...',
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                12), // Set the desired radius for rounded corners
+                                          ),
+                                        ),
+                                      ),
+                                      maxLines: 2,
                                     ),
+
                                     CustomSizedBox(
                                       value: 20,
                                       side: 'height',

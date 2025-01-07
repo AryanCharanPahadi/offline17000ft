@@ -69,7 +69,8 @@ class ApiService {
         print('Deleting existing tour details from the local database...');
       }
       try {
-        await SqfliteDatabaseHelper().delete('tour_details');
+        final dbHelper = SqfliteDatabaseHelper();
+        await dbHelper.delete(SqfliteDatabaseHelper.tourDetails);
         for (var tour in _tourList) {
           if (kDebugMode) {
             print('Adding tour detail to local database: $tour');
@@ -87,32 +88,5 @@ class ApiService {
     }
 
     return _tourList; // Return the list, whether empty or populated
-  }
-
-  // Clear tour details upon logout
-  Future<void> clearTourDetailsOnLogout() async {
-    if (kDebugMode) {
-      print('Clearing tour details on logout...');
-    }
-    try {
-      await SqfliteDatabaseHelper()
-          .delete('tour_details'); // Clear from local DB
-      _tourList.clear(); // Clear in-memory list
-      if (kDebugMode) {
-        print('Tour details cleared.');
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error clearing tour details on logout: $e');
-      }
-    }
-  }
-
-  // Refresh tour details on login
-  Future<void> refreshTourDetailsOnLogin(String? office) async {
-    if (kDebugMode) {
-      print('Refreshing tour details on login...');
-    }
-    await fetchTourIds(office); // Fetch fresh data and update local storage
   }
 }

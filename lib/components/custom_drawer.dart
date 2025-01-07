@@ -1,4 +1,4 @@
-import 'package:offline17000ft/forms/issue_tracker/issue_tracker_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -16,7 +16,7 @@ import '../forms/school_recce_form/school_recce_sync.dart';
 import '../forms/school_staff_vec_form/school_vec_sync.dart';
 import '../forms/select_tour_id/select_from.dart';
 import '../forms/user_controller/user_controller.dart';
-import '../helper/api_services.dart';
+import '../helper/database_helper.dart';
 import '../helper/responsive_helper.dart';
 import '../helper/shared_prefernce.dart';
 import '../change_password/change_pasword.dart';
@@ -35,7 +35,6 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   final UserController _userController = Get.put(UserController());
   final HomeController _homeController = Get.put(HomeController());
-  final IssueTrackerController _issueController = Get.put(IssueTrackerController());
 
 
   @override
@@ -65,7 +64,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.white,
               child: Icon(
@@ -117,8 +116,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
       children: [
         _buildDrawerMenu('Home', FontAwesomeIcons.house, () => _navigateTo(const HomeScreen())),
         _buildDrawerMenu('Change Password', FontAwesomeIcons.key, _navigateToChangePassword),
-        _buildDrawerMenu('Edit Form', FontAwesomeIcons.penToSquare, () => _navigateTo(EditFormPage())),
-        _buildDrawerMenu('Select Tour Id', FontAwesomeIcons.penToSquare, () => _navigateTo(SelectForm())),
+        _buildDrawerMenu('Edit Form', FontAwesomeIcons.penToSquare, () => _navigateTo(const EditFormPage())),
+        _buildDrawerMenu('Select Tour Id', FontAwesomeIcons.penToSquare, () => _navigateTo(const SelectForm())),
         // _buildDrawerMenu('Alfa Observation Sync', FontAwesomeIcons.database, () => _syncNavigation(const AlfaObservationSync())),
         _buildDrawerMenu('Cab Meter Tracing Sync', FontAwesomeIcons.database, () => _syncNavigation(const CabTracingSync())),
         _buildDrawerMenu('Enrollment Sync', FontAwesomeIcons.database, () => _syncNavigation(const EnrolmentSync())),
@@ -155,7 +154,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     if (_homeController.empId?.isNotEmpty == true) {
       _navigateTo(ChangePassword(userid: _homeController.empId!));
     } else {
-      print("empId is null or empty, cannot navigate to ChangePassword.");
+      if (kDebugMode) {
+        print("empId is null or empty, cannot navigate to ChangePassword.");
+      }
     }
   }
 
@@ -165,7 +166,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
       await SharedPreferencesHelper.logout();
       _navigateTo(syncScreen);
     } catch (e) {
-      print("Error during sync navigation: $e");
+      if (kDebugMode) {
+        print("Error during sync navigation: $e");
+      }
       customSnackbar(
         'Error',
         'Failed to navigate to sync screen.',
@@ -178,8 +181,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   // Handle user logout and clear data
   Future<void> _handleLogout() async {
-    await ApiService().clearTourDetailsOnLogout(); // Clear tour details before logout
-    _issueController.clearStaffNameOnLogout();
+// Clear user data and tour details
+    final dbHelper = SqfliteDatabaseHelper();
+    await dbHelper.delete(SqfliteDatabaseHelper.tourDetails);
+    if (kDebugMode) {
+      print('Tour table cleared');
+    }
+    await dbHelper.delete(SqfliteDatabaseHelper.tableStaffNames);
+    if (kDebugMode) {
+      print('Staff table cleared');
+    }
     _userController.clearUserData();
     await SharedPreferencesHelper.logout();
 
@@ -214,7 +225,7 @@ class DrawerMenu extends StatelessWidget {
       leading: icon,
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.onBackground,
           fontSize: 14,
           fontWeight: FontWeight.w600,

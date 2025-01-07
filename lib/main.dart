@@ -1,21 +1,25 @@
 import 'dart:async';
+
 import 'package:offline17000ft/helper/shared_prefernce.dart';
 import 'package:offline17000ft/home/home_screen.dart';
 import 'package:offline17000ft/login/login_screen.dart';
 import 'package:offline17000ft/splash/splash_screen.dart';
 import 'package:offline17000ft/utils/dependency_injection.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:offline17000ft/theme/theme_constants.dart';
 import 'package:offline17000ft/theme/theme_manager.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure widgets are initialized
+  await GetStorage.init(); // Initialize GetStorage
   DependencyInjection.init();
-
-  runApp(const MyApp());
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String version = packageInfo.version;
+  GetStorage().write('version', version);
+  runApp(const MyApp()); // Run the app
 }
 
 ThemeManager themeManager = ThemeManager();
@@ -50,33 +54,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _initializeApp() async {
-    // Add a short delay to allow the splash screen to display briefly
-    await Future.delayed(const Duration(seconds: 4));
+    await GetStorage.init();
+    await Future.delayed(const Duration(seconds: 3));
+    _checkLoginState();
+  }
 
-    // Check login state and store it in _isLoggedIn
-    final isLoggedIn = await SharedPreferencesHelper.getLoginState();
-
-    // Update the state and navigate based on login state
+  Future<void> _checkLoginState() async {
+    bool isLoggedIn = await SharedPreferencesHelper.getLoginState();
     setState(() {
       _isLoggedIn = isLoggedIn;
     });
-
-    _navigateBasedOnAuth();
-  }
-
-  void _navigateBasedOnAuth() {
-    // Navigate to the appropriate screen based on login state
-    if (_isLoggedIn == true) {
-      Get.offAll(() => const HomeScreen());
-    } else {
-      Get.offAll(() => const LoginScreen());
+    if (_isLoggedIn != null) {
+      _isLoggedIn!
+          ? Get.offAll(() => const HomeScreen())
+          : Get.offAll(() => const LoginScreen());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'offline17000ft',
+      title: 'Flutter Demo',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeManager.themeMode,
