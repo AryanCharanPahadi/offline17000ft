@@ -125,7 +125,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                                 : null, // Disable dropdown if lockedTourId is present
                             labelText: "Select Tour ID",
                           ),
-
                           CustomSizedBox(
                             value: 20,
                             side: 'height',
@@ -194,7 +193,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                               return null;
                             },
                           ),
-
                           CustomSizedBox(
                             value: 20,
                             side: 'height',
@@ -236,7 +234,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                             value: 20,
                             side: 'height',
                           ),
-
                           CustomTextFormField(
                             textController:
                                 cabMeterController.meterReadingController,
@@ -256,7 +253,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                               return null;
                             },
                           ),
-
                           CustomSizedBox(
                             value: 20,
                             side: 'height',
@@ -307,7 +303,6 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                             value: 20,
                             side: 'height',
                           ),
-
                           cabMeterController.multipleImage.isNotEmpty
                               ? Container(
                                   width: responsive.responsiveValue(
@@ -396,7 +391,8 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                           ),
                           CustomRadioButton(
                             value: 'Start',
-                            groupValue: cabMeterController.getSelectedValue('meter'),
+                            groupValue:
+                                cabMeterController.getSelectedValue('meter'),
                             onChanged: (value) {
                               cabMeterController.setRadioValue('meter', value);
                             },
@@ -406,16 +402,16 @@ class _CabMeterTracingFormState extends State<CabMeterTracingForm> {
                           SizedBox(width: screenWidth * 0.4),
                           CustomRadioButton(
                             value: 'End',
-                            groupValue: cabMeterController.getSelectedValue('meter'),
+                            groupValue:
+                                cabMeterController.getSelectedValue('meter'),
                             onChanged: (value) {
                               cabMeterController.setRadioValue('meter', value);
                             },
                             label: 'End',
                             screenWidth: screenWidth,
-                            showError: cabMeterController.getRadioFieldError('meter'),
-
+                            showError:
+                                cabMeterController.getRadioFieldError('meter'),
                           ),
-
                           CustomSizedBox(
                             value: 20,
                             side: 'height',

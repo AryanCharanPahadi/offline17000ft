@@ -639,26 +639,6 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                           labelText: 'Enter Email',
                                           textInputType:
                                               TextInputType.emailAddress,
-                                          validator: (value) {
-                                            // Check if the value is empty
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return null; // No validation if the field is empty
-                                            }
-
-                                            // Regular expression for validating email
-                                            final emailRegex = RegExp(
-                                              r'^[^@]+@[^@]+\.[^@]+$',
-                                              caseSensitive: false,
-                                            );
-
-                                            // Check if the email matches the regex
-                                            if (!emailRegex.hasMatch(value)) {
-                                              return 'Please Enter a Valid Email Address';
-                                            }
-
-                                            return null; // Return null if the email is valid
-                                          },
                                           showCharacterCount: true,
                                         ),
                                         CustomSizedBox(
@@ -996,7 +976,6 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                         ),
                                         LabelText(
                                           label: 'Email ID',
-                                          astrick: true,
                                         ),
                                         CustomSizedBox(
                                           value: 20,
@@ -1009,23 +988,7 @@ class _SchoolStaffVecFormState extends State<SchoolStaffVecForm> {
                                           labelText: 'Enter Email',
                                           textInputType:
                                               TextInputType.emailAddress,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Please Enter Email';
-                                            }
 
-                                            // Regular expression for validating email
-                                            final emailRegex = RegExp(
-                                              r'^[^@]+@[^@]+\.[^@]+$',
-                                              caseSensitive: false,
-                                            );
-
-                                            if (!emailRegex.hasMatch(value)) {
-                                              return 'Please Enter a Valid Email Address';
-                                            }
-                                            return null;
-                                          },
                                           showCharacterCount: true,
                                         ),
                                         CustomSizedBox(

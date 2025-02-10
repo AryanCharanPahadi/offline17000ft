@@ -81,9 +81,10 @@ class SchoolStaffVecRecords {
     headEmail: json["headEmail"],  // Updated to match field name
     headDesignation: json["headDesignation"],  // Updated to match field name
     totalTeachingStaff: json["totalTeachingStaff"],
-    totalNonTeachingStaff: json["totalTeachingStaff"],
+    totalNonTeachingStaff: json["totalNonTeachingStaff"],
     totalStaff: json["totalStaff"],
     smcVecName: json["SmcVecName"],  // Updated to match field name
+
     genderVec: json["genderVec"],  // Updated to match field name
     vecMobile: json["vecMobile"],  // Updated to match field name
     vecEmail: json["vecEmail"],  // Updated to match field name

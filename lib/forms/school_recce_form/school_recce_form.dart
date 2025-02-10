@@ -5496,10 +5496,6 @@ class _SchoolRecceFormState extends State<SchoolRecceForm> {
                                                 if (value!.isEmpty) {
                                                   return 'Please fill this field';
                                                 }
-
-                                                if (value.length < 25) {
-                                                  return 'Must be at least 25 characters long';
-                                                }
                                                 return null;
                                               },
                                               showCharacterCount: true,
